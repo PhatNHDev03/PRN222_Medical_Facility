@@ -15,3 +15,4 @@ D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\M
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.DataAccess\obj\Debug\net8.0\MedicaiFacility.DataAccess.pdb
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.DataAccess\obj\Debug\net8.0\MedicaiFacility.DataAccess.genruntimeconfig.cache
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.DataAccess\obj\Debug\net8.0\ref\MedicaiFacility.DataAccess.dll
+D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.DataAccess\obj\Debug\net8.0\MedicaiFacility.DataAccess.sourcelink.json

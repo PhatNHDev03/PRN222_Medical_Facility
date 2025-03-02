@@ -15,3 +15,4 @@ D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\M
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.Services\obj\Debug\net8.0\refint\MedicaiFacility.Service.dll
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.Services\obj\Debug\net8.0\MedicaiFacility.Service.pdb
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.Services\obj\Debug\net8.0\ref\MedicaiFacility.Service.dll
+D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.Services\obj\Debug\net8.0\MedicaiFacility.Service.sourcelink.json

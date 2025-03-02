@@ -99,3 +99,4 @@ D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\M
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility\obj\Debug\net8.0\MedicaiFacility.RazorPage.pdb
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility\obj\Debug\net8.0\MedicaiFacility.RazorPage.genruntimeconfig.cache
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility\obj\Debug\net8.0\ref\MedicaiFacility.RazorPage.dll
+D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility\obj\Debug\net8.0\MedicaiFacility.RazorPage.sourcelink.json

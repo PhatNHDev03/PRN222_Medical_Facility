@@ -10,3 +10,4 @@ D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\M
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.BusinessObject\obj\Debug\net8.0\refint\MedicaiFacility.BusinessObject.dll
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.BusinessObject\obj\Debug\net8.0\MedicaiFacility.BusinessObject.pdb
 D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.BusinessObject\obj\Debug\net8.0\ref\MedicaiFacility.BusinessObject.dll
+D:\FPT_source\sem 7\PRN222\Assignments\Final_Project\MedicaiFacility.RazorPage\MedicaiFacility.BusinessObject\obj\Debug\net8.0\MedicaiFacility.BusinessObject.sourcelink.json

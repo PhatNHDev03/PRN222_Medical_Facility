@@ -23,6 +23,8 @@ namespace MedicaiFacility.Service
             throw new NotImplementedException();
         }
 
+        public (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize) 
+            => _healthRecordRepository.findAllWithPagination(pg, pageSize);
         public HealthRecord FindById(int id)
         {
             throw new NotImplementedException();

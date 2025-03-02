@@ -1,0 +1,172 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.HealthRecords.IndexModel
+@{
+	ViewData["Title"] = "Health Records";
+}
+
+<h2>Health Records</h2>
+<form asp-page="/HealthRecords/Create" method="post">
+	<button class="btn btn-sm btn-primary m-2">Add New Record</button>
+</form>
+
+<table class="table table-bordered">
+	<thead class="thead-dark">
+		<tr>
+			<th>ID</th>
+			<th>Patient</th>
+			<th>File Name</th>
+			<th>Created At</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var record in Model.HealthRecords)
+		{
+			<tr>
+				<td>@record.RecordId</td>
+				<td>@(record.Patient != null ? record.Patient.PatientId : "Unknown")</td>
+				<td>@record.FileName</td>
+				<td>@record.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>
+					<button class="btn btn-warning btn-sm" onclick="openModal('Edit', @record.RecordId)">Edit</button>
+					<button class="btn btn-danger btn-sm" onclick="openModal('Delete', @record.RecordId)">Delete</button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+@if (Model.Pager.TotalPages > 0)
+{
+
+	<ul class="pagination justify-content-end">
+		@if (Model.Pager.CurrentPage > 1)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+			</li>
+		}
+		@for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
+		{
+			<li class="page-item  @(pge == Model.Pager.CurrentPage? "active": "")">
+				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@pge">@pge</a>
+			</li>
+		}
+		@if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+			</li>
+		}
+	</ul>
+}
+
+@* <script>
+    async function openModal(action, id = null) {
+        let url = action === 'Create' ? '/HealthRecords/Create' : `/HealthRecords/${action}?id=${id}`;
+
+        try {
+            let response = await fetch(url);
+            let data = await response.text();
+
+            let modalForm = document.getElementById("modalForm");
+            modalForm.innerHTML = data;
+            document.getElementById("modal").style.display = "block";
+
+            attachSubmitHandler();
+        } catch (error) {
+            console.error("Error loading modal:", error);
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("modalForm").innerHTML = "";
+    }
+
+    function attachSubmitHandler() {
+        let form = document.getElementById("healthRecordForm");
+        if (!form) return;
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            let formData = new FormData(form);
+
+            try {
+                let response = await fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                });
+                let result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                alert("An error occurred while processing.");
+            }
+        });
+    }
+</script> *@
+
+<!-- Modal -->
+<div id="modal" class="modal">
+	<div class="modal-content">
+		<span class="close-btn" onclick="closeModal()">&times;</span>
+		<div id="modalForm"></div>
+	</div>
+</div>
+
+<style>
+	.modal {
+		display: none;
+		position: fixed;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.4);
+	}
+
+	.modal-content {
+		background-color: white;
+		margin: 10% auto;
+		padding: 20px;
+		border: 1px solid #888;
+		width: 50%;
+		box-shadow: 0px 0px 10px 0px #000;
+	}
+
+	.close-btn {
+		color: #aaa;
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+		.close-btn:hover {
+			color: black;
+		}
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+

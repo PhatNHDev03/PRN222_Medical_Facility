@@ -3,52 +3,32 @@
   "WorkspaceRootPath": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecord.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecord.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.services\\iservice\\ihealthrecordservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|solutionrelative:medicaifacility.services\\iservice\\ihealthrecordservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.dataaccess\\healthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|solutionrelative:medicaifacility.dataaccess\\healthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.services\\healhrecordservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|solutionrelative:medicaifacility.services\\healhrecordservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecord.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecord.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{84F38B7B-1885-48AB-8701-06A130664B4B}|MedicaiFacility.BusinessObject\\MedicaiFacility.BusinessObject.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.businessobject\\healthrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{84F38B7B-1885-48AB-8701-06A130664B4B}|MedicaiFacility.BusinessObject\\MedicaiFacility.BusinessObject.csproj|solutionrelative:medicaifacility.businessobject\\healthrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{84F38B7B-1885-48AB-8701-06A130664B4B}|MedicaiFacility.BusinessObject\\MedicaiFacility.BusinessObject.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.businessobject\\pagination\\pager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84F38B7B-1885-48AB-8701-06A130664B4B}|MedicaiFacility.BusinessObject\\MedicaiFacility.BusinessObject.csproj|solutionrelative:medicaifacility.businessobject\\pagination\\pager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.dataaccess\\efpt.config.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|solutionrelative:medicaifacility.dataaccess\\efpt.config.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecords\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecords\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.dataaccess\\irepostory\\ihealthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|solutionrelative:medicaifacility.dataaccess\\irepostory\\ihealthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecords\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecords\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.services\\denpendenceinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{85469165-E386-4529-B3C2-CA1FFD7669FD}|MedicaiFacility.Services\\MedicaiFacility.Service.csproj|solutionrelative:medicaifacility.services\\denpendenceinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecords\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecords\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility\\pages\\healthrecords\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB470433-B064-45EE-8005-0A42EDF66D25}|MedicaiFacility\\MedicaiFacility.RazorPage.csproj|solutionrelative:medicaifacility\\pages\\healthrecords\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|d:\\fpt_source\\sem 7\\prn222\\assignments\\final_project\\medicaifacility.razorpage\\medicaifacility.dataaccess\\healthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}|MedicaiFacility.DataAccess\\MedicaiFacility.DataAccess.csproj|solutionrelative:medicaifacility.dataaccess\\healthrecordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,8 +38,39 @@
       "DocumentGroups": [
         {
           "DockedWidth": 312,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Pager.cs",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\Pagination\\Pager.cs",
+              "RelativeDocumentMoniker": "MedicaiFacility.BusinessObject\\Pagination\\Pager.cs",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\Pagination\\Pager.cs",
+              "RelativeToolTip": "MedicaiFacility.BusinessObject\\Pagination\\Pager.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAIBDwA8AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T06:53:56.499Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HealthRecord.cs",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\HealthRecord.cs",
+              "RelativeDocumentMoniker": "MedicaiFacility.BusinessObject\\HealthRecord.cs",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\HealthRecord.cs",
+              "RelativeToolTip": "MedicaiFacility.BusinessObject\\HealthRecord.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T07:22:15.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
@@ -78,166 +89,74 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IHealthRecordService.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\IService\\IHealthRecordService.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.Services\\IService\\IHealthRecordService.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\IService\\IHealthRecordService.cs",
-              "RelativeToolTip": "MedicaiFacility.Services\\IService\\IHealthRecordService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAwAAAAiAAAA",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml.cs",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml.cs",
+              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:39:10.768Z",
+              "WhenOpened": "2025-03-01T07:13:38.941Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "HealhRecordService.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\HealhRecordService.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.Services\\HealhRecordService.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\HealhRecordService.cs",
-              "RelativeToolTip": "MedicaiFacility.Services\\HealhRecordService.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAABBwCAAAAALAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:39:13.616Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "_ViewImports.cshtml",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\_ViewImports.cshtml",
-              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\_ViewImports.cshtml",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\_ViewImports.cshtml",
-              "RelativeToolTip": "MedicaiFacility\\Pages\\_ViewImports.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAWAAAA",
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml",
+              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml",
+              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecords\\Create.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-25T05:46:24.552Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HealthRecordRepository.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
-              "RelativeToolTip": "MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
-              "ViewState": "AQIAACEAAAAAAAAAAAAqwCYAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:36:37.034Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Program.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility\\Program.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Program.cs",
-              "RelativeToolTip": "MedicaiFacility\\Program.cs",
-              "ViewState": "AQIAABcAAAAAAAAAAAAzwCEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:37:32.747Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HealthRecord.cshtml",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecord.cshtml",
-              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecord.cshtml",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecord.cshtml",
-              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecord.cshtml",
-              "ViewState": "AQIAAAsAAAAAAAAAAIA0wA0AAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-25T05:40:41.737Z",
+              "WhenOpened": "2025-03-01T07:13:28.627Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "HealthRecord.cshtml.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecord.cshtml.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecord.cshtml.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecord.cshtml.cs",
-              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecord.cshtml.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAA3wBQAAAAMAAAA",
+              "Title": "HealthRecordRepository.cs",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
+              "RelativeDocumentMoniker": "MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
+              "RelativeToolTip": "MedicaiFacility.DataAccess\\HealthRecordRepository.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAAAIAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:39:33.396Z",
+              "WhenOpened": "2025-03-01T06:53:34.9Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml.cs",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml.cs",
+              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAA1wBkAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T06:52:41.86Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "HealthRecord.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\HealthRecord.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.BusinessObject\\HealthRecord.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.BusinessObject\\HealthRecord.cs",
-              "RelativeToolTip": "MedicaiFacility.BusinessObject\\HealthRecord.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAA0wB0AAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:48:09.861Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "_ViewStart.cshtml",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\_ViewStart.cshtml",
-              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\_ViewStart.cshtml",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\_ViewStart.cshtml",
-              "RelativeToolTip": "MedicaiFacility\\Pages\\_ViewStart.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml",
+              "RelativeDocumentMoniker": "MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml",
+              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml",
+              "RelativeToolTip": "MedicaiFacility\\Pages\\HealthRecords\\Index.cshtml",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAADAAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-25T05:46:19.999Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "efpt.config.json",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\efpt.config.json",
-              "RelativeDocumentMoniker": "MedicaiFacility.DataAccess\\efpt.config.json",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\efpt.config.json",
-              "RelativeToolTip": "MedicaiFacility.DataAccess\\efpt.config.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-25T05:46:01.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "IHealthRecordRepository.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\IRepostory\\IHealthRecordRepository.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.DataAccess\\IRepostory\\IHealthRecordRepository.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.DataAccess\\IRepostory\\IHealthRecordRepository.cs",
-              "RelativeToolTip": "MedicaiFacility.DataAccess\\IRepostory\\IHealthRecordRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:39:05.765Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DenpendenceInjection.cs",
-              "DocumentMoniker": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\DenpendenceInjection.cs",
-              "RelativeDocumentMoniker": "MedicaiFacility.Services\\DenpendenceInjection.cs",
-              "ToolTip": "D:\\FPT_source\\sem 7\\PRN222\\Assignments\\Final_Project\\MedicaiFacility.RazorPage\\MedicaiFacility.Services\\DenpendenceInjection.cs",
-              "RelativeToolTip": "MedicaiFacility.Services\\DenpendenceInjection.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-25T05:45:30.358Z",
+              "WhenOpened": "2025-03-01T06:52:41.281Z",
               "EditorCaption": ""
             }
           ]

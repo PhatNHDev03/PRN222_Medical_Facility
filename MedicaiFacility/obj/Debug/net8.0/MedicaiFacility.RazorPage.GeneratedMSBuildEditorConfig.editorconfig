@@ -22,8 +22,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FPT_source/sem 7/PRN222/Assignments/Final_Project/MedicaiFacility.RazorPage/MedicaiFacility/Pages/HealthRecord.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSGVhbHRoUmVjb3JkLmNzaHRtbA==
+[D:/FPT_source/sem 7/PRN222/Assignments/Final_Project/MedicaiFacility.RazorPage/MedicaiFacility/Pages/HealthRecords/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSGVhbHRoUmVjb3Jkc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FPT_source/sem 7/PRN222/Assignments/Final_Project/MedicaiFacility.RazorPage/MedicaiFacility/Pages/HealthRecords/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSGVhbHRoUmVjb3Jkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FPT_source/sem 7/PRN222/Assignments/Final_Project/MedicaiFacility.RazorPage/MedicaiFacility/Pages/Index.cshtml]
