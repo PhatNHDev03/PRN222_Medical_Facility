@@ -1,0 +1,21 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Departments.CreateModel
+@{
+    Layout = null;
+}
+
+<h2 class="text-center my-4">Create New Department</h2>
+
+<form method="post" id="createDepartmentForm" class="p-4 border rounded shadow-sm bg-light">
+    <div class="mb-3">
+        <label for="DepartmentName" class="form-label">Department Name</label>
+        <input type="text" id="DepartmentName" name="Department.DepartmentName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea id="Description" name="Department.Description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
