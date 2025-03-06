@@ -26,7 +26,7 @@ namespace MedicaiFacility.DataAccess
         }
         public Department FindById(int id)
         {
-            throw new NotImplementedException();
+            return _Context.Departments.Find(id);
         }
 
         public void AddDepartment(Department department)
@@ -37,7 +37,8 @@ namespace MedicaiFacility.DataAccess
 
         public void UpdateDepartment(Department department)
         {
-            throw new NotImplementedException();
+            _Context.Departments.Update(department);
+            _Context.SaveChanges();
         }
 
         public void DeleteDepartment(int id)

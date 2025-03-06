@@ -1,4 +1,84 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.MedicalFacilites.EditModel
 @{
+    ViewData["Title"] = "Edit Medical Facility";
+    Layout = null;
 }
+
+<h2 class="text-center my-4">Edit Medical Facility</h2>
+
+<form method="post" asp-page="Edit" class="p-4 border rounded shadow-sm bg-light">
+    <input type="hidden" asp-for="MedicalFacility.FacilityId" />
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.FacilityName" class="form-label">Facility Name</label>
+        <input asp-for="MedicalFacility.FacilityName" type="text" class="form-control" required />
+        <span asp-validation-for="MedicalFacility.FacilityName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.Address" class="form-label">Address</label>
+        <textarea asp-for="MedicalFacility.Address" type="text" class="form-control" required></textarea>
+        <span asp-validation-for="MedicalFacility.Address" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.FacilityType" class="form-label">Facility Type</label>
+        <select id="FacilityType" name="MedicalFacility.FacilityType" class="form-control" required>
+            @foreach (var facilityType in new[] { "Clinic", "Public Hospital", "Private Hospital" })
+            {
+                if (facilityType == Model.MedicalFacility.FacilityType)
+                {
+                    <option value="@facilityType" selected>@facilityType</option>
+                }
+                else
+                {
+                    <option value="@facilityType">@facilityType</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.Verified" class="form-label">Verified</label>
+        <div>
+            <input type="radio" asp-for="MedicalFacility.Verified" value="True" required checked />
+            <label for="VerifiedTrue">True</label>
+        </div>
+        <div>
+            <input type="radio" asp-for="MedicalFacility.Verified" value="False" required checked />
+            <label for="VerifiedFalse">False</label>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.ContactInfo" class="form-label">Contact Information</label>
+        <input asp-for="MedicalFacility.ContactInfo" type="text" class="form-control" required />
+        <span asp-validation-for="MedicalFacility.ContactInfo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MedicalFacility.IsActive" class="form-label">Verified</label>
+        <div>
+            <input type="radio" asp-for="MedicalFacility.IsActive" value="True" required checked />
+            <label for="IsActiveTrue">True</label>
+        </div>
+        <div>
+            <input type="radio" asp-for="MedicalFacility.IsActive" value="False" required checked />
+            <label for="IsActiveFalse">False</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary px-4" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-success px-4">Save</button>
+    </div>
+</form>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center mt-3">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center mt-3">@TempData["SuccessMessage"]</div>
+}
+
+<script>
+    function closeModal() {
+        window.history.back();
+    }
+</script>

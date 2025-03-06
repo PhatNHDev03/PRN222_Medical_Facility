@@ -1,4 +1,181 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.MedicalFacilites.IndexModel
 @{
+    ViewData["Title"] = "MedicalFacilites";
+}
+
+
+<h2>Medical Facilite List</h2>
+<button class="btn btn-sm btn-primary m-2" onclick="openModal('Create')">Add New Medical Facilite</button>
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Facility Type</th>
+            <th>Vetified</th>
+            <th>Contact Info</th>
+            <th>Is Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MedicalFacilities)
+        {
+            <tr>
+                <td>@item.FacilityId</td>
+                <td>@item.FacilityName</td>
+                <td>@item.Address</td>
+                <td>@item.FacilityType</td>
+                <td class="@(item.Verified == true ? "text-success font-weight-bold" : "text-danger font-weight-bold")">
+                    @item.Verified
+                </td>
+                <td>@item.ContactInfo</td>
+                <td class="@(item.IsActive == true ? "text-success font-weight-bold" : "text-danger font-weight-bold")">
+                    @item.IsActive
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.FacilityId)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.FacilityId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.Pager.TotalPages > 0)
+{
+
+    <ul class="pagination justify-content-end">
+        @if (Model.Pager.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalFacilites/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalFacilites/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+            </li>
+
+        }
+        @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
+        {
+            <li class="page-item  @(pge == Model.Pager.CurrentPage? "active": "")">
+                <a class="page-link" asp-page="/MedicalFacilites/Index" asp-route-pg="@pge">@pge</a>
+            </li>
+        }
+        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalFacilites/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalFacilites/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+            </li>
+        }
+    </ul>
+}
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalForm"></div>
+    </div>
+</div>
+
+<script>
+    async function openModal(action, id = null) {
+        let url = action === 'Create' ? '/MedicalFacilites/Create' : `/MedicalFacilites/${action}?id=${id}`;
+
+        try {
+            let response = await fetch(url);
+            let data = await response.text();
+
+            let modalForm = document.getElementById("modalForm");
+            modalForm.innerHTML = data;
+            document.getElementById("modal").style.display = "block";
+
+            attachSubmitHandler(); // Gọi hàm xử lý submit form
+        } catch (error) {
+            console.error("Error loading modal:", error);
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("modalForm").innerHTML = "";
+    }
+
+    function attachSubmitHandler() {
+        let form = document.getElementById("createMedicalFacilityForm");
+        if (!form) return; // Kiểm tra nếu form chưa được load
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            let formData = new FormData(form);
+
+            try {
+                let response = await fetch("/MedicalFacilites/Create", {
+                    method: "POST",
+                    body: formData
+                });
+                let result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    closeModal(); // Đóng modal sau khi tạo thành công
+                    location.reload(); // Load lại danh sách tags
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                alert("An error occurred while creating the Medical Facility.");
+            }
+        });
+    }
+</script>
+
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: black;
+        }
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }

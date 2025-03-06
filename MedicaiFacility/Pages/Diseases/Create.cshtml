@@ -22,7 +22,7 @@
     <div class="mb-3">
         <label for="DepartmentId" class="form-label">Deparment Name</label>
         <select ="DepartmentId" name="Disease.DepartmentId" class="form-control">
-            <option value="">Select a Department</option> <!-- Default option -->
+            <option value="" disabled selected>Select a Department</option> <!-- Default option -->
             @foreach (var department in Model.Departments)
             {
                 <option value="@department.DepartmentId">@department.DepartmentName</option>

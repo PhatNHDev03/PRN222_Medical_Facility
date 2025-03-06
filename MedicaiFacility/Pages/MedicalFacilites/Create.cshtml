@@ -1,4 +1,56 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.MedicalFacilites.CreateModel
 @{
+    Layout = null;
 }
+
+<h2 class="text-center my-4">Create New Medical Facility</h2>
+
+<form method="post" id="createMedicalFacilityForm" class="p-4 border rounded shadow-sm bg-light">
+    <div class="mb-3">
+        <label for="FacilityName" class="form-label">Facility Name</label>
+        <input type="text" id="FacilityName" name="MedicalFacility.FacilityName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label for="Address" class="form-label">Address</label>
+        <input type="text" id="Address" name="MedicalFacility.Address" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="FacilityType" class="form-label">Facility Type</label>
+        <select id="FacilityType" name="MedicalFacility.FacilityType" class="form-control" required>
+            <option value="" disabled selected>Select Facility Type</option>
+            <option value="Public Hospital">Clinic</option>
+            <option value="Public Hospital">Public Hospital</option>
+            <option value="Private Hospital">Private Hospital</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Verified" class="form-label">Verified</label>
+        <div>
+            <input type="radio" id="VerifiedTrue" name="MedicalFacility.Verified" value="True" required checked/>
+            <label for="VerifiedTrue">True</label>
+        </div>
+        <div>
+            <input type="radio" id="VerifiedFalse" name="MedicalFacility.Verified" value="False" />
+            <label for="VerifiedFalse">False</label>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="ContactInfo" class="form-label">Contact Information</label>
+        <input type="text" id="ContactInfo" name="MedicalFacility.ContactInfo" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="IsActive" class="form-label">Is Active</label>
+        <div>
+            <input type="radio" id="IsActiveTrue" name="MedicalFacility.IsActive" value="True" required checked/>
+            <label for="IsActiveTrue">True</label>
+        </div>
+        <div>
+            <input type="radio" id="IsActiveFalse" name="MedicalFacility.IsActive" value="False" />
+            <label for="IsActiveFalse">False</label>
+        </div>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

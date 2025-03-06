@@ -37,11 +37,6 @@ namespace MedicaiFacility.Service
             _diseaseRepository.UpdateDisease(disease);
         }
 
-        public void DeleteDisease(int id)
-        {
-            _diseaseRepository.DeleteDisease(id);
-        }
-
         public (List<Disease>, int totalItem) FindAllWithPagination(int pg, int pageSize)
         {
             return _diseaseRepository.FindAllWithPagination(pg, pageSize);

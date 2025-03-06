@@ -1,32 +1,37 @@
 ﻿@page
-@model MedicaiFacility.RazorPage.Pages.Departments.IndexModel
+@model MedicaiFacility.RazorPage.Pages.FacilitityDepartments.IndexModel
 @{
-    ViewData["Title"] = "Departments";
+    ViewData["Title"] = "FacilityDepartments";
 }
 
 
-
-<h2>Department List</h2>
-<button class="btn btn-sm btn-primary m-2" onclick="openModal('Create')">Add New Department</button>
+<h2>Facility Department List</h2>
+<button class="btn btn-sm btn-primary m-2" onclick="openModal('Create')">Add New Facility Department</button>
 <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Facility Name</th>
+            <th>Department Name</th>
+            <th>Created At</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Departments)
+        @foreach (var item in Model.FacilityDepartments)
         {
             <tr>
-                <td>@item.DepartmentId</td>
-                <td>@item.DepartmentName</td>
-                <td>@item.Description</td>
+                <td>@item.FacilityDepartmentId</td>
+                <td>@item.Facility?.FacilityName</td>
+                <td>@item.Department?.DepartmentName</td>
+                <td>@item.CreatedAt</td>
+                <td class="@(item.Status == true ? "text-success font-weight-bold" : "text-danger font-weight-bold")">
+                    @item.Status
+                </td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.DepartmentId)">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.DepartmentId)">Delete</button>
+                    <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.FacilityDepartmentId)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.FacilityDepartmentId)">Delete</button>
                 </td>
             </tr>
         }
@@ -39,26 +44,26 @@
         @if (Model.Pager.CurrentPage > 1)
         {
             <li class="page-item">
-                <a class="page-link" asp-page="/Departments/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+                <a class="page-link" asp-page="/FacilityDepartments/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
             </li>
             <li class="page-item">
-                <a class="page-link" asp-page="/Departments/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+                <a class="page-link" asp-page="/FacilityDepartments/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
             </li>
 
         }
         @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
         {
             <li class="page-item  @(pge == Model.Pager.CurrentPage? "active": "")">
-                <a class="page-link" asp-page="/Departments/Index" asp-route-pg="@pge">@pge</a>
+                <a class="page-link" asp-page="/FacilityDepartments/Index" asp-route-pg="@pge">@pge</a>
             </li>
         }
         @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
         {
             <li class="page-item">
-                <a class="page-link" asp-page="/Departments/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+                <a class="page-link" asp-page="/FacilityDepartments/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
             </li>
             <li class="page-item">
-                <a class="page-link" asp-page="/Departments/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+                <a class="page-link" asp-page="/FacilityDepartments/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
             </li>
         }
     </ul>
@@ -73,7 +78,7 @@
 
 <script>
     async function openModal(action, id = null) {
-        let url = action === 'Create' ? '/Departments/Create' : `/Departments/${action}?id=${id}`;
+        let url = action === 'Create' ? '/FacilityDepartments/Create' : `/FacilityDepartments/${action}?id=${id}`;
 
         try {
             let response = await fetch(url);
@@ -95,7 +100,7 @@
     }
 
     function attachSubmitHandler() {
-        let form = document.getElementById("createDepartmentForm");
+        let form = document.getElementById("createFacilityDepartmentForm");
         if (!form) return; // Kiểm tra nếu form chưa được load
 
         form.addEventListener("submit", async function (event) {
@@ -103,7 +108,7 @@
             let formData = new FormData(form);
 
             try {
-                let response = await fetch("/Departments/Create", {
+                let response = await fetch("/FacilityDepartments/Create", {
                     method: "POST",
                     body: formData
                 });
@@ -168,6 +173,3 @@
 {
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-
-
-

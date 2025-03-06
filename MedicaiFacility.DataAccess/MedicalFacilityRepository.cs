@@ -21,7 +21,7 @@ namespace MedicaiFacility.DataAccess
         }
         public MedicalFacility FindById(int id)
         {
-            throw new NotImplementedException();
+            return _Context.MedicalFacilities.Find(id);
         }
 
         public void AddMedicalFacility(MedicalFacility medicalFacility)
@@ -32,7 +32,8 @@ namespace MedicaiFacility.DataAccess
 
         public void UpdateMedicalFacility(MedicalFacility medicalFacility)
         {
-            throw new NotImplementedException();
+            _Context.MedicalFacilities.Update(medicalFacility);
+            _Context.SaveChanges();
         }
 
         public void DeleteMedicalFacility(int id)

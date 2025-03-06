@@ -27,3 +27,6 @@ namespace MedicaiFacility.RazorPage.Pages.Departments
         }
     }
 }
+
+
+

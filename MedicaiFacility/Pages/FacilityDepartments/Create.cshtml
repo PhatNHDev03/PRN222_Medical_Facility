@@ -1,0 +1,44 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.FacilityDepartments.CreateModel
+@{
+    Layout = null;
+}
+
+<h2 class="text-center my-4">Create New Facility Department</h2>
+
+<form method="post" id="createFacilityDepartmentForm" class="p-4 border rounded shadow-sm bg-light">
+    <div class="mb-3">
+        <label for="FacilityId" class="form-label">Facility Name</label>
+        <select ="FacilityId" name="FacilityDepartment.FacilityId" class="form-control">
+            <option value="" disabled selected>Select a Medical Facility</option>
+            @foreach (var facility in Model.MedicalFacilities)
+            {
+                <option value="@facility.FacilityId">@facility.FacilityName</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="DepartmentId" class="form-label">Deparment Name</label>
+        <select ="DepartmentId" name="FacilityDepartment.DepartmentId" class="form-control">
+            <option value="" disabled selected>Select a Department</option>
+            @foreach (var department in Model.Departments)
+            {
+                <option value="@department.DepartmentId">@department.DepartmentName</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Status" class="form-label">Status</label>
+        <div>
+            <input type="radio" id="StatusTrue" name="FacilityDepartment.Status" value="True" required checked />
+            <label for="StatusTrue">True</label>
+        </div>
+        <div>
+            <input type="radio" id="StatusFalse" name="FacilityDepartment.Status" value="False" />
+            <label for="StatusFalse">False</label>
+        </div>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

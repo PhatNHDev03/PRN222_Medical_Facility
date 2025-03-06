@@ -1,5 +1,6 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.DataAccess.IRepostory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,14 @@ namespace MedicaiFacility.DataAccess
         }
         public List<FacilityDepartment> GetAllFacilityDepartment()
         {
-            return _Context.FacilityDepartments.ToList();
+            return _Context.FacilityDepartments
+                .Include(d => d.Department)
+                .Include(mf => mf.Facility)
+                .ToList();
         }
         public FacilityDepartment FindById(int id)
         {
-            throw new NotImplementedException();
+            return _Context.FacilityDepartments.Find(id);
         }
 
         public void AddFacilityDepartment(FacilityDepartment facilityDepartment)
@@ -32,7 +36,8 @@ namespace MedicaiFacility.DataAccess
 
         public void UpdateFacilityDepartment(FacilityDepartment facilityDepartment)
         {
-            throw new NotImplementedException();
+            _Context.FacilityDepartments.Update(facilityDepartment);
+            _Context.SaveChanges();
         }
 
         public void DeleteFacilityDepartment(int id)
@@ -42,7 +47,9 @@ namespace MedicaiFacility.DataAccess
 
         public (List<FacilityDepartment>, int totalItem) FindAllWithPagination(int pg, int pageSize)
         {
-            var query = _Context.FacilityDepartments;
+            var query = _Context.FacilityDepartments
+                .Include(d => d.Department)
+                .Include(mf => mf.Facility);
             //.OrderByDescending(d => d.DepartmentId); 
 
             int totalItem = query.Count();

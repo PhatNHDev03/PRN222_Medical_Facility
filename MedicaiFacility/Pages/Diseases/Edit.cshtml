@@ -1,4 +1,64 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.Diseases.EditModel
 @{
+    ViewData["Title"] = "Edit Disease";
+    Layout = null;
 }
+
+<h2 class="text-center my-4">Edit Disease</h2>
+
+<form method="post" asp-page="Edit" class="p-4 border rounded shadow-sm bg-light">
+    <input type="hidden" asp-for="Disease.DiseaseId" />
+
+    <div class="mb-3">
+        <label asp-for="Disease.DiseaseName" class="form-label">Disease Name</label>
+        <input asp-for="Disease.DiseaseName" type="text" class="form-control" required />
+        <span asp-validation-for="Disease.DiseaseName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Disease.Symptoms" class="form-label">Symptoms</label>
+        <textarea asp-for="Disease.Symptoms" type="text" class="form-control" required></textarea>
+        <span asp-validation-for="Disease.DiseaseName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Disease.Description" class="form-label">Description</label>
+        <textarea asp-for="Disease.Description" type="text" class="form-control" required></textarea>
+        <span asp-validation-for="Disease.Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="DepartmentId" class="form-label">Department Name</label>
+        <select id="DepartmentId" name="Disease.DepartmentId" class="form-control" required>
+            <option value="" disabled>Select a Department</option>
+            @foreach (var department in Model.Departments)
+            {
+                if (Model.Disease.DepartmentId == department.DepartmentId)
+                {
+                    <option value="@department.DepartmentId" selected>@department.DepartmentName</option>
+                }
+                else
+                {
+                    <option value="@department.DepartmentId">@department.DepartmentName</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary px-4" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-success px-4">Save</button>
+    </div>
+</form>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center mt-3">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center mt-3">@TempData["SuccessMessage"]</div>
+}
+
+<script>
+    function closeModal() {
+        window.history.back();
+    }
+</script>
