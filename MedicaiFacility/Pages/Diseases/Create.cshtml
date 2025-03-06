@@ -1,0 +1,46 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Diseases.CreateModel
+@{
+    Layout = null;
+}
+
+<h2 class="text-center my-4">Create New Disease</h2>
+
+<form method="post" id="createDiseaseForm" class="p-4 border rounded shadow-sm bg-light">
+    <div class="mb-3">
+        <label for="DiseaseName" class="form-label">Disease Name</label>
+        <input type="text" id="DiseaseName" name="Disease.DiseaseName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label for="Symptoms" class="form-label">Symptoms</label>
+        <textarea id="Symptoms" name="Disease.Symptoms" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea id="Description" name="Disease.Description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="DepartmentId" class="form-label">Deparment Name</label>
+        <select ="DepartmentId" name="Disease.DepartmentId" class="form-control">
+            <option value="">Select a Department</option> <!-- Default option -->
+            @foreach (var department in Model.Departments)
+            {
+                <option value="@department.DepartmentId">@department.DepartmentName</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
+
+<script>
+    document.getElementById('createDiseaseForm').addEventListener('submit', function() {
+        var departmentSelect = document.getElementById('DepartmentID');
+        console.log('Selected DepartmentID: ' + departmentSelect.value);
+        if (departmentSelect.value === '') {
+            alert('Please select a department.');
+            event.preventDefault(); // Prevent form submission if no department is selected
+        }
+    });
+</script>

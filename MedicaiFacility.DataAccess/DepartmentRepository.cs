@@ -24,10 +24,6 @@ namespace MedicaiFacility.DataAccess
                 //.OrderByDescending(d => d.DepartmentId)
                 .ToList();
         }
-        public int GetLastId()
-        {
-            return _Context.Departments.OrderByDescending(d => d.DepartmentId).FirstOrDefault()?.DepartmentId ?? 0;
-        }
         public Department FindById(int id)
         {
             throw new NotImplementedException();

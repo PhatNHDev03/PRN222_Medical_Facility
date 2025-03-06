@@ -11,7 +11,6 @@ namespace MedicaiFacility.DataAccess.IRepostory
     public interface IDepartmentRepository
     {
         List<Department> GetAllDepartment();
-        int GetLastId();
         Department FindById(int id);
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);

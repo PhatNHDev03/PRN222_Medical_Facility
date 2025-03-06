@@ -9,8 +9,7 @@ namespace MedicaiFacility.Service.IService
 {
     public interface IDepartmentService
     {
-        List<Department> GetAllDepartments();
-        int GetLastId();
+        List<Department> GetAllDepartment();
         Department FindById(int id);
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);

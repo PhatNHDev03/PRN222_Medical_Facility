@@ -18,13 +18,9 @@ namespace MedicaiFacility.Service
             _departmentRepository = departmentRepository;
         }
 
-        public List<Department> GetAllDepartments()
+        public List<Department> GetAllDepartment()
         {
             return _departmentRepository.GetAllDepartment();
-        }
-        public int GetLastId()
-        {
-            return _departmentRepository.GetLastId();
         }
         public Department FindById(int id)
         {
