@@ -14,8 +14,16 @@
 		<tr>
 			<th>ID</th>
 			<th>Patient</th>
+			<th>Upload By</th>
 			<th>File Name</th>
+			<th>Test result</th>
+			<th>Diagnosis</th>
+			<th>Prescription</th>
 			<th>Created At</th>
+			<th>UpdatedAt</th>
+			<th>SharedLink</th>
+			<th>DiseaseId</th>
+
 			<th>Actions</th>
 		</tr>
 	</thead>
@@ -25,6 +33,7 @@
 			<tr>
 				<td>@record.RecordId</td>
 				<td>@(record.Patient != null ? record.Patient.PatientId : "Unknown")</td>
+				<td>@(record.UploadedBy != null ? record.UploadedBy : "Unknown")</td>
 				<td>@record.FileName</td>
 				<td>@record.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
 				<td>

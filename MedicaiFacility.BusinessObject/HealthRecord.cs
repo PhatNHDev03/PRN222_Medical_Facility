@@ -29,11 +29,9 @@ public partial class HealthRecord
 
     public string SharedLink { get; set; }
 
-    public int? DiseaseId { get; set; }
-
     public bool? IsActive { get; set; }
 
-    public virtual Disease Disease { get; set; }
+    public virtual ICollection<HealthRecordDisease> HealthRecordDiseases { get; set; } = new List<HealthRecordDisease>();
 
     public virtual Patient Patient { get; set; }
 

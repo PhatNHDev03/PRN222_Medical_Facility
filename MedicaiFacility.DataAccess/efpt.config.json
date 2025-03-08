@@ -39,6 +39,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HealthRecordDiseases]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HealthRecords]",
          "ObjectType": 0
       },

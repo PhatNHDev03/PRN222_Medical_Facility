@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 3,
-   "ContextClassName": "PRN222V2Context",
+   "ContextClassName": "AppDbContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
@@ -36,6 +36,10 @@
       },
       {
          "Name": "[dbo].[HealthArticles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[HealthRecordDiseases]",
          "ObjectType": 0
       },
       {
