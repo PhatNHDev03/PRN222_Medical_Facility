@@ -17,16 +17,17 @@ namespace MedicaiFacility.Service
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IHealthRecordRepository,HealthRecordRepository>();
-         
-            return services;
+
+			services.AddScoped<IUserRepository, UserRepository>();
+			return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IHealthRecordService, HealhRecordService>();
+			services.AddScoped<IUserService, UserService>();
 
-
-            return services;
+			return services;
         }
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)
         {

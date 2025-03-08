@@ -31,11 +31,11 @@ public partial class User
 
     public virtual ICollection<Conversation> Conversations { get; set; } = new List<Conversation>();
 
-    public virtual ICollection<MedicalExpert> MedicalExperts { get; set; } = new List<MedicalExpert>();
+    public virtual MedicalExpert MedicalExpert { get; set; }
 
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
+    public virtual Patient Patient { get; set; }
 
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }
