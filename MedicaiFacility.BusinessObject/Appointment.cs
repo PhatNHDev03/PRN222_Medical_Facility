@@ -15,9 +15,13 @@ public partial class Appointment
 
     public int? FacilityId { get; set; }
 
-    public DateTime AppointmentDate { get; set; }
+    public DateTime StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
 
     public string Status { get; set; }
+
+    public int? TransactionId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
@@ -31,7 +35,9 @@ public partial class Appointment
 
     public virtual Patient Patient { get; set; }
 
-    public virtual ICollection<RatingsAndFeedback> RatingsAndFeedbacks { get; set; } = new List<RatingsAndFeedback>();
+    public virtual RatingsAndFeedback RatingsAndFeedback { get; set; }
 
-    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public virtual Transaction Transaction { get; set; }
+
+    public virtual Transaction TransactionNavigation { get; set; }
 }

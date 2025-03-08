@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 3,
-   "ContextClassName": "PRN222V2Context",
+   "ContextClassName": "AppDbContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,
@@ -39,11 +39,19 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HealthRecordDiseases]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[HealthRecords]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[MedicalExperts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MedicalExpertSchedule]",
          "ObjectType": 0
       },
       {
@@ -64,6 +72,10 @@
       },
       {
          "Name": "[dbo].[RatingsAndFeedback]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SystemBalances]",
          "ObjectType": 0
       },
       {

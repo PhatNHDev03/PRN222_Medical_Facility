@@ -13,6 +13,7 @@ namespace MedicaiFacility.DataAccess.IRepostory
         Disease FindById(int id);
         void AddDisease(Disease disease);
         void UpdateDisease(Disease disease);
+        void DeleteDisease(int id);
         (List<Disease>, int totalItem) FindAllWithPagination(int pg, int pageSize);
     }
 }

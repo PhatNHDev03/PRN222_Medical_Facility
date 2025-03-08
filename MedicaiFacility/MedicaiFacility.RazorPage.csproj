@@ -18,4 +18,8 @@
     <ProjectReference Include="..\MedicaiFacility.Services\MedicaiFacility.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\imgs\" />
+  </ItemGroup>
+
 </Project>

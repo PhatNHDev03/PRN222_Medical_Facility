@@ -25,6 +25,8 @@ public partial class User
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string BankAccount { get; set; }
+
     public bool? Status { get; set; }
 
     public virtual ICollection<Conversation> Conversations { get; set; } = new List<Conversation>();
@@ -34,4 +36,6 @@ public partial class User
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
+
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

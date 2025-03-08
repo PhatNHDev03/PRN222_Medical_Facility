@@ -16,6 +16,7 @@
             <th>Symptoms</th>
             <th>Description</th>
             <th>Department Name</th>
+            <th>Is Active</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -28,8 +29,12 @@
                 <td>@item.Symptoms</td>
                 <td>@item.Description</td>
                 <td>@item.Department?.DepartmentName</td>
+                <td class="@(item.IsActive == true ? "text-success font-weight-bold" : "text-danger font-weight-bold")">
+                    @item.IsActive
+                </td>
                 <td>
                     <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.DiseaseId)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.DepartmentId)">Delete</button>
                 </td>
             </tr>
         }

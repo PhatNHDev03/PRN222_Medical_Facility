@@ -9,9 +9,7 @@ public partial class Transaction
 {
     public int TransactionId { get; set; }
 
-    public int? AppointmentId { get; set; }
-
-    public int? PatientId { get; set; }
+    public int? UserId { get; set; }
 
     public string PaymentMethod { get; set; }
 
@@ -19,11 +17,17 @@ public partial class Transaction
 
     public string TransactionStatus { get; set; }
 
-    public string VnPayTransactionId { get; set; }
-
     public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdateAt { get; set; }
+
+    public string TransactionType { get; set; }
+
+    public int? AppointmentId { get; set; }
 
     public virtual Appointment Appointment { get; set; }
 
-    public virtual Patient Patient { get; set; }
+    public virtual Appointment AppointmentNavigation { get; set; }
+
+    public virtual User User { get; set; }
 }

@@ -12,7 +12,6 @@ namespace MedicaiFacility.RazorPage.Pages.Diseases
         private readonly IDepartmentService _departmentService;
 
         public Disease Disease { get; set; }
-        //public List<Disease> Diseases { get; set; }
         public List<Department> Departments { get; set; }
 
         public CreateModel(IDiseaseService diseaseService, IDepartmentService departmentService)
@@ -24,7 +23,10 @@ namespace MedicaiFacility.RazorPage.Pages.Diseases
         {
             //Diseases = _diseaseService.GetAllDisease();
             Departments = _departmentService.GetAllDepartment();
-            Disease = new Disease();
+            Disease = new Disease()
+            {
+                IsActive = true,
+            };
             return Page();
         }
 
@@ -38,7 +40,7 @@ namespace MedicaiFacility.RazorPage.Pages.Diseases
             {
                 return new JsonResult(new { success = false, message = "Please select a valid department." });
             }
-            //Check có l?y dc id k
+            //Check có lay dc id k
             Console.WriteLine($"Received Disease: Name={Disease.DiseaseName}, Symptoms={Disease.Symptoms}, Description={Disease.Description}, DepartmentID={Disease.DepartmentId}");
             try
             {

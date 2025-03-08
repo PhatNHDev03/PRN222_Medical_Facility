@@ -21,7 +21,10 @@ namespace MedicaiFacility.RazorPage.Pages.Departments
         }
         public IActionResult OnGet()
         {
-            Departments = _departmentService.GetAllDepartment();
+            Department = new Department
+            {
+                IsActive = true    // Default value 
+            };
             return Page();
         }
 
@@ -34,7 +37,6 @@ namespace MedicaiFacility.RazorPage.Pages.Departments
 
             try
             {
-                //Department.DepartmentId = _departmentService.GetLastId() + 1;
                 _departmentService.AddDepartment(Department);
                 return new JsonResult(new { success = true, message = "Department created successfully!", redirectUrl = "/Departments/Index" });
             }

@@ -15,9 +15,11 @@ public partial class Disease
 
     public string Description { get; set; }
 
+    public bool? IsActive { get; set; }
+
     public int? DepartmentId { get; set; }
 
     public virtual Department Department { get; set; }
 
-    public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
+    public virtual ICollection<HealthRecordDisease> HealthRecordDiseases { get; set; } = new List<HealthRecordDisease>();
 }

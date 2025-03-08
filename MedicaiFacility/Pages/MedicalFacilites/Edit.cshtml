@@ -38,11 +38,11 @@
     <div class="mb-3">
         <label asp-for="MedicalFacility.Verified" class="form-label">Verified</label>
         <div>
-            <input type="radio" asp-for="MedicalFacility.Verified" value="True" required checked />
+            <input type="radio" asp-for="MedicalFacility.Verified" value="True" required  />
             <label for="VerifiedTrue">True</label>
         </div>
         <div>
-            <input type="radio" asp-for="MedicalFacility.Verified" value="False" required checked />
+            <input type="radio" asp-for="MedicalFacility.Verified" value="False" required  />
             <label for="VerifiedFalse">False</label>
         </div>
     </div>
@@ -52,13 +52,13 @@
         <span asp-validation-for="MedicalFacility.ContactInfo" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="MedicalFacility.IsActive" class="form-label">Verified</label>
+        <label asp-for="MedicalFacility.IsActive" class="form-label">Is Active</label>
         <div>
-            <input type="radio" asp-for="MedicalFacility.IsActive" value="True" required checked />
+            <input type="radio" asp-for="MedicalFacility.IsActive" value="True" required  />
             <label for="IsActiveTrue">True</label>
         </div>
         <div>
-            <input type="radio" asp-for="MedicalFacility.IsActive" value="False" required checked />
+            <input type="radio" asp-for="MedicalFacility.IsActive" value="False" required  />
             <label for="IsActiveFalse">False</label>
         </div>
     </div>

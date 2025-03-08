@@ -17,5 +17,7 @@ public partial class RatingsAndFeedback
 
     public DateTime? CreatedAt { get; set; }
 
+    public bool? IsActive { get; set; }
+
     public virtual Appointment Appointment { get; set; }
 }

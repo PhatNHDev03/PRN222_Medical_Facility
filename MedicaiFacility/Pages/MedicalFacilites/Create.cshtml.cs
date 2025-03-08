@@ -43,9 +43,9 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             }
 
 
-            Console.WriteLine($"Received MedicalFacility: Name={MedicalFacility.FacilityName}, Address={MedicalFacility.Address}, " +
-                $"FacilityType={MedicalFacility.FacilityType}, Verified={MedicalFacility.Verified}, " +
-                $"ContactInfo={MedicalFacility.ContactInfo}, IsActive={MedicalFacility.IsActive}");
+            //Console.WriteLine($"Received MedicalFacility: Name={MedicalFacility.FacilityName}, Address={MedicalFacility.Address}, " +
+            //    $"FacilityType={MedicalFacility.FacilityType}, Verified={MedicalFacility.Verified}, " +
+            //    $"ContactInfo={MedicalFacility.ContactInfo}, IsActive={MedicalFacility.IsActive}");
             try
             {
                 _medicalFacilityService.AddMedicalFacility(MedicalFacility);

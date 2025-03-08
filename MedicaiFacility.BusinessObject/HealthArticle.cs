@@ -17,5 +17,7 @@ public partial class HealthArticle
 
     public DateTime? CreatedAt { get; set; }
 
+    public bool? IsActive { get; set; }
+
     public virtual MedicalExpert Author { get; set; }
 }

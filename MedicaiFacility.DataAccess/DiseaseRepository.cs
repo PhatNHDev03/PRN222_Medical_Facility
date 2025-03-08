@@ -38,6 +38,17 @@ namespace MedicaiFacility.DataAccess
             _Context.SaveChanges();
         }
 
+        public void DeleteDisease(int id)
+        {
+            var disease = _Context.Diseases.Find(id);
+            if (disease == null)
+            {
+                throw new InvalidOperationException($"Disease with ID {id} not found.");
+            }
+            disease.IsActive = false;
+            _Context.Diseases.Update(disease);
+            _Context.SaveChanges();
+        }
         public (List<Disease>, int totalItem) FindAllWithPagination(int pg, int pageSize)
         {
             var query = _Context.Diseases.Include(d => d.Department);
