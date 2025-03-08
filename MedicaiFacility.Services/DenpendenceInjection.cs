@@ -19,6 +19,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IHealthRecordRepository,HealthRecordRepository>();
 
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<ITransactionRepository, TransactionRepository>();
 			return services;
         }
 
@@ -26,6 +27,7 @@ namespace MedicaiFacility.Service
         {
             services.AddScoped<IHealthRecordService, HealhRecordService>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<ITransactionService, TransactionService>();
 
 			return services;
         }

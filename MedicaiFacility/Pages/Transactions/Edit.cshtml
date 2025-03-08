@@ -1,0 +1,67 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Transactions.EditModel
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit Transaction</h1>
+</div>
+
+<div class="container">
+    <div class="mb-3 mt-3">
+        <form asp-page="/Transactions/Edit" method="post">
+            <input hidden="hidden" type="text" class="form-control" asp-for="Transaction.UserId" />
+
+            <input hidden="hidden" type="text" class="form-control" asp-for="Transaction.TransactionId" />
+
+            <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <select class="form-control" asp-for="Transaction.PaymentMethod">
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input type="text" step="0.01" class="form-control" asp-for="Transaction.Amount" placeholder="Enter transaction amount" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Transaction Status</label>
+                <select class="form-control" asp-for="Transaction.TransactionStatus">
+                    <option value="Pending" selected="@(Model.Transaction.TransactionStatus == "Pending" ? "selected" : null)">Pending</option>
+                    <option value="Success" selected="@(Model.Transaction.TransactionStatus == "Success" ? "selected" : null)">Success</option>
+                    <option value="Failed" selected="@(Model.Transaction.TransactionStatus == "Failed" ? "selected" : null)">Failed</option>
+                    <option value="InActive" selected="@(Model.Transaction.TransactionStatus == "InActive" ? "selected" : null)">InActive</option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Transaction Type</label>
+                <select class="form-control" asp-for="Transaction.TransactionType">
+                    <option value="AppointmentTransaction" selected="@(Model.Transaction.TransactionType == "AppointmentTransaction" ? "selected" : null)">Appointment Transaction</option>
+                    <option value="PayoutTransaction" selected="@(Model.Transaction.TransactionType == "PayoutTransaction" ? "selected" : null)">Payout Transaction</option>
+                    <option value="RefundTransaction" selected="@(Model.Transaction.TransactionType == "RefundTransaction" ? "selected" : null)">Refund Transaction</option>
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">Created At</label>
+                <input type="date" class="form-control" asp-for="Transaction.CreatedAt" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Updated At</label>
+                <input type="date" class="form-control" asp-for="Transaction.UpdateAt" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Update Transaction</button>
+            </div>
+        </form>
+    </div>
+</div>

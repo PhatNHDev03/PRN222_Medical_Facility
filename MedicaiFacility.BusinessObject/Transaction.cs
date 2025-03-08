@@ -23,11 +23,7 @@ public partial class Transaction
 
     public string TransactionType { get; set; }
 
-    public int? AppointmentId { get; set; }
-
     public virtual Appointment Appointment { get; set; }
-
-    public virtual Appointment AppointmentNavigation { get; set; }
 
     public virtual User User { get; set; }
 }

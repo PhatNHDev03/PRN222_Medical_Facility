@@ -1,0 +1,75 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Transactions.DetailModel
+@{
+}
+<div class="container">
+    
+    <div class="mb-3">
+        <label class="form-label">User Name</label>
+        <input class="form-control" asp-for="TransactionViewModel.TransactionId" disabled="disabled" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">User Name</label>
+        <input disabled="disabled" type="text" class="form-control" asp-for="TransactionViewModel.UserName" placeholder="Enter user name" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">User Email</label>
+        <input disabled="disabled" type="email" class="form-control" asp-for="TransactionViewModel.UserEmail" placeholder="Enter user email" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input disabled="disabled" type="text" class="form-control" asp-for="TransactionViewModel.NumberPhone" placeholder="Enter phone number" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Bank Account</label>
+        <input disabled="disabled" type="text" class="form-control" asp-for="TransactionViewModel.BankAccount" placeholder="Enter bank account" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Payment Method</label>
+        <select disabled="disabled" class="form-control" asp-for="TransactionViewModel.PaymentMethod">
+            <option value="Credit Card">Credit Card</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Amount</label>
+        <input disabled="disabled" type="number" step="0.01" class="form-control" asp-for="TransactionViewModel.Amount" placeholder="Enter transaction amount" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Transaction Status</label>
+        <select disabled="disabled" class="form-control" asp-for="TransactionViewModel.TransactionStatus">
+            <option value="Pending">Pending</option>
+            <option value="Success">Success</option>
+            <option value="Failed">Failed</option>
+            <option value="InActive">Inactive</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Transaction Type</label>
+        <select disabled="disabled" class="form-control" asp-for="TransactionViewModel.TransactionType">
+            <option value="AppointmentTransaction">Appointment Transaction</option>
+            <option value="PayoutTransaction">Payout Transaction</option>
+            <option value="RefundTransaction">Refund Transaction</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Created At</label>
+        <input disabled="disabled" type="datetime-local" class="form-control" asp-for="TransactionViewModel.CreatedAt" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Updated At</label>
+        <input disabled="disabled" type="datetime-local" class="form-control" asp-for="TransactionViewModel.UpdateAt" />
+    </div>
+
+    
+</div>

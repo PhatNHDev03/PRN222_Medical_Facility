@@ -38,6 +38,4 @@ public partial class Appointment
     public virtual RatingsAndFeedback RatingsAndFeedback { get; set; }
 
     public virtual Transaction Transaction { get; set; }
-
-    public virtual Transaction TransactionNavigation { get; set; }
 }
