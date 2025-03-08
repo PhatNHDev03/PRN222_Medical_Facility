@@ -42,7 +42,12 @@ namespace MedicaiFacility.DataAccess
 
         public void DeleteFacilityDepartment(int id)
         {
-            throw new NotImplementedException();
+            var facilityDepartment = _Context.FacilityDepartments.Find(id);
+            if (facilityDepartment != null)
+            {
+                _Context.FacilityDepartments.Remove(facilityDepartment);
+                _Context.SaveChanges();
+            }
         }
 
         public (List<FacilityDepartment>, int totalItem) FindAllWithPagination(int pg, int pageSize)

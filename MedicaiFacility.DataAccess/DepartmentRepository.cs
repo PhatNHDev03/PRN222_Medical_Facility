@@ -43,7 +43,49 @@ namespace MedicaiFacility.DataAccess
 
         public void DeleteDepartment(int id)
         {
-            throw new NotImplementedException();
+            using var transaction = _Context.Database.BeginTransaction();
+            try
+            {
+                // Find the Department
+                var department = _Context.Departments.Find(id);
+                if (department == null)
+                {
+                    throw new InvalidOperationException($"Department with ID {id} not found.");
+                }
+
+                // Delete all related Diseases
+                var relatedDiseases = _Context.Diseases
+                    .Where(d => d.DepartmentId == id)
+                    .ToList();
+                if (relatedDiseases.Any())
+                {
+                    _Context.Diseases.RemoveRange(relatedDiseases);
+                }
+
+                // Set status to false for all related FacilityDepartments
+                var relatedFacilityDepartments = _Context.FacilityDepartments
+                    .Where(fd => fd.DepartmentId == id)
+                    .ToList();
+                if (relatedFacilityDepartments.Any())
+                {
+                    foreach (var fd in relatedFacilityDepartments)
+                    {
+                        fd.Status = false; // Update the status field
+                    }
+                    _Context.FacilityDepartments.UpdateRange(relatedFacilityDepartments);
+                }
+
+                // Delete the Department
+                _Context.Departments.Remove(department);
+                _Context.SaveChanges();
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new Exception($"Failed to delete department with ID {id}: {ex.Message}", ex);
+            }
         }
 
         public (List<Department>, int totalItem) FindAllWithPagination(int pg, int pageSize)

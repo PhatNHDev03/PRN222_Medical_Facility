@@ -1,4 +1,23 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.MedicalFacilites.DeleteModel
 @{
+    ViewData["Title"] = "Delete Medical Facility";
+    Layout = null;
+}
+
+<h4>Are you sure you want to delete this Facility Department?</h4>
+
+<form method="post" asp-page="Delete" asp-route-id="@Model.MedicalFacility.FacilityId">
+    <input type="hidden" asp-for="MedicalFacility.FacilityId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center mt-3">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center mt-3">@TempData["SuccessMessage"]</div>
 }
