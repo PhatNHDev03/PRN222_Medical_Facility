@@ -2,4 +2,23 @@
 @model MedicaiFacility.RazorPage.Pages.HealthRecords.CreateModel
 @{
 }
-<h1>hi</h1>
+<div class="text-center">
+    <h1 class="display-4">File Upload</h1>
+</div>
+<div class="container">
+    <div class="mb-3 mt-3">
+        <form asp-page="/HealthRecords/Create" method="post" enctype="multipart/form-data">
+            
+           
+            <div class="mb-3">
+                <label class="form-label">share link</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.SharedLink" />
+            </div>
+          
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+            
+    </div>
+</div>

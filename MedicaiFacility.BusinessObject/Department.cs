@@ -13,6 +13,8 @@ public partial class Department
 
     public string Description { get; set; }
 
+    public bool? IsActive { get; set; }
+
     public virtual ICollection<Disease> Diseases { get; set; } = new List<Disease>();
 
     public virtual ICollection<FacilityDepartment> FacilityDepartments { get; set; } = new List<FacilityDepartment>();

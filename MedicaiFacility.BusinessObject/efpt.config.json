@@ -47,6 +47,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[MedicalExpertSchedule]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[MedicalFacilities]",
          "ObjectType": 0
       },
@@ -64,6 +68,10 @@
       },
       {
          "Name": "[dbo].[RatingsAndFeedback]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SystemBalances]",
          "ObjectType": 0
       },
       {

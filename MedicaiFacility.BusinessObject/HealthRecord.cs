@@ -17,11 +17,21 @@ public partial class HealthRecord
 
     public string FilePath { get; set; }
 
+    public string TestResult { get; set; }
+
+    public string Diagnosis { get; set; }
+
+    public string Prescription { get; set; }
+
     public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
 
     public string SharedLink { get; set; }
 
     public int? DiseaseId { get; set; }
+
+    public bool? IsActive { get; set; }
 
     public virtual Disease Disease { get; set; }
 
