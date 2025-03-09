@@ -20,6 +20,7 @@ namespace MedicaiFacility.Service
 
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 			return services;
         }
 
@@ -28,7 +29,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IHealthRecordService, HealhRecordService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITransactionService, TransactionService>();
-
+            services.AddScoped<IAppointmentService, AppointmentService>();
 			return services;
         }
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)

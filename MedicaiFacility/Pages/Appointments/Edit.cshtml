@@ -1,0 +1,67 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Appointments.EditModel
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit Appointment</h1>
+</div>
+
+<div class="container">
+    <form asp-page="/Appointments/Edit" method="post">
+        <input type="hidden" asp-for="Appointment.AppointmentId" />
+
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label class="form-label">Patient ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.PatientId" required />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Transaction ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.TransactionId" required />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Expert ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.ExpertId" required />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Facility ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.FacilityId" required />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" asp-for="Appointment.StartDate" required />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" asp-for="Appointment.EndDate" />
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Status</label>
+                <select class="form-control" asp-for="Appointment.Status" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Delay">Delay</option>
+                </select>
+            </div>
+
+            <div class="mb-3 col-6">
+                <label class="form-label">Updated At</label>
+                <input type="datetime-local" class="form-control" asp-for="Appointment.UpdatedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Save </button>
+            <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

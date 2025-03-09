@@ -1,0 +1,75 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Appointments.DetailModel
+@{
+}
+
+<div class="container">
+    <h2 class="text-center my-4">Appointment Details</h2>
+
+    <div class="row">
+        <div class="mb-3 col-6">
+            <label class="form-label">Appointment ID</label>
+            <input class="form-control" asp-for="AppointmentViewModel.AppointmentId" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Patient Name</label>
+            <input class="form-control" asp-for="AppointmentViewModel.PatientName" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Expert Name</label>
+            <input class="form-control" asp-for="AppointmentViewModel.ExpertName" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Facility Name</label>
+            <input class="form-control" asp-for="AppointmentViewModel.FacilityName" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Facility Address</label>
+            <input class="form-control" asp-for="AppointmentViewModel.Address" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Start Date</label>
+            <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.StartDate" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">End Date</label>
+            <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.EndDate" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Status</label>
+            <input class="form-control" asp-for="AppointmentViewModel.Status" disabled="disabled" />
+        </div>
+    </div>
+
+    <h3 class="mt-4">Transaction Details</h3>
+    <div class="row">
+        <div class="mb-3 col-6">
+            <label class="form-label">Transaction ID</label>
+            <input class="form-control" asp-for="AppointmentViewModel.TransactionId" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Payment Method</label>
+            <input class="form-control" asp-for="AppointmentViewModel.PaymentMethod" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Amount</label>
+            <input class="form-control" type="number" asp-for="AppointmentViewModel.Amount" disabled="disabled" />
+        </div>
+
+        <div class="mb-3 col-6">
+            <label class="form-label">Transaction Status</label>
+            <input class="form-control" asp-for="AppointmentViewModel.TransactionStatus" disabled="disabled" />
+        </div>
+    </div>
+
+
+</div>
