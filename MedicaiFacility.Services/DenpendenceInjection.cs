@@ -21,8 +21,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IDiseaseRepository, DiseaseRepository>();
             services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
             services.AddScoped<IFacilityDepartmentRepository, FacilityDepartmentRepository>();
-            return services;
-
+        
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
@@ -37,7 +36,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IDiseaseService, DiseaseService>();
             services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
             services.AddScoped<IFacilityDepartmentService, FacilityDepartmentService>();
-            return services;
+        
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
