@@ -11,11 +11,7 @@ public partial class MedicalHistory
 
     public int? AppointmentId { get; set; }
 
-    public string Diagnosis { get; set; }
-
-    public string Treatment { get; set; }
-
-    public string Prescription { get; set; }
+    public string Description { get; set; }
 
     public string Status { get; set; }
 

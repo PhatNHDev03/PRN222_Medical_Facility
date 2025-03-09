@@ -43,19 +43,11 @@
                     <option value="Confirmed">Confirmed</option>
                     <option value="Completed">Completed</option>
                     <option value="Cancelled">Cancelled</option>
-                    <option value="Delay">Delay</option>
+              
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Created At</label>
-                <input type="datetime-local" class="form-control" asp-for="Appointment.CreatedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Updated At</label>
-                <input type="datetime-local" class="form-control" asp-for="Appointment.UpdatedAt" />
-            </div>
+           
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Create Appointment</button>
