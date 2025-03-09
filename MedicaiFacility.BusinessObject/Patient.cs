@@ -9,8 +9,6 @@ public partial class Patient
 {
     public int PatientId { get; set; }
 
-    public int? UserId { get; set; }
-
     public DateTime? DateOfBirth { get; set; }
 
     public string Gender { get; set; }
@@ -23,5 +21,5 @@ public partial class Patient
 
     public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
 
-    public virtual User User { get; set; }
+    public virtual User PatientNavigation { get; set; }
 }

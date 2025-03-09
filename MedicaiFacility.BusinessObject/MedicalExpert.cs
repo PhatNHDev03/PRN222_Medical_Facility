@@ -9,8 +9,6 @@ public partial class MedicalExpert
 {
     public int ExpertId { get; set; }
 
-    public int? UserId { get; set; }
-
     public string Specialization { get; set; }
 
     public int ExperienceYears { get; set; }
@@ -25,6 +23,8 @@ public partial class MedicalExpert
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
+    public virtual User Expert { get; set; }
+
     public virtual MedicalFacility Facility { get; set; }
 
     public virtual ICollection<HealthArticle> HealthArticles { get; set; } = new List<HealthArticle>();
@@ -32,6 +32,4 @@ public partial class MedicalExpert
     public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
 
     public virtual ICollection<MedicalExpertSchedule> MedicalExpertSchedules { get; set; } = new List<MedicalExpertSchedule>();
-
-    public virtual User User { get; set; }
 }

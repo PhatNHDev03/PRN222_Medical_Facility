@@ -32,18 +32,18 @@ namespace MedicaiFacility.DataAccess
         {
             var healthRecords = _Context.HealthRecords
             .Include(hr => hr.Patient) // Include Patient
-                .ThenInclude(p => p.User) // Include User từ Patient
+                .ThenInclude(p => p.PatientNavigation) // Include User từ Patient
             .Include(hr => hr.UploadedByNavigation) // Include MedicalExpert
-                .ThenInclude(me => me.User) // Include User từ MedicalExpert
+                .ThenInclude(me => me.Expert) // Include User từ MedicalExpert
             .ToList();
             return healthRecords;
         }
         public (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize) {
             var healthRecords = _Context.HealthRecords
              .Include(hr => hr.Patient) // Include Patient
-                 .ThenInclude(p => p.User) // Include User từ Patient
+                 .ThenInclude(p => p.PatientNavigation) // Include User từ Patient
              .Include(hr => hr.UploadedByNavigation) // Include MedicalExpert
-                 .ThenInclude(me => me.User) // Include User từ MedicalExpert
+                 .ThenInclude(me => me.Expert) // Include User từ MedicalExpert
              .ToList();
             int totalItem = healthRecords.Count();
             var pager = new Pager(totalItem, pg, pageSize);

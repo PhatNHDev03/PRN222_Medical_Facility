@@ -58,8 +58,8 @@ namespace MedicaiFacility.DataAccess
         {
             var query = _Context.FacilityDepartments
                 .Include(d => d.Department)
-                .Include(mf => mf.Facility);
-            //.OrderByDescending(d => d.DepartmentId); 
+                .Include(mf => mf.Facility)
+            .OrderByDescending(d => d.DepartmentId); 
 
             int totalItem = query.Count();
             var data = query
