@@ -20,12 +20,20 @@ namespace MedicaiFacility.DataAccess
 
         public void deleteById(int id)
         {
-            throw new NotImplementedException();
+            var item = _Context.HealthRecords.FirstOrDefault(x => x.RecordId == id);
+            if (item != null) { 
+                _Context.HealthRecords.Remove(item);
+                _Context.SaveChanges();
+            }
         }
 
         public HealthRecord FindById(int id)
         {
-            throw new NotImplementedException();
+            return _Context.HealthRecords
+            .Include(hr => hr.Patient) // Include Patient
+                .ThenInclude(p => p.PatientNavigation) // Include User từ Patient
+            .Include(hr => hr.UploadedByNavigation) // Include MedicalExpert
+                .ThenInclude(me => me.Expert).FirstOrDefault();
         }
 
         public List<HealthRecord> GetAll()
@@ -52,14 +60,18 @@ namespace MedicaiFacility.DataAccess
             return (data, totalItem);
         }
 
-        public void Save()
+        public void Save(HealthRecord healthRecord)
         {
-            throw new NotImplementedException();
+            _Context.HealthRecords.Add(healthRecord);
+            _Context.SaveChanges();
         }
 
-        public void Udpate()
+        public void Udpate(HealthRecord healthRecord)
         {
-            throw new NotImplementedException();
+            _Context.HealthRecords.Update(healthRecord);
+            _Context.SaveChanges();
         }
+
+        
     }
 }

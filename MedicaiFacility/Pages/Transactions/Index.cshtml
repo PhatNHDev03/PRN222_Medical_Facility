@@ -1,64 +1,56 @@
 ﻿@page
-@model MedicaiFacility.RazorPage.Pages.HealthRecords.IndexModel
+@model MedicaiFacility.RazorPage.Pages.Transactions.IndexModel
 @{
-	ViewData["Title"] = "Health Records";
 }
-
-<h2>Health Records</h2>
-<form asp-page="/HealthRecords/Create" method="get">
-	<button class="btn btn-sm btn-primary m-2">Add New Record</button>
+<h2>Transactions</h2>
+<form asp-page="/Transactions/Create" method="get">
+	<button class="btn btn-sm btn-primary m-2">Add New Transaction</button>
 </form>
 
 <table class="table table-bordered">
 	<thead class="thead-dark">
 		<tr>
-			<th>ID</th>
-			<th>Patient</th>
-			<th>Upload By</th>
-			<th>File Name</th>
-			<th>Test result</th>
-			<th>Diagnosis</th>
-			<th>Prescription</th>
+			<th>Id</th>
+			<th>User Name</th>
+			<th>User Email</th>
+			<th>Number Phone</th>
+			<th>Bank Account</th>
+			<th>Payment Method</th>
+			<th>Amount</th>
+			<th>Transaction Status</th>
 			<th>Created At</th>
-			<th>UpdatedAt</th>
-			<th>SharedLink</th>
-			<th class="w-25">IsActive</th>
-			<th class="w-50">DiseaseId</th>
-			
+			<th>Updated At</th>
+			<th>Transaction Type</th>
+			<th class="w-50">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var record in Model.HealthRecordViewModel)
+		@foreach (var transaction in Model.transactionViewModels)
 		{
 			<tr>
-				<td>@record.RecordId</td>
-				<td>@(record.PatientName != null ? record.PatientName : "Unknown")</td>
-				<td>@(record.UploadedName != null ? record.UploadedName : "Unknown")</td>
-				<td>@record.FileName</td>
-				<td>@record.TestResult</td>
-				<td>@record.Diagnosis</td>
-				<td>@record.Prescription</td>
-				<td>@record.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
-				<td>@record.UpdatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@transaction.TransactionId</td>
+				<td>@(transaction.UserName ?? "Unknown")</td>
+				<td>@(transaction.UserEmail ?? "Unknown")</td>
+				<td>@(transaction.NumberPhone ?? "N/A")</td>
+				<td>@(transaction.BankAccount ?? "N/A")</td>
+				<td>@transaction.PaymentMethod</td>
+				<td>@transaction.Amount.ToString("C")</td>
+				<td>@transaction.TransactionStatus</td>
+				<td>@transaction.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@transaction.UpdateAt?.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@transaction.TransactionType</td>
 				<td>
-					
-					<a href="@record.SharedLink" class="text-decoration-none pe-auto cursor-pointer">ShareLink</a>
-				</td>
+					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/Transactions/Detail", new { id = transaction.TransactionId })'">Detail</button>
 
-				<td>@(record.IsActive==true?"Active":"InActive")</td>
-				<td>
+					<button class="btn btn-secondary" onclick="window.location.href='@Url.Page("/Transactions/Edit", new { id = transaction.TransactionId })'">Edit</button>
 
-					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/HealthRecords/Detail", new { id = record.RecordId })'">Detail</button>
-
-					<button class="btn btn-secondary" onclick="window.location.href='@Url.Page("/HealthRecords/Edit", new { id = record.RecordId })'">Edit</button>
-
-					<button class="btn btn-danger" onclick="openModal(event, 'Delete', @record.RecordId)">Delete</button>
-
+					<button class="btn btn-danger" onclick="openModal(event, 'Delete', @transaction.TransactionId)">Delete</button>
 				</td>
 			</tr>
 		}
 	</tbody>
 </table>
+
 @if (Model.Pager.TotalPages > 0)
 {
 
@@ -66,31 +58,29 @@
 		@if (Model.Pager.CurrentPage > 1)
 		{
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+				<a class="page-link" asp-page="/Transactions/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
 			</li>
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+				<a class="page-link" asp-page="/Transactions/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
 			</li>
 		}
 		@for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
 		{
 			<li class="page-item  @(pge == Model.Pager.CurrentPage? "active": "")">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@pge">@pge</a>
+				<a class="page-link" asp-page="/Transactions/Index" asp-route-pg="@pge">@pge</a>
 			</li>
 		}
 		@if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
 		{
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+				<a class="page-link" asp-page="/Transactions/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
 			</li>
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+				<a class="page-link" asp-page="/Transactions/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
 			</li>
 		}
 	</ul>
 }
-
-
 
 
 <!-- Delete Confirmation Modal -->
@@ -99,13 +89,15 @@
 		<span class="close-btn" onclick="closeModal()">&times;</span>
 		<h3>Are you sure you want to delete this record?</h3>
 		<p>Record ID: <strong id="deleteRecordId"></strong></p>
-		<form id="deleteForm" method="post" asp-page="/HealthRecords/Delete">
-			<input type="hidden" name="recordId" id="deleteInputId">
+		<form id="deleteForm" method="post" asp-page-handler="DeleteById">
+			<input type="hidden" name="id" id="deleteInputId">
 			<button type="submit" class="btn btn-danger">Confirm Delete</button>
 			<button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
 		</form>
+
 	</div>
 </div>
+
 <script>
 	function openModal(event, action, recordId) {
 		event.preventDefault(); // Chặn hành vi mặc định của button
@@ -174,4 +166,3 @@
 {
 	<div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-

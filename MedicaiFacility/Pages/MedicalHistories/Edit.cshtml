@@ -1,0 +1,35 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalHistories.EditModel
+@{
+}
+<h2>Update Medical History</h2>
+
+<div class="container">
+    <form asp-page="/MedicalHistories/Update" method="post">
+        <input type="hidden" asp-for="MedicalHistory.HistoryId" />
+
+        <div class="mb-3">
+            <label class="form-label">Appointment ID</label>
+            <input type="number" class="form-control" asp-for="MedicalHistory.AppointmentId" placeholder="Enter Appointment ID" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" asp-for="MedicalHistory.Description" placeholder="Enter Description" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-control" asp-for="MedicalHistory.Status">
+                <option value="Pending" selected="@(Model.MedicalHistory.Status == "Pending" ? "selected" : null)">Pending</option>
+                <option value="Completed" selected="@(Model.MedicalHistory.Status == "Completed" ? "selected" : null)">Completed</option>
+                <option value="Incomplete" selected="@(Model.MedicalHistory.Status == "Incomplete" ? "selected" : null)">Incomplete</option>
+                <option value="Cancel" selected="@(Model.MedicalHistory.Status == "Cancel" ? "selected" : null)">Cancel</option>
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-page="/MedicalHistories/Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

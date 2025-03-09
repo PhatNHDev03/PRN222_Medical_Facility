@@ -1,0 +1,57 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Appointments.CreateModel
+@{
+}<div class="text-center">
+    <h1 class="display-4">Create Appointment</h1>
+</div>
+
+<div class="container">
+    <div class="mb-3 mt-3">
+        <form asp-page="/Appointments/Create" method="post">
+            <div class="mb-3">
+                <label class="form-label">Patient ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.PatientId" placeholder="Enter Patient ID" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Transaction ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.TransactionId" placeholder="Enter Transaction ID" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Expert ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.ExpertId" placeholder="Enter Expert ID" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Facility ID</label>
+                <input type="number" class="form-control" asp-for="Appointment.FacilityId" placeholder="Enter Facility ID" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" asp-for="Appointment.StartDate" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" asp-for="Appointment.EndDate" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" asp-for="Appointment.Status" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+              
+                </select>
+            </div>
+
+           
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>

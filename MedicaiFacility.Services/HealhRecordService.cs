@@ -20,14 +20,14 @@ namespace MedicaiFacility.Service
 
         public void deleteById(int id)
         {
-            throw new NotImplementedException();
+            _healthRecordRepository.deleteById(id);
         }
 
         public (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize) 
             => _healthRecordRepository.findAllWithPagination(pg, pageSize);
         public HealthRecord FindById(int id)
         {
-            throw new NotImplementedException();
+           return _healthRecordRepository.FindById(id);
         }
 
         public List<HealthRecord> GetAll()
@@ -35,14 +35,14 @@ namespace MedicaiFacility.Service
            return _healthRecordRepository.GetAll();
         }
 
-        public void Save()
+        public void Save(HealthRecord healthRecord)
         {
-            throw new NotImplementedException();
+          _healthRecordRepository.Save(healthRecord);
         }
 
-        public void Udpate()
+        public void Udpate(HealthRecord healthRecord)
         {
-            throw new NotImplementedException();
+            _healthRecordRepository.Udpate(healthRecord);
         }
     }
 }

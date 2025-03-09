@@ -1,4 +1,5 @@
 ﻿using MedicaiFacility.BusinessObject;
+using MedicaiFacility.RazorPage.ViewModel;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,23 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 {
     [BindProperties]
-    public class CreateModel : PageModel
+    public class EditModel : PageModel
     {
+        public HealthRecord HealthRecord { get; set; }
         private readonly IHealthRecordService _healthRecordService;
-        public CreateModel(IHealthRecordService healthRecordService)
+        public EditModel(IHealthRecordService healthRecordService)
         {
             _healthRecordService = healthRecordService;
         }
-        public HealthRecord HealthRecord { get; set; }
-        public IActionResult OnGet()
+        public IActionResult OnGet(int? id)
         {
-          
+            HealthRecord = _healthRecordService.FindById((int)id);
             
             return Page();
         }
-
-        public async Task<IActionResult> OnPostAsync(IFormFile file)
-        {
+        public async Task<IActionResult> OnPost(IFormFile file) {
             if (file != null && file.Length > 0)
             {
                 // Định nghĩa thư mục lưu file
@@ -42,18 +41,10 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
                 HealthRecord.FilePath = "/imgPatient/" + file.FileName;
             }
 
-		      HealthRecord.CreatedAt = DateTime.Now;
-            HealthRecord.UpdatedAt = DateTime.Now;
-            HealthRecord.IsActive = true;
-            //code cung 
-            HealthRecord.PatientId = 1;
-            HealthRecord.UploadedBy = 1;
+            var check = HealthRecord;
+            _healthRecordService.Udpate(HealthRecord);
+			return RedirectToPage("/HealthRecords/Detail", new { id = HealthRecord.RecordId });
 
-                _healthRecordService.Save(HealthRecord);
-          
-			return Page();
-        }
-
-
-    }
+		}
+	}
 }

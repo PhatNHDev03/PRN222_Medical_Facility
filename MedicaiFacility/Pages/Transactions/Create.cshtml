@@ -1,0 +1,65 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Transactions.CreateModel
+@{
+}
+<div class="text-center">
+    <h1 class="display-4">Create Transaction</h1>
+</div>
+
+<div class="container">
+    <div class="mb-3 mt-3">
+        <form asp-page="/Transactions/Create" method="post">
+            <div class="mb-3">
+                <label class="form-label">User ID</label>
+                <input type="text" class="form-control" asp-for="Transaction.UserId" placeholder="Enter User ID (optional)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <select class="form-control" asp-for="Transaction.PaymentMethod">
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input type="text" step="0.01" class="form-control" asp-for="Transaction.Amount" placeholder="Enter transaction amount" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Transaction Status</label>
+                <select class="form-control" asp-for="Transaction.TransactionStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="Success">Success</option>
+                    <option value="Failed">Failed</option>
+                    <option value="InActive">Inactive</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Transaction Type</label>
+                <select class="form-control" asp-for="Transaction.TransactionType">
+                    <option value="AppointmentTransaction">Appointment Transaction</option>
+                    <option value="PayoutTransaction">Payout Transaction</option>
+                    <option value="RefundTransaction">Refund Transaction</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Created At</label>
+                <input type="date" class="form-control" asp-for="Transaction.CreatedAt" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Updated At</label>
+                <input type="date" class="form-control" asp-for="Transaction.UpdateAt" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Transaction</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -9,7 +9,31 @@
     <div class="mb-3 mt-3">
         <form asp-page="/HealthRecords/Create" method="post" enctype="multipart/form-data">
             
-           
+          
+            <div class="mb-3">
+                <label class="form-label">Upload by</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.UploadedBy" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">File Name</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.FileName" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">File Path</label>
+                <input type="file" class="form-control" name="file" asp-for="HealthRecord.FilePath" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Test result</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.TestResult" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Diagnosis</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.Diagnosis" />
+            </div>
+                 <div class="mb-3">
+                <label class="form-label">Prescription</label>
+                <input type="text" class="form-control" asp-for="HealthRecord.Prescription" />
+            </div>
             <div class="mb-3">
                 <label class="form-label">share link</label>
                 <input type="text" class="form-control" asp-for="HealthRecord.SharedLink" />

@@ -1,0 +1,61 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalHistories.DetailModel
+@{
+}
+<div class="container">
+    <h2 class="mb-4">Medical History Detail</h2>
+
+    <div class="mb-3">
+        <label class="form-label">History ID</label>
+        <input class="form-control" asp-for="MedicalHistoryViewModel.HistoryId" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" asp-for="MedicalHistoryViewModel.Description" disabled></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <input class="form-control" asp-for="MedicalHistoryViewModel.Status" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Created At</label>
+        <input type="datetime-local" class="form-control" asp-for="MedicalHistoryViewModel.CreatedAt" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Updated At</label>
+        <input type="datetime-local" class="form-control" asp-for="MedicalHistoryViewModel.UpdatedAt" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Start Date</label>
+        <input type="datetime-local" class="form-control" asp-for="MedicalHistoryViewModel.StartDate" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">End Date</label>
+        <input type="datetime-local" class="form-control" asp-for="MedicalHistoryViewModel.EndDate" disabled />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Appointment information: </label>
+        <a href="/Appointments/Detail?id=@Model.MedicalHistoryViewModel.AppointmentId">more</a>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Appointment Status</label>
+        <input class="form-control" asp-for="MedicalHistoryViewModel.AppointmentStatus" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Patient Information</label>
+        <textarea class="form-control" asp-for="MedicalHistoryViewModel.patientInfor" disabled></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Expert Information</label>
+        <textarea class="form-control" asp-for="MedicalHistoryViewModel.ExpertInfor" disabled></textarea>
+    </div>
+</div>

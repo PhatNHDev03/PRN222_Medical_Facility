@@ -22,6 +22,12 @@ namespace MedicaiFacility.Service
             services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
             services.AddScoped<IFacilityDepartmentRepository, FacilityDepartmentRepository>();
             return services;
+
+			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IMedicalHistoryRepository, MedicalHistoryRepository>();
+			return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
@@ -32,6 +38,11 @@ namespace MedicaiFacility.Service
             services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
             services.AddScoped<IFacilityDepartmentService, FacilityDepartmentService>();
             return services;
+			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
+			return services;
         }
 
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)
