@@ -30,19 +30,19 @@ namespace MedicaiFacility.DataAccess
         public HealthRecord FindById(int id)
         {
             return _Context.HealthRecords
-            .FirstOrDefault();
+           .FirstOrDefault(x=>x.RecordId== id);
         }
 
         public List<HealthRecord> GetAll()
         {
             var healthRecords = _Context.HealthRecords
-             // Include User từ MedicalExpert
+       
             .ToList();
             return healthRecords;
         }
         public (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize) {
             var healthRecords = _Context.HealthRecords
-             // Include User từ MedicalExpert
+             
              .ToList();
             int totalItem = healthRecords.Count();
             var pager = new Pager(totalItem, pg, pageSize);

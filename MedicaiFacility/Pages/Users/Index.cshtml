@@ -1,0 +1,144 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Users List";
+}
+
+<h2>Users List</h2>
+
+@if (Model.Users == null || !Model.Users.Any())
+{
+    <p>No users found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Image</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>User Type</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Bank Account</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserId</td>
+                    <td>@user.FullName</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(user.Image) && Uri.TryCreate(user.Image, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                        {
+                            <img src="@user.Image" alt="User Image" style="max-width: 50px; max-height: 50px;" class="img-thumbnail" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/50" alt="Default User Image" style="max-width: 50px; max-height: 50px;" class="img-thumbnail" />
+                        }
+                    </td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.UserType</td>
+                    <td>@user.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@user.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@(string.IsNullOrEmpty(user.BankAccount) ? "N/A" : user.BankAccount)</td>
+                    <td>@(user.Status.HasValue ? (user.Status.Value ? "Active" : "Inactive") : "N/A")</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm edit-btn" data-userid="@user.UserId" data-bs-toggle="modal" data-bs-target="#editModal">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @if (Model.Pager != null)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @(Model.Pager.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-page="./Index" asp-route-pg="@(Model.Pager.CurrentPage - 1)">Previous</a>
+                </li>
+                @for (int i = 1; i <= Model.Pager.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.Pager.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" asp-page="./Index" asp-route-pg="@i">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.Pager.CurrentPage == Model.Pager.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-page="./Index" asp-route-pg="@(Model.Pager.CurrentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Nội dung form sẽ được load động qua AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.edit-btn').on('click', function () {
+                var userId = $(this).data('userid');
+                fetch(`/Users/Edit?id=${userId}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('editModalBody').innerHTML = data;
+                        $('#editModal').modal('show');
+                    })
+                    .catch(error => console.error('Error loading edit form:', error));
+            });
+
+            $(document).on('submit', '#editForm', function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '/Users/Edit?handler=Update',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            $('#editModal').modal('hide');
+                            location.reload();
+                        } else {
+                            alert(response.message || 'Error updating user.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('An unexpected error occurred.');
+                    }
+                });
+            });
+        });
+    </script>
+}

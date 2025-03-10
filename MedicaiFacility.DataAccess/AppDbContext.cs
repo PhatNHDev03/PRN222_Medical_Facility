@@ -21,6 +21,9 @@ public partial class AppDbContext : DbContext
         _configuration = configuration;
     }
 
+
+
+
     public virtual DbSet<Appointment> Appointments { get; set; }
 
     public virtual DbSet<Conversation> Conversations { get; set; }
