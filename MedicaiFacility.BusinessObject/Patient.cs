@@ -19,7 +19,5 @@ public partial class Patient
 
     public virtual ICollection<Conversation> Conversations { get; set; } = new List<Conversation>();
 
-    public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
-
     public virtual User PatientNavigation { get; set; }
 }

@@ -1,0 +1,130 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Patients.CreateAppointmentModel
+@{
+}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Thông tin cơ sở y tế -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Expert Information</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>📌 @Model.MedicalExpert.Specialization</strong><br>
+                        <small class="text-muted">Experience Years: @Model.MedicalExpert.ExperienceYears</small>
+                    </p>
+                    <p><strong>➕ Department:</strong> @Model.MedicalExpert.Department</p>
+                    <p><strong>🩺 Expert: </strong>@Model.MedicalExpert.Expert.FullName</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chọn dịch vụ -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Choose your service: </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name Appointment</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <strong>Appointment: </strong><br>
+                                    <small class="text-muted"><em>Medical examination</em></small>
+                                </td>
+                                <td>@Model.MedicalExpert.PriceBooking</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="openModal(event)">Book now</button>
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Xác Nhận Thanh Toán -->
+<div id="confirmBookingModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Confirm Payment</h3>
+        <p>Are you sure you want to book this appointment?</p>
+        <p><strong>Expert:</strong> @Model.MedicalExpert.Expert.FullName</p>
+        <p><strong>Price:</strong> @Model.MedicalExpert.PriceBooking</p>
+
+        <form id="paymentForm" method="post" asp-page-handler="ConfirmPayment">
+            <input type="hidden" name="expertId" value="@Model.MedicalExpert.ExpertId">
+            <button type="submit" class="btn btn-success">Confirm & Pay</button>
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+<script>
+    function openModal(event) {
+        event.preventDefault(); // Chặn hành vi mặc định của button
+        document.getElementById("confirmBookingModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("confirmBookingModal").style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById("confirmBookingModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0px 0px 10px 0px #000;
+        text-align: center;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: black;
+        }
+</style>
+
