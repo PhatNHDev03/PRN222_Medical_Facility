@@ -31,6 +31,8 @@ public partial class Appointment
 
     public virtual MedicalFacility Facility { get; set; }
 
+    public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
+
     public virtual MedicalHistory MedicalHistory { get; set; }
 
     public virtual Patient Patient { get; set; }
