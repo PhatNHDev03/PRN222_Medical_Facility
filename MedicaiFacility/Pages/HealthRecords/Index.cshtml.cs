@@ -36,8 +36,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
                     new HealthRecordViewModel
                     {
                         RecordId = item.RecordId,
-						PatientName  = item.Patient.PatientNavigation.FullName,
-						UploadedName = item.UploadedByNavigation.Expert.FullName,
+						
                         FileName = item.FileName,
                         FilePath = item.FilePath,
                         TestResult = item.TestResult,

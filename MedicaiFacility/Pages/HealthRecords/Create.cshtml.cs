@@ -46,8 +46,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             HealthRecord.UpdatedAt = DateTime.Now;
             HealthRecord.IsActive = true;
             //code cung 
-            HealthRecord.PatientId = 1;
-            HealthRecord.UploadedBy = 1;
+           
 
                 _healthRecordService.Save(HealthRecord);
           
