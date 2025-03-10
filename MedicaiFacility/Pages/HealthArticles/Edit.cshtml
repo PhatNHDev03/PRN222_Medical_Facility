@@ -1,0 +1,58 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.HealthArticles.EditModel
+@{
+}
+
+<form asp-page="/HealthArticles/Edit" method="post">
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-primary">Create Article</h2>
+			<hr />
+		</div>
+		<input hidden="hidden" asp-for="HealthArticle.ArticleId" class="form-control" />
+		<div class="mb-3 row p-1">
+			<label asp-for="HealthArticle.Title" class="p-0"></label>
+			<input asp-for="HealthArticle.Title" class="form-control" />
+			<span asp-validation-for="HealthArticle.Title" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3 row p-1">
+			<label asp-for="HealthArticle.Content" class="p-0"></label>
+			<textarea asp-for="HealthArticle.Content" class="form-control" rows="5"></textarea>
+			<span asp-validation-for="HealthArticle.Content" class="text-danger"></span>
+		</div>
+		<div class="mb-3 row p-1">
+			<label asp-for="HealthArticle.IsActive" class="p-0"></label>
+			<select asp-for="HealthArticle.IsActive" class="form-control">
+				<option value="">-- Select Status --</option>
+				<option value="true" selected="@(Model.HealthArticle.IsActive == true)">Active</option>
+				<option value="false" selected="@(Model.HealthArticle.IsActive == false)">Inactive</option>
+			</select>
+			<span asp-validation-for="HealthArticle.IsActive" class="text-danger"></span>
+		</div>
+
+	
+
+		<div class="mb-3 row p-1">
+			<label asp-for="HealthArticle.CreatedAt" class="p-0"></label>
+			<input asp-for="HealthArticle.CreatedAt" class="form-control" type="datetime-local" />
+			<span asp-validation-for="HealthArticle.CreatedAt" class="text-danger"></span>
+		</div>
+
+
+		<div class="row">
+			<div class="col-6 col-md-3">
+				<button type="submit" class="btn btn-primary form-control">Create</button>
+			</div>
+			<div class="col-6 col-md-3">
+				<a asp-page="/HealthArticles/index" class="btn btn-outline-secondary border form-control">
+					Back to List
+				</a>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
