@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Experts\" />
+    <Folder Include="Pages\Admin\" />
+    <Folder Include="Pages\Patients\" />
     <Folder Include="wwwroot\imgs\" />
   </ItemGroup>
 
