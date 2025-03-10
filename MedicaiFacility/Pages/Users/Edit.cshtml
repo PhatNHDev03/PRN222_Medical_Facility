@@ -1,0 +1,54 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Users.EditModel
+@{
+    Layout = null;
+}
+
+<form method="post" id="editForm" asp-page="Edit" asp-page-handler="Update">
+    <input type="hidden" asp-for="Input.UserId" />
+
+    <div class="mb-3">
+        <label asp-for="Input.FullName" class="form-label">Full Name</label>
+        <input asp-for="Input.FullName" class="form-control" required />
+        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label">Email</label>
+        <input asp-for="Input.Email" class="form-control" type="email" required />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="Input.PhoneNumber" class="form-control" />
+        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.UserType" class="form-label">User Type</label>
+        <select asp-for="Input.UserType" asp-items="Model.UserTypeOptions" class="form-select" required>
+            <option value="">Select User Type</option>
+        </select>
+        <span asp-validation-for="Input.UserType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.BankAccount" class="form-label">Bank Account</label>
+        <input asp-for="Input.BankAccount" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Status" class="form-label">Status</label>
+        <select asp-for="Input.Status" asp-items="Model.StatusOptions" class="form-select" required>
+            <option value="">Select Status</option>
+        </select>
+        <span asp-validation-for="Input.Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
