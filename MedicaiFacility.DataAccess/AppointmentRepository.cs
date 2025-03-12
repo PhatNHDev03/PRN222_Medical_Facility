@@ -64,5 +64,18 @@ namespace MedicaiFacility.DataAccess
 			_context.Appointments.Update(appointment);
 			_context.SaveChanges();
 		}
-	}
+
+
+        public (List<Appointment> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize,int patientId)
+        {
+            var list = _context.Appointments.Where(x=>x.PatientId== patientId).OrderByDescending(x => x.AppointmentId).Include(x => x.Transaction)
+                .Include(x => x.Expert).ThenInclude(x => x.Expert).Include(x => x.Patient).ThenInclude(x => x.PatientNavigation).Include(x => x.Facility)
+                .ToList();
+            var total = list.Count();
+			
+            int skip = (pg - 1) * pageSize;
+            var data = list.Skip(skip).Take(pageSize).ToList();
+            return (data, total);
+        }
+    }
 }

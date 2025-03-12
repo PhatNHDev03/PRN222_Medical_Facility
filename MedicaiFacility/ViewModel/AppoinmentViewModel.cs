@@ -3,12 +3,13 @@
 	public class AppoinmentViewModel
 	{
 		public int AppointmentId { get; set; }
-
+		public int? PatientId { get; set; }
 		public string? PatientName { get; set; }
-
+        public string? PatientPhone { get; set; }
+        public int? ExpertId { get; set; } 
 		public string? ExpertName { get; set; }
-
-		public int? FacilityId { get; set; }
+        public string? ExpertPhone { get; set; }
+        public int? FacilityId { get; set; }
 
 		public DateTime StartDate { get; set; }
 

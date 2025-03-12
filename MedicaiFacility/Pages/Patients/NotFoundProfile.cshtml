@@ -1,0 +1,19 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Patients.NotFoundProfileModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="text-center p-4 bg-white rounded-3 shadow" style="max-width: 450px;">
+            <h2 class="text-primary fw-bold">Your profile is not available</h2>
+        <p class="text-secondary">Your profile is not found. <strong>Please add your profile to continue booking.</strong> </p>
+            <img src="/imgPatient/EmptyList.png" alt="Hình minh họa" class="img-fluid my-3">
+            <div>
+                <a href="#" class="btn btn-primary px-4 py-2">➕ Add Profile</a>
+            </div>
+            <div class="mt-3">
+            <a href="/Index" class="text-decoration-none text-primary fw-bold">⬅ Back to homepage</a>
+            </div>
+        </div>
+    </div>

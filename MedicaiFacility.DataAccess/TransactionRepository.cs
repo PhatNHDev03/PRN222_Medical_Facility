@@ -57,5 +57,14 @@ namespace MedicaiFacility.DataAccess
 			_Context.Transactions.Add(transaction);
 			_Context.SaveChanges();
 		}
+
+		public (List<Transaction>, int totalItems) GetListByPaginationWithPatientId(int pg, int pageSize,int patientId) {
+			var list = _Context.Transactions.Where(x=>x.UserId== patientId).OrderByDescending(x => x.TransactionId).Include(t => t.User).ToList();
+			int total = list.Count();
+			var pager = new Pager(total, pg, pageSize);
+			int skipItem = (pg - 1) * pageSize;
+			var data = list.Skip(skipItem).Take(pager.Pagesize).ToList();
+			return (data, total);
+		}
 	}
 }

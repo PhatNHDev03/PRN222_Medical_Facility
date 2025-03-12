@@ -15,8 +15,6 @@ public partial class MedicalExpert
 
     public string Department { get; set; }
 
-    public string Schedule { get; set; }
-
     public decimal? PriceBooking { get; set; }
 
     public int? FacilityId { get; set; }

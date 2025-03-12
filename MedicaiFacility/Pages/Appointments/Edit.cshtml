@@ -44,13 +44,34 @@
 
             <div class="mb-3 col-6">
                 <label class="form-label">Status</label>
-                <select class="form-control" asp-for="Appointment.Status" required>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-           
-                </select>
+                @if (User.FindFirst(ClaimTypes.Role)?.Value == "MedicalExpert")
+                {
+                    <select asp-for="Appointment.Status" class="form-control">
+                        <option value="Pending" selected="@(Model.Appointment.Status == "Pending")">Pending</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Confirmed")">Confirmed</option>
+                        <option value="Cancelled" selected="@(Model.Appointment.Status == "Cancelled")">Cancelled</option>
+                    </select>
+                }
+                else if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+                {
+                    <select asp-for="Appointment.Status" class="form-control">
+                        <option value="Pending" selected="@(Model.Appointment.Status == "Pending")">Pending</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Confirmed")">Confirmed</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Complete")">Confirmed</option>
+                        <option value="Cancelled" selected="@(Model.Appointment.Status == "Cancelled")">Cancelled</option>
+                    </select>
+                }
+                else
+                {
+                    <select asp-for="Appointment.Status" class="form-control">
+                        <option value="Pending" selected="@(Model.Appointment.Status == "Pending")">Pending</option>
+                       
+                        <option value="Cancelled" selected="@(Model.Appointment.Status == "Cancelled")">Cancelled</option>
+                    </select>
+                
+                
+                }
+
             </div>
 
             <div class="mb-3 col-6">

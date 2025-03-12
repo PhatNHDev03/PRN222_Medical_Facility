@@ -15,5 +15,7 @@ namespace MedicaiFacility.Service.IService
 		void Update(Appointment appointment);
 		void DeleteById(int id);
 		(List<Appointment> list, int totalItems) GetALlPagainations(int pg, int pageSize);
-	}
+		(List<Appointment> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize, int patientId);
+
+    }
 }

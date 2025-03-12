@@ -60,5 +60,29 @@ namespace MedicaiFacility.DataAccess
            _Context.MedicalHistories.Update(medicalHistory);
             _Context.SaveChanges(); 
         }
+
+        public (List<MedicalHistory> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize,int patientId)
+        {
+            var list = _Context.MedicalHistories.Where(x=>x.Appointment.PatientId==patientId).OrderByDescending(x => x.HistoryId).Include(x => x.Appointment).ThenInclude(x => x.Expert).ThenInclude(x => x.Expert)
+              .Include(x => x.Appointment).ThenInclude(x => x.Patient).ThenInclude(x => x.PatientNavigation)
+                .ToList();
+            int total = list.Count();
+            Pager pager = new Pager(total, pg, pageSize);
+            int skipItem = (pg - 1) * pageSize;
+            var data = list.Skip(skipItem).Take(pager.Pagesize).ToList();
+            return (data, total);
+        }
+
+        public (List<MedicalHistory> list, int totalItems) GetALlPagainationsByExpertId(int pg, int pageSize, int expertId)
+        {
+            var list = _Context.MedicalHistories.Where(x => x.Appointment.ExpertId == expertId).OrderByDescending(x => x.HistoryId).Include(x => x.Appointment).ThenInclude(x => x.Expert).ThenInclude(x => x.Expert)
+              .Include(x => x.Appointment).ThenInclude(x => x.Patient).ThenInclude(x => x.PatientNavigation)
+                .ToList();
+            int total = list.Count();
+            Pager pager = new Pager(total, pg, pageSize);
+            int skipItem = (pg - 1) * pageSize;
+            var data = list.Skip(skipItem).Take(pager.Pagesize).ToList();
+            return (data, total);
+        }
     }
 }

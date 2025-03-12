@@ -22,6 +22,8 @@ namespace MedicaiFacility.RazorPage.ViewModel
         public int? AppointmentId { get; set; }
         public string? AppointmentStatus { get; set; }
         //user
+        public int? patientId { get; set; }
+        public int? expertId { get; set; }
         public string? patientInfor { get; set; }
 
         public string? ExpertInfor { get; set; }

@@ -9,6 +9,8 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
     public class CreateModel : PageModel
     {
         public Appointment Appointment { get; set; }
+        public int PatientId { get; set; }
+        public int TransactionId { get; set; }
         private readonly IAppointmentService _appointmentService;
 
         public CreateModel(IAppointmentService appointmentService)

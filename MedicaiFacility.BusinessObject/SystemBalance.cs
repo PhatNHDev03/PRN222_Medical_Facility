@@ -11,7 +11,5 @@ public partial class SystemBalance
 
     public decimal TotalBalance { get; set; }
 
-    public decimal PendingDebt { get; set; }
-
     public DateTime? LastUpdated { get; set; }
 }
