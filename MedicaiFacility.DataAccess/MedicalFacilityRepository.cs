@@ -62,5 +62,49 @@ namespace MedicaiFacility.DataAccess
 
             return (data, totalItem);
         }
+        public (List<MedicalFacility>, Dictionary<int, List<string>>, int totalItem) FindAllWithDepartmentsAndPagination(int pg, int pageSize)
+        {
+            // Step 1: Fetch paginated medical facilities
+            var facilitiesQuery = _Context.MedicalFacilities;
+            int totalItem = facilitiesQuery.Count();
+
+            var facilities = facilitiesQuery
+                .Skip((pg - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Step 2: Fetch department names for the paginated facilities
+            var facilityIds = facilities.Select(f => f.FacilityId).ToList();
+
+            // Join FacilityDepartments with Departments to get department names
+            var facilityDepartments = (from fd in _Context.FacilityDepartments
+                                       join d in _Context.Departments on fd.DepartmentId equals d.DepartmentId
+                                       where facilityIds.Contains(fd.FacilityId ?? 0)
+                                       select new
+                                       {
+                                           fd.FacilityId,
+                                           d.DepartmentName
+                                       })
+                                       .ToList();
+
+            // Step 3: Group department names by FacilityId
+            var facilityDepartmentsDict = facilityDepartments
+                .GroupBy(fd => fd.FacilityId ?? 0)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(fd => fd.DepartmentName).ToList()
+                );
+
+            // Ensure all facilities have an entry in the dictionary, even if they have no departments
+            foreach (var facility in facilities)
+            {
+                if (!facilityDepartmentsDict.ContainsKey(facility.FacilityId))
+                {
+                    facilityDepartmentsDict[facility.FacilityId] = new List<string>();
+                }
+            }
+
+            return (facilities, facilityDepartmentsDict, totalItem);
+        }
     }
 }

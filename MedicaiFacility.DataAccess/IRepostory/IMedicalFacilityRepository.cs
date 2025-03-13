@@ -15,5 +15,6 @@ namespace MedicaiFacility.DataAccess.IRepostory
         void UpdateMedicalFacility(MedicalFacility medicalFacility);
         void DeleteMedicalFacility(int id);
         (List<MedicalFacility>, int totalItem) FindAllWithPagination(int pg, int pageSize);
+        (List<MedicalFacility>, Dictionary<int, List<string>>, int totalItem) FindAllWithDepartmentsAndPagination(int pg, int pageSize);
     }
 }

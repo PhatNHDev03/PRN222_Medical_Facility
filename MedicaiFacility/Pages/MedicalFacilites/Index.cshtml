@@ -15,6 +15,7 @@
             <th>Name</th>
             <th>Address</th>
             <th>Facility Type</th>
+            <th>Department Name</th>
             <th>Vetified</th>
             <th>Contact Info</th>
             <th>Is Active</th>
@@ -29,6 +30,16 @@
                 <td>@item.FacilityName</td>
                 <td>@item.Address</td>
                 <td>@item.FacilityType</td>
+                <td>
+                    @if (Model.FacilityDepartments.ContainsKey(item.FacilityId) && Model.FacilityDepartments[item.FacilityId].Any())
+                    {
+                        @string.Join(", ", Model.FacilityDepartments[item.FacilityId])
+                    }
+                    else
+                    {
+                        <span>No Departments</span>
+                    }
+                </td>
                 <td class="@(item.Verified == true ? "text-success font-weight-bold" : "text-danger font-weight-bold")">
                     @item.Verified
                 </td>
