@@ -106,5 +106,46 @@ namespace MedicaiFacility.DataAccess
 
             return (facilities, facilityDepartmentsDict, totalItem);
         }
+        public void UpdateMedicalFacilityWithDepartments(MedicalFacility medicalFacility, List<int> selectedDepartmentIds)
+        {
+            // Step 1: Update the medical facility details
+            _Context.MedicalFacilities.Update(medicalFacility);
+
+            // Step 2: Fetch existing FacilityDepartment records for this facility
+            var existingFacilityDepartments = _Context.FacilityDepartments
+                .Where(fd => fd.FacilityId == medicalFacility.FacilityId)
+                .ToList();
+
+            var existingDepartmentIds = existingFacilityDepartments.Select(fd => fd.DepartmentId).ToList();
+
+            // Step 3: Remove departments that are no longer selected
+            foreach (var fd in existingFacilityDepartments.Where(fd => !selectedDepartmentIds.Contains(fd.DepartmentId ?? 0)))
+            {
+                _Context.FacilityDepartments.Remove(fd);
+            }
+
+            // Step 4: Add new departments that are selected but not currently associated
+            foreach (var departmentId in selectedDepartmentIds.Where(did => !existingDepartmentIds.Contains(did)))
+            {
+                var facilityDepartment = new FacilityDepartment
+                {
+                    FacilityId = medicalFacility.FacilityId,
+                    DepartmentId = departmentId,
+                    CreatedAt = DateTime.Now,
+                    Status = true, 
+                };
+                _Context.FacilityDepartments.Add(facilityDepartment);
+            }
+
+            // Step 5: Save all changes in one transaction
+            _Context.SaveChanges();
+        }
+        public List<int?> GetDepartmentIdsByFacilityId(int facilityId)
+        {
+            return _Context.FacilityDepartments
+                .Where(fd => fd.FacilityId == facilityId)
+                .Select(fd => fd.DepartmentId)
+                .ToList();
+        }
     }
 }

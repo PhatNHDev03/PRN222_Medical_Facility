@@ -10,12 +10,16 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
     public class EditModel : PageModel
     {
         private readonly IMedicalFacilityService _medicalFacilityService;
+        private readonly IDepartmentService _departmentService; 
+        private readonly IFacilityDepartmentService _facilityDepartmentService; 
 
         public MedicalFacility MedicalFacility { get; set; }
-
-        public EditModel(IMedicalFacilityService medicalFacilityService)
+        public List<Department> AvailableDepartments { get; set; }
+        public List<int?> SelectedDepartmentIds { get; set; } 
+        public EditModel(IMedicalFacilityService medicalFacilityService, IDepartmentService departmentService, IFacilityDepartmentService facilityDepartmentService)
         {
             _medicalFacilityService = medicalFacilityService;
+            _departmentService = departmentService;
         }
 
         public IActionResult OnGet(int id)
@@ -25,6 +29,13 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             {
                 return NotFound();
             }
+
+            // Fetch all available departments
+            AvailableDepartments = _departmentService.GetAllDepartment();
+
+            // Fetch the currently associated department IDs for this facility
+            SelectedDepartmentIds = _medicalFacilityService.GetDepartmentIdsByFacilityId(id);
+
             return Page();
         }
 
@@ -34,7 +45,11 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             {
                 return Page();
             }
-            _medicalFacilityService.UpdateMedicalFacility(MedicalFacility);
+
+            var nonNullableSelectedDepartmentIds = SelectedDepartmentIds?.Where(id => id.HasValue).Select(id => id.Value).ToList() ?? new List<int>();
+            _medicalFacilityService.UpdateMedicalFacilityWithDepartments(MedicalFacility, nonNullableSelectedDepartmentIds);
+
+            TempData["SuccessMessage"] = "Medical Facility updated successfully!";
             return RedirectToPage("Index");
 
         }
