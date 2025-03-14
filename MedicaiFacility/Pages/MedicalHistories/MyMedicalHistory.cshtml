@@ -3,117 +3,213 @@
 @{
 }
 
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>History ID</th>
-            <th>Description</th>
-            <th>History Status</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Appointment Status</th>
-            <th>Patient Info</th>
-            <th>Expert Info</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var history in Model.MedicalHistoryViewModels)
-        {
+<div class="container mt-4">
+    <h2 class="text-center mb-4">My Medical History</h2>
+
+    <table class="table table-bordered table-custom">
+        <thead>
             <tr>
-                <td>@history.HistoryId</td>
-                <td>@(history.Description ?? "No Description")</td>
-                <td>@(history.Status ?? "Unknown")</td>
-                <td>@(history.CreatedAt?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
-                <td>@(history.UpdatedAt?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
-                <td>@history.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@(history.EndDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
-                <td>@(history.AppointmentStatus ?? "N/A")</td>
-                <td>@(history.patientInfor ?? "Unknown")</td>
-                <td>@(history.ExpertInfor ?? "Unknown")</td>
-                <td>
-                    <button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'">Detail</button>
-                    @if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
-                    {
-                        <button class="btn btn-secondary" onclick="window.location.href='@Url.Page("/MedicalHistories/Edit", new { id = history.HistoryId })'">Edit</button>
-                        @if (history.Status == "Pending")
-                        {
-                            <button class="btn btn-danger" onclick="openModal(event, '@history.HistoryId')">Cancel</button>
-                        }
-
-                }
-                 
-                </td>
+                <th>History ID</th>
+                <th>Description</th>
+                <th>History Status</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Appointment Status</th>
+                <th>Patient Info</th>
+                <th>Expert Info</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var history in Model.MedicalHistoryViewModels)
+            {
+                <tr>
+                    <td>@history.HistoryId</td>
+                    <td>@(history.Description ?? "No Description")</td>
+                    <td>@(history.Status ?? "Unknown")</td>
+                    <td>@(history.CreatedAt?.ToString("dd MMM yyyy, HH:mm") ?? "N/A")</td>
+                    <td>@(history.UpdatedAt?.ToString("dd MMM yyyy, HH:mm") ?? "N/A")</td>
+                    <td>@history.StartDate.ToString("dd MMM yyyy, HH:mm")</td>
+                    <td>@(history.EndDate?.ToString("dd MMM yyyy, HH:mm") ?? "N/A")</td>
+                    <td>
+                        @if (history.AppointmentStatus == "Confirmed")
+                        {
+                            <span class="status-confirmed">@history.AppointmentStatus</span>
+                        }
+                        else
+                        {
+                            @(history.AppointmentStatus ?? "N/A")
+                        }
+                    </td>
+                    <td>@(history.patientInfor ?? "Unknown")</td>
+                    <td>@(history.ExpertInfor ?? "Unknown")</td>
+                    <td>
+                        <button class="btn btn-primary btn-action" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'">Detail</button>
+                        @if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+                        {
+                            <button class="btn btn-secondary btn-action" onclick="window.location.href='@Url.Page("/MedicalHistories/Edit", new { id = history.HistoryId })'">Edit</button>
+                            @if (history.Status == "Pending")
+                            {
+                                <button class="btn btn-danger btn-action" onclick="openModal(event, '@history.HistoryId')">Cancel</button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<!-- Modal Bootstrap -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Cancellation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to cancel this appointment?</p>
-                <p>Please make sure you have the patient's consent!</p>
-            </div>
-            <div class="modal-footer">
-                <form method="post" asp-page-handler="CancelMyMedicalHistory">
-                    <input type="hidden" name="hid" id="deleteHistoryId" />
-             
-                    <button type="submit" class="btn btn-danger">Confirm Cancel</button>
-                </form>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Cancellation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to cancel this appointment?</p>
+                    <p class="text-muted">Please make sure you have the patient's consent!</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <form method="post" asp-page-handler="CancelMyMedicalHistory">
+                        <input type="hidden" name="hid" id="deleteHistoryId" />
+                        <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function openModal(event, historyId) {
+            event.preventDefault();
+            document.getElementById("deleteHistoryId").value = historyId;
+            var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            myModal.show();
+        }
+    </script>
+
+    @if (Model.Pager.TotalPages > 0)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage - 1)">Previous</a>
+                    </li>
+                }
+                @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
+                {
+                    <li class="page-item @(pge == Model.Pager.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@pge">@pge</a>
+                    </li>
+                }
+                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage + 1)">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
 </div>
 
-<script>
-    function openModal(event, historyId) {
-        event.preventDefault(); // Prevent default button behavior
-
-        // Set value to hidden input - fix variable name here
-        document.getElementById("deleteHistoryId").value = historyId;
-
-        // Show modal using Bootstrap
-        var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        myModal.show();
+<!-- Custom CSS -->
+<style>
+    .table-custom {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
     }
-</script>
 
-@if (Model.Pager.TotalPages > 0)
-{
-    <ul class="pagination justify-content-end">
-        @if (Model.Pager.CurrentPage > 1)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.StartPage)">First</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
-            </li>
+        .table-custom th,
+        .table-custom td {
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+            background-color: #fff;
+            border: none;
         }
-        @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
-        {
-            <li class="page-item @(pge == Model.Pager.CurrentPage ? "active" : "")">
-                <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@pge">@pge</a>
-            </li>
+
+        .table-custom th {
+            background-color: #343a40;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
-        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
-            </li>
+
+        .table-custom tr {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-    </ul>
-}
+
+        .table-custom td:first-child,
+        .table-custom th:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .table-custom td:last-child,
+        .table-custom th:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+    .btn-action {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+    .status-confirmed {
+        background-color: #28a745; /* Green background */
+        color: #fff; /* White text for contrast */
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .pagination {
+        margin-top: 20px;
+    }
+
+        .pagination .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+    .modal-dialog {
+        max-width: 400px;
+    }
+
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+</style>
