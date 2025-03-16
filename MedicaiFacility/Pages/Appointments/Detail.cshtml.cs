@@ -25,6 +25,7 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                 AppointmentId = item.AppointmentId,
                 PatientName = item.Patient.PatientNavigation.FullName,
                 PatientPhone = item.Patient.PatientNavigation.PhoneNumber,
+                ExpertDepartment = item.Expert.Department,
                 ExpertName = item.Expert.Expert.FullName,
                 ExpertPhone = item.Expert.Expert.PhoneNumber,
                 StartDate = item.StartDate,

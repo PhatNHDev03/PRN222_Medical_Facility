@@ -25,9 +25,16 @@ namespace MedicaiFacility.Service
 
         public (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize) 
             => _healthRecordRepository.findAllWithPagination(pg, pageSize);
-        public HealthRecord FindById(int id)
+
+
+		public HealthRecord FindById(int id)
         {
            return _healthRecordRepository.FindById(id);
+        }
+
+        public HealthRecord findByMedicalHistoryId(int hisId)
+        {
+            return _healthRecordRepository.findByMedicalHistoryId(hisId);
         }
 
         public List<HealthRecord> GetAll()

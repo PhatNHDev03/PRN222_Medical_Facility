@@ -7,6 +7,7 @@
 		public string? PatientName { get; set; }
         public string? PatientPhone { get; set; }
         public int? ExpertId { get; set; } 
+		public string? ExpertDepartment { get; set; }
 		public string? ExpertName { get; set; }
         public string? ExpertPhone { get; set; }
         public int? FacilityId { get; set; }

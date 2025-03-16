@@ -2,62 +2,38 @@
 using MedicaiFacility.BusinessObject.Pagination;
 using MedicaiFacility.RazorPage.ViewModel;
 using MedicaiFacility.Service.IService;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.Appointments
 {
     [BindProperties]
     public class MyAppointmentsModel : PageModel
     {
-        public int PatientId { get; set; }
+        public int UserId { get; set; }
+        public int ExpertId { get; set; }
         public Pager Pager { get; set; }
         public List<AppoinmentViewModel> AppointmentViewModels { get; set; } = new List<AppoinmentViewModel>();
         private readonly IAppointmentService _appointmentService;
         private readonly ITransactionService _transactionService;
         private readonly ISystemBalanceService _systemBalanceService;
-        public MyAppointmentsModel(IAppointmentService appointmentService, ITransactionService transactionService, ISystemBalanceService systemBalanceService)
+        private readonly IMedicalHistoryService _medicalHistoryService;
+        public MyAppointmentsModel(IAppointmentService appointmentService, ITransactionService transactionService, ISystemBalanceService systemBalanceService, IMedicalHistoryService medicalHistoryService)
         {
             _appointmentService = appointmentService;
             _transactionService = transactionService;
             _systemBalanceService = systemBalanceService;
+            _medicalHistoryService = medicalHistoryService;
         }
 
-        public void OnGet(int pg = 1, int patientId = 0)
+        public void OnGet(int pg = 1)
         {
-            if (patientId == null)
-            {
-                RedirectToPage("/Error");
-                return;
-            }
-            PatientId = patientId;
-            int pageSize = 5;
-            var (list, total) = _appointmentService.GetALlPagainationsByPatientId(pg, pageSize, (int)patientId);
+            PreLoadPage(pg);
 
-            Pager = new Pager(total, pg, pageSize);
-
-            // Sử dụng LINQ .Select() thay vì foreach
-            AppointmentViewModels = list.Select(item => new AppoinmentViewModel
-            {
-                AppointmentId = item.AppointmentId,
-                PatientId = item.PatientId,
-                PatientName = item.Patient.PatientNavigation.FullName,
-                ExpertName = item.Expert.Expert.FullName,
-                FacilityName = item.Facility.FacilityName,
-                StartDate = item.StartDate,
-                EndDate = item.EndDate,
-                Status = item.Status,
-                Address = item.Facility.Address,
-                PaymentMethod = item.Transaction.PaymentMethod,
-                Amount = item.Transaction.Amount,
-                TransactionStatus = item.Transaction.TransactionStatus
-            }).ToList();
-
-        }
-
-
-
-        public IActionResult OnPostCancelMyAppointment(int id, int pId)
+		}
+        public void OnPostCancelMyAppointment(int id)
         {
             var item = _appointmentService.GetById(id);
             if (item != null)
@@ -89,7 +65,55 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                 }
             }
 
-            return RedirectToPage("/Patients/MyAppointment", new { pg = 1, patientId = pId });
+            PreLoadPage(1);
+    
         }
+
+        public void OnPostConfirmedHandler(int id,string description)
+        {
+            var item = _appointmentService.GetById(id);
+            if (item != null) {
+                item.Status = "Confirmed";
+                _appointmentService.Update(item);
+               var medicalHistory = new MedicalHistory {
+                AppointmentId = item.AppointmentId,
+                   Description = description,
+                   Status = "Pending",
+                   CreatedAt = DateTime.Now,
+                   UpdatedAt = DateTime.Now
+               };
+               _medicalHistoryService.Create(medicalHistory);
+            }
+            PreLoadPage(1);
+        
+        }
+        private void PreLoadPage(int pg){
+            var list = new List<Appointment>();
+            var total = 0;
+            int pageSize = 5;
+            UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            (list, total) = (User.FindFirstValue(ClaimTypes.Role) == "Patient") ? _appointmentService.GetALlPagainationsByPatientId(pg, pageSize, UserId)
+                : _appointmentService.GetALlPagainationsByExpertId(pg,pageSize,UserId);
+			Pager = new Pager(total, pg, pageSize);
+
+			// Sử dụng LINQ .Select() thay vì foreach
+			AppointmentViewModels = list.Select(item => new AppoinmentViewModel
+			{
+				AppointmentId = item.AppointmentId,
+				PatientId = item.PatientId,
+				PatientName = item.Patient.PatientNavigation.FullName,
+				ExpertDepartment = item.Expert.Department,
+				ExpertName = item.Expert.Expert.FullName,
+				FacilityName = item.Facility.FacilityName,
+				StartDate = item.StartDate,
+				EndDate = item.EndDate,
+				Status = item.Status,
+				Address = item.Facility.Address,
+				PaymentMethod = item.Transaction.PaymentMethod,
+				Amount = item.Transaction.Amount,
+				TransactionStatus = item.Transaction.TransactionStatus
+			}).ToList();
+		}
+    
     }
 }
