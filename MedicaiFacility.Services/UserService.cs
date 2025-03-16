@@ -38,5 +38,29 @@ namespace MedicaiFacility.Service
         {
             _userRepository.UpdateUser(user); 
         }
+        public User FindByEmail(string email)
+        {
+            return _userRepository.FindByEmail(email);
+        }
+
+        public User IsExistEmail(string email)
+        {
+            return _userRepository.IsExistEmail(email);
+        }
+
+        public bool ValidatePassword(string email, string password)
+        {
+            var user = _userRepository.FindByEmail(email);
+            if (user == null)
+            {
+                return false;
+            }
+            return user.Password == password;
+        }
+
+        public void ChangePassword(string email, string newPassword)
+        {
+            _userRepository.ChangePassword(email, newPassword);
+        }
     }
 }

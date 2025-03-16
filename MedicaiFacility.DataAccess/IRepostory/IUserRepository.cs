@@ -13,5 +13,8 @@ namespace MedicaiFacility.DataAccess.IRepostory
         void RegisterUser(User user);
         IEnumerable<User> GetAllUsers();
         void UpdateUser(User user); // Thêm phương thức này
+        User IsExistEmail(string email);
+        bool ValidatePassword(string email, string password);
+        void ChangePassword(string email, string newPassword);
     }
 }

@@ -35,13 +35,13 @@ else
                     <td>@user.UserId</td>
                     <td>@user.FullName</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(user.Image) && Uri.TryCreate(user.Image, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                        @if (!string.IsNullOrEmpty(user.Image))
                         {
                             <img src="@user.Image" alt="User Image" style="max-width: 50px; max-height: 50px;" class="img-thumbnail" />
                         }
                         else
                         {
-                            <img src="https://via.placeholder.com/50" alt="Default User Image" style="max-width: 50px; max-height: 50px;" class="img-thumbnail" />
+                            <img src="/imgs/default-user.jpg" alt="Default User Image" style="max-width: 50px; max-height: 50px;" class="img-thumbnail" />
                         }
                     </td>
                     <td>@user.Email</td>

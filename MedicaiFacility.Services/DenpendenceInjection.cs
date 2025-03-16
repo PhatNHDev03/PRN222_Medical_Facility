@@ -1,5 +1,6 @@
 ﻿using MedicaiFacility.DataAccess;
 using MedicaiFacility.DataAccess.IRepostory;
+using MedicaiFacility.Repository;
 using MedicaiFacility.Service.IService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,10 @@ namespace MedicaiFacility.Service
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IMedicalHistoryRepository, MedicalHistoryRepository>();
             services.AddScoped<IMedicalExpertRepository, MedicalExpertRepository>();
-			return services;
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IMedicalExpertScheduleRepository, MedicalExpertScheduleRepository>();
+
+            return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
@@ -43,7 +47,9 @@ namespace MedicaiFacility.Service
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
             services.AddScoped<IMedicalExpertService, MedicalExpertService>();
-			return services;
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IMedicalExpertScheduleService, MedicalExpertScheduleService>();
+            return services;
         }
 
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)

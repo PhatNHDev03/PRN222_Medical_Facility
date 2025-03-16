@@ -1,0 +1,45 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Patients.EditModel
+@{
+    Layout = null; // Không sử dụng layout để tránh render toàn bộ trang
+}
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Patient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="post">
+                    <input type="hidden" asp-for="Input.PatientId" />
+                    <div class="form-group">
+                        <label asp-for="Input.DateOfBirth" class="control-label"></label>
+                        <input asp-for="Input.DateOfBirth" class="form-control" type="date" required />
+                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Gender" class="control-label"></label>
+                        <select asp-for="Input.Gender" class="form-control" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.MedicalHistory" class="control-label"></label>
+                        <input asp-for="Input.MedicalHistory" class="form-control" />
+                        <span asp-validation-for="Input.MedicalHistory" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editForm" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

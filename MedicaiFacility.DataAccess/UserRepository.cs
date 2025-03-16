@@ -12,7 +12,7 @@ namespace MedicaiFacility.DataAccess
 
         public UserRepository(AppDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public User FindById(int id) => _context.Users.FirstOrDefault(x => x.UserId == id);
@@ -79,6 +79,33 @@ namespace MedicaiFacility.DataAccess
             existingUser.UpdatedAt = DateTime.Now;
 
             _context.SaveChanges();
+        }
+
+        public User IsExistEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(x => x.Email.Equals(email));
+        }
+
+        public bool ValidatePassword(string email, string password)
+        {
+            var user = FindByEmail(email);
+            if (user == null)
+            {
+                return false;
+            }
+            return user.Password == password; 
+        }
+
+        public void ChangePassword(string email, string newPassword)
+        {
+            var user = FindByEmail(email);
+            if (user != null)
+            {
+                user.Password = newPassword;
+                user.UpdatedAt = DateTime.Now;
+                _context.Users.Update(user);
+                _context.SaveChanges();
+            }
         }
     }
 }

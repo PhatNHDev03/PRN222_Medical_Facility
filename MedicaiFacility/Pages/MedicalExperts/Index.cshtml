@@ -1,0 +1,166 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalExperts.IndexModel
+@{
+    ViewData["Title"] = "Medical Experts List";
+}
+
+<h2>Medical Experts List</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Expert ID</th>
+            <th>Specialization</th>
+            <th>Experience Years</th>
+            <th>Department</th>
+            <th>Price Booking</th>
+            <th>Facility ID</th>
+            <th>Schedule</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var medicalExpert in Model.MedicalExperts)
+        {
+            <tr>
+                <td>@medicalExpert.ExpertId</td>
+                <td>@medicalExpert.Specialization</td>
+                <td>@medicalExpert.ExperienceYears</td>
+                <td>@medicalExpert.Department</td>
+                <td>@medicalExpert.PriceBooking?.ToString("F2")</td>
+                <td>@medicalExpert.FacilityId</td>
+                <td>@string.Join(", ", medicalExpert.ScheduleDays)</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="openEditModal(@medicalExpert.ExpertId)">Edit</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="openDeleteModal(@medicalExpert.ExpertId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal Edit -->
+<div id="editModalContainer"></div>
+
+<!-- Modal Delete -->
+<div id="deleteModalContainer"></div>
+
+@section Scripts {
+    <partial name="../Shared/_ValidationScriptsPartial" />
+    <script>
+        let editModalInstance = null;
+        let deleteModalInstance = null;
+
+        async function openEditModal(id) {
+            try {
+                const response = await fetch(`/MedicalExperts/Edit?id=${id}`);
+                if (response.ok) {
+                    const html = await response.text();
+                    const modalContainer = document.getElementById('editModalContainer');
+                    modalContainer.innerHTML = html;
+
+                    const modalElement = document.getElementById('editModal');
+                    editModalInstance = new bootstrap.Modal(modalElement);
+                    editModalInstance.show();
+
+                    const editForm = document.getElementById('editForm');
+                    if (editForm) {
+                        editForm.addEventListener('submit', async function (e) {
+                            e.preventDefault();
+                            const formData = new FormData(this);
+                            try {
+                                const response = await fetch('/MedicalExperts/Edit', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                    alert(result.message);
+                                    editModalInstance.hide();
+                                    window.location.reload(); // Tải lại trang để cập nhật dữ liệu
+                                } else {
+                                    alert('Error: ' + result.message);
+                                }
+                            } catch (error) {
+                                console.error('Error submitting form:', error);
+                                alert('An error occurred while submitting the form.');
+                            }
+                        });
+                    }
+
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        modalContainer.innerHTML = '';
+                        editModalInstance = null;
+                    });
+                } else if (response.status === 404) {
+                    console.error('Medical Expert not found for ID:', id);
+                    alert('Medical Expert with ID ' + id + ' not found!');
+                } else {
+                    console.error('Failed to load edit modal:', response.statusText);
+                    alert('Failed to load edit modal: ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Error loading edit modal:', error);
+                alert('An error occurred while loading the edit modal: ' + error.message);
+            }
+        }
+
+        async function openDeleteModal(id) {
+            try {
+                const response = await fetch(`/MedicalExperts/Delete?id=${id}`);
+                if (response.ok) {
+                    const html = await response.text();
+                    const modalContainer = document.getElementById('deleteModalContainer');
+                    modalContainer.innerHTML = html;
+
+                    const modalElement = document.getElementById('deleteModal');
+                    deleteModalInstance = new bootstrap.Modal(modalElement);
+                    deleteModalInstance.show();
+
+                    const deleteForm = document.getElementById('deleteForm');
+                    if (deleteForm) {
+                        deleteForm.addEventListener('submit', async function (e) {
+                            e.preventDefault();
+                            const formData = new FormData(this);
+                            try {
+                                const response = await fetch('/MedicalExperts/Delete', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                    alert(result.message);
+                                    deleteModalInstance.hide();
+                                    window.location.reload();
+                                } else {
+                                    alert('Error: ' + result.message);
+                                }
+                            } catch (error) {
+                                console.error('Error submitting delete form:', error);
+                                alert('An error occurred while submitting the delete form.');
+                            }
+                        });
+                    }
+
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        modalContainer.innerHTML = '';
+                        deleteModalInstance = null;
+                    });
+                } else {
+                    console.error('Failed to load delete modal:', response.statusText);
+                    alert('Failed to load delete modal!');
+                }
+            } catch (error) {
+                console.error('Error loading delete modal:', error);
+                alert('An error occurred while loading the delete modal.');
+            }
+        }
+    </script>
+}

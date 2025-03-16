@@ -1,0 +1,175 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Users.EditSelfProfileModel
+@{
+    ViewData["Title"] = "Edit Self Profile";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Your Profile</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form method="post" asp-page-handler="Update" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Input.UserId" />
+    <input type="hidden" asp-for="Input.Status" value="@Model.Input.Status" />
+    <input type="hidden" asp-for="Input.UserType" value="@Model.Input.UserType" />
+
+    <div class="mb-3">
+        <label asp-for="Input.FullName" class="form-label">Full Name</label>
+        <input asp-for="Input.FullName" class="form-control" required />
+        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label">Current Email</label>
+        <input asp-for="Input.Email" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.NewEmail" class="form-label">New Email</label>
+        <input asp-for="Input.NewEmail" class="form-control" required />
+        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="Input.PhoneNumber" class="form-control" />
+        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.BankAccount" class="form-label">Bank Account <span class="text-muted">(Optional)</span></label>
+        <input asp-for="Input.BankAccount" class="form-control" placeholder="Leave blank if not applicable" />
+        <span asp-validation-for="Input.BankAccount" class="text-danger"></span>
+    </div>
+
+    <!-- Thêm phần upload ảnh -->
+    <div class="mb-3">
+        <label class="form-label">Profile Image</label>
+        @if (!string.IsNullOrEmpty(Model.Input.Image))
+        {
+            <div>
+                <img src="@Model.Input.Image" alt="Profile Image" style="max-width: 200px; max-height: 200px;" />
+            </div>
+        }
+        <input type="file" name="ProfileImage" accept="image/*" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Password</label>
+        <input asp-for="Password" class="form-control" type="password" required placeholder="Input password to change email" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-warning" onclick="openChangePasswordModal()">Change Password</button>
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+</form>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeChangePasswordModal()">×</span>
+        <h3>Change Password</h3>
+        <form method="post" asp-page-handler="ChangePassword">
+            <input type="hidden" asp-for="Input.UserId" />
+            <div class="mb-3">
+                <label class="form-label">Old Password</label>
+                <input name="OldPassword" class="form-control" type="password" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input name="NewPassword" class="form-control" type="password" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input name="ConfirmNewPassword" class="form-control" type="password" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openChangePasswordModal() {
+        console.log("Opening change password modal");
+        var modal = document.getElementById("changePasswordModal");
+        if (modal) {
+            modal.style.display = "block";
+            console.log("Modal display set to block");
+        } else {
+            console.error("Modal element not found!");
+        }
+    }
+
+    function closeChangePasswordModal() {
+        console.log("Closing change password modal");
+        var modal = document.getElementById("changePasswordModal");
+        if (modal) {
+            modal.style.display = "none";
+            console.log("Modal display set to none");
+        } else {
+            console.error("Modal element not found!");
+        }
+    }
+
+    window.onclick = function(event) {
+        var modal = document.getElementById("changePasswordModal");
+        if (event.target == modal) {
+            console.log("Clicked outside modal, closing");
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: black;
+        }
+</style>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
