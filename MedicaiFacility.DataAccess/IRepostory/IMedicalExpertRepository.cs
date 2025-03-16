@@ -10,5 +10,6 @@ namespace MedicaiFacility.DataAccess.IRepostory
     public interface IMedicalExpertRepository
     {
         MedicalExpert getById(int id);
+        List<MedicalExpert> SearchDoctors(string searchTerm);
     }
 }
