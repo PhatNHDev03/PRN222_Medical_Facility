@@ -29,9 +29,9 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             _systemBalanceService = systemBalanceService;
             _appointmentService = appointmentService;
         }
-        public void OnGet()
+        public void OnGet(int expertId)
         {
-            MedicalExpert = _medicalExpertService.getById(3);
+            MedicalExpert = _medicalExpertService.getById(expertId);
         }
 
         public IActionResult OnPostConfirmTransaction(int expertId, string PaymentMethodSelected, decimal AmountAccepted)
