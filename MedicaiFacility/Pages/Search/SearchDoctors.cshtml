@@ -10,7 +10,7 @@
         margin-bottom: 20px;
         position: relative;
         transition: box-shadow 0.3s ease;
-        cursor: pointer;
+        /* cursor: pointer; */
     }
 
         .doctor-card:hover {
@@ -18,8 +18,8 @@
         }
 
     .doctor-image {
-        width: 200px;
-        height: 200px;
+        width: 100px;
+        height: 100px;
         border-radius: 10%;
         object-fit: cover;
         margin-right: 15px;
@@ -51,6 +51,25 @@
 
         .book-now:hover {
             background-color: #C74422;
+            transform: scale(1.05);
+        }
+
+    .view-detail {
+        position: absolute;
+        bottom: 15px;
+        right: 200px;
+        background-color: #78c2ad;
+        color: white;
+        font-weight: bold;
+        padding: 8px 24px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+        .view-detail:hover {
+            background-color: #4f9f89;
             transform: scale(1.05);
         }
 
@@ -141,13 +160,14 @@
             <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image" />
             <div class="doctor-info">
                 <h5>@doctor.FullName</h5>
-                <p><strong>Specialization:</strong> @doctor.Specialization</p>
-                <p><strong>Experience:</strong> @doctor.ExperienceYears Years</p>
-                <p><strong>Department:</strong> @doctor.DepartmentName</p>
-                <p><strong>Medical Facility:</strong> @doctor.FacilityName</p>
-                <p><strong>Address:</strong> @doctor.Address</p>
+                <p><strong>Specialization:</strong> @doctor.Specialization</p> 
+                @* <p><strong>Experience:</strong> @doctor.ExperienceYears Years</p> *@
+                @* <p><strong>Department:</strong> @doctor.DepartmentName</p> *@
+                <p><strong>Medical Facility:</strong> @doctor.FacilityName</p> 
+                @* <p><strong>Address:</strong> @doctor.Address</p> *@
                 <p><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
             </div>
+            <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="view-detail">View Detail</a>
             <a href="@Url.Page("/Appointments/Create", new { expertId = doctor.ExpertId })" class="book-now">Book now</a>
         </div>
     }

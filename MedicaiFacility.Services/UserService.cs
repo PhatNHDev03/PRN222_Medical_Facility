@@ -38,5 +38,10 @@ namespace MedicaiFacility.Service
         {
             _userRepository.UpdateUser(user); 
         }
+        public User GetUserByPatientId(int patientId)
+        {
+            return _userRepository.GetUserByPatientId(patientId);
+        }
+
     }
 }

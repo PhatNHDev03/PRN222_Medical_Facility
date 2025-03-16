@@ -37,5 +37,20 @@ namespace MedicaiFacility.DataAccess
 
             return query.ToList();
         }
+        public List<string> GetScheduleByExpertId(int expertId)
+        {
+            return _context.MedicalExpertSchedules
+                .Where(s => s.ExpertId == expertId)
+                .Select(s => s.DayOfWeek)
+                .ToList();
+        }
+        public List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId)
+        {
+            return _context.RatingsAndFeedbacks
+                .Include(rf => rf.MedicalHistory)
+                .ThenInclude(mh => mh.Appointment)
+                .Where(rf => rf.MedicalHistory != null && rf.MedicalHistory.Appointment != null && rf.MedicalHistory.Appointment.ExpertId == expertId)
+                .ToList();
+        }
     }
 }

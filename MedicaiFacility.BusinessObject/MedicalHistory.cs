@@ -20,4 +20,8 @@ public partial class MedicalHistory
     public DateTime? UpdatedAt { get; set; }
 
     public virtual Appointment Appointment { get; set; }
+
+    public virtual ICollection<HealthRecord> HealthRecords { get; set; } = new List<HealthRecord>();
+
+    public virtual RatingsAndFeedback RatingsAndFeedback { get; set; }
 }

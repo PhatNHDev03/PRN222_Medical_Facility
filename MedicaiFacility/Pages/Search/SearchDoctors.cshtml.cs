@@ -21,10 +21,8 @@ namespace MedicaiFacility.RazorPage.Pages.Search
 
         public void OnGet()
         {
-            // Fetch MedicalExpert entities from the service
             var medicalExperts = _medicalExpertService.SearchDoctors(SearchTerm);
 
-            // Transform MedicalExpert entities to DoctorViewModel
             Doctors = medicalExperts.Select(me => new DoctorViewModel
             {
                 ExpertId = me.ExpertId,
