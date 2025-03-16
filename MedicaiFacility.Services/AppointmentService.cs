@@ -36,6 +36,11 @@ namespace MedicaiFacility.Service
 			return _appointmentRepository.GetALlPagainations(pg, pageSize);
 		}
 
+        public (List<Appointment> list, int totalItems) GetALlPagainationsByExpertId(int pg, int pageSize, int expertId)
+        {
+			return _appointmentRepository.GetALlPagainationsByExpertId(pg, pageSize, expertId);
+        }
+
         public (List<Appointment> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize, int patientId)
         {
 			return _appointmentRepository.GetALlPagainationsByPatientId(pg, pageSize, patientId);

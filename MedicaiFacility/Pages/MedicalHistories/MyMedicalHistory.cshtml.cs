@@ -16,11 +16,13 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
         private readonly IMedicalHistoryService _medicalHistoryService;
         private readonly ISystemBalanceService _systemBalanceService;
         private readonly ITransactionService _transactionService;
-        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService)
+        private readonly IHealthRecordService _healthRecordService;
+        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService,IHealthRecordService healthRecordService)
         {
             _medicalHistoryService = medicalHistoryService;
             _systemBalanceService = systemBalanceService;
             _transactionService = transactionService;
+            _healthRecordService = healthRecordService;
         }
         public void OnGet(int pg = 1)
         {
@@ -48,10 +50,13 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 
             }
             int pg =1;
-            PreRender(pg );
+            PreRender(pg);
             return Page();
 
         }
+
+      
+
         private void PreRender(int pg)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -90,6 +95,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                 AppointmentStatus = item.Appointment?.Status,
                 patientId = item.Appointment.PatientId,
                 expertId = item.Appointment.ExpertId,
+
                 patientInfor = item.Appointment?.Patient?.PatientNavigation != null
                     ? $"{item.Appointment.Patient.PatientNavigation.FullName} {item.Appointment.Patient.PatientNavigation.PhoneNumber} {item.Appointment.Patient.PatientNavigation.Email}"
                     : "N/A",

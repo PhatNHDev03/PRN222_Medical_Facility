@@ -1,4 +1,5 @@
-﻿using MedicaiFacility.DataAccess;
+﻿
+using MedicaiFacility.DataAccess;
 using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IMedicalExpertRepository, MedicalExpertRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<ISystemBalanceRepository, SystemBalanceRepository>();
+            services.AddScoped<IHealthRecordDiseasesRepository, HealthRecordDiseasesRepository>();
 			return services;
         }
 
@@ -47,6 +49,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IMedicalExpertService, MedicalExpertService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<ISystemBalanceService, SystembalanceService>();
+            services.AddScoped<IHealthRecordDiseasesService,HealthRecordDiseasesService>();
 			return services;
         }
 
