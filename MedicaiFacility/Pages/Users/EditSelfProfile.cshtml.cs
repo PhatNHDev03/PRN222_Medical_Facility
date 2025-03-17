@@ -1,93 +1,89 @@
 using MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace MedicaiFacility.RazorPage.Pages.Users
 {
-    [Authorize]
-    [BindProperties]
     public class EditSelfProfileModel : PageModel
     {
         private readonly IUserService _userService;
-        private readonly IWebHostEnvironment _environment; // ?? truy c?p th? m?c wwwroot
+        private readonly IPatientService _patientService;
 
-        public EditSelfProfileModel(IUserService userService, IWebHostEnvironment environment)
+        public EditSelfProfileModel(IUserService userService, IPatientService patientService)
         {
-            _userService = userService;
-            _environment = environment;
-            Input = new EditSelfProfileInputModel();
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
         }
 
-        public EditSelfProfileInputModel Input { get; set; }
+        [BindProperty]
+        public InputModel Input { get; set; }
 
         [BindProperty]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
-        [BindProperty]
-        public string? OldPassword { get; set; }
-
-        [BindProperty]
-        public string? NewPassword { get; set; }
-
-        [BindProperty]
-        public string? ConfirmNewPassword { get; set; }
-
-        [BindProperty]
-        public IFormFile? ProfileImage { get; set; } // Thu?c tính ?? nh?n file ?nh
-
-        public class EditSelfProfileInputModel
+        public class InputModel
         {
             public int UserId { get; set; }
 
-            [Required(ErrorMessage = "Full Name is required.")]
+            [Required]
             public string FullName { get; set; }
 
-            [Required(ErrorMessage = "Current Email is required.")]
-            [EmailAddress(ErrorMessage = "Invalid email format.")]
+            [Required]
+            [EmailAddress]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "New Email is required.")]
-            [EmailAddress(ErrorMessage = "Invalid email format.")]
+            [Required]
+            [EmailAddress]
             public string NewEmail { get; set; }
 
-            [Phone(ErrorMessage = "Invalid phone number format.")]
-            public string? PhoneNumber { get; set; }
+            [Phone]
+            public string PhoneNumber { get; set; }
 
             public string? BankAccount { get; set; }
 
-            public string? Image { get; set; } // Thêm thu?c tính Image
+            [BindNever]
+            public string Image { get; set; } // Không b? binding t? form
 
             public bool Status { get; set; }
 
             public string UserType { get; set; }
+
+            [Required(ErrorMessage = "Date of Birth is required for Patients")]
+            [Display(Name = "Date of Birth")]
+            public DateTime? DateOfBirth { get; set; }
+
+            [Required(ErrorMessage = "Gender is required for Patients")]
+            public string Gender { get; set; }
         }
 
         public IActionResult OnGet()
         {
-            string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            if (string.IsNullOrEmpty(userEmail))
+            int userId = int.TryParse(User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out int uid) ? uid : 0;
+            if (userId == 0)
             {
-                TempData["ErrorMessage"] = "User not authenticated!";
-                return RedirectToPage("/Index");
+                Console.WriteLine("User not authenticated, redirecting to login.");
+                return RedirectToPage("/Users/Login");
             }
 
-            var user = _userService.FindByEmail(userEmail);
+            Console.WriteLine($"Loading profile for UserId: {userId}");
+
+            var user = _userService.FindById(userId);
             if (user == null)
             {
-                TempData["ErrorMessage"] = "User not found!";
-                return RedirectToPage("/Index");
+                Console.WriteLine("User not found.");
+                return NotFound("User not found.");
             }
 
-            Input = new EditSelfProfileInputModel
+            Console.WriteLine($"User found: UserId={user.UserId}, UserType={user.UserType}, FullName={user.FullName}");
+
+            Input = new InputModel
             {
                 UserId = user.UserId,
                 FullName = user.FullName,
@@ -95,142 +91,166 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 NewEmail = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 BankAccount = user.BankAccount,
-                Image = user.Image, // L?y ???ng d?n ?nh
+                Image = user.Image, // Gán giá tr? ban ??u t? database
                 Status = user.Status ?? false,
                 UserType = user.UserType
             };
+
+            if (user.UserType == "Patient")
+            {
+                Console.WriteLine("User is a Patient, loading Patient info...");
+                var patient = _patientService.GetPatientById(userId);
+                if (patient != null)
+                {
+                    Console.WriteLine($"Patient found: DateOfBirth={patient.DateOfBirth}, Gender={patient.Gender}");
+                    Input.DateOfBirth = patient.DateOfBirth;
+                    Input.Gender = patient.Gender;
+                }
+                else
+                {
+                    Console.WriteLine("No Patient record found for this user.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("User is not a Patient, skipping Patient fields.");
+            }
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostUpdate()
         {
-            ModelState.Remove("OldPassword");
-            ModelState.Remove("NewPassword");
-            ModelState.Remove("ConfirmNewPassword");
+            ModelState.Remove("Input.Image");
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine($"Validation error: {error.ErrorMessage}");
+                }
                 return Page();
             }
 
-            var existingUser = _userService.FindById(Input.UserId);
-            if (existingUser == null)
+            var user = _userService.FindById(Input.UserId);
+            if (user == null)
             {
-                TempData["ErrorMessage"] = "User not found!";
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "User not found.";
+                return Page();
             }
 
-            if (!string.IsNullOrEmpty(Password) && !_userService.ValidatePassword(existingUser.Email, Password))
+            if (user.Password != Password)
             {
-                TempData["ErrorMessage"] = "Sai m?t kh?u!";
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "Incorrect password.";
+                return Page();
             }
 
-            bool isEmailChanged = !existingUser.Email.Equals(Input.NewEmail);
+            user.FullName = Input.FullName;
+            user.Email = Input.NewEmail;
+            user.PhoneNumber = Input.PhoneNumber;
+            user.BankAccount = Input.BankAccount;
 
-            if (isEmailChanged)
-            {
-                var checkEmail = _userService.IsExistEmail(Input.NewEmail.Trim());
-                if (checkEmail != null && checkEmail.UserId != Input.UserId)
-                {
-                    TempData["ErrorMessage"] = "Email is already in use!";
-                    return RedirectToPage("EditSelfProfile");
-                }
-            }
+            var profileImage = Request.Form.Files.GetFile("ProfileImage");
 
-            // X? lý upload ?nh
-            if (ProfileImage != null && ProfileImage.Length > 0)
+            if (profileImage != null && profileImage.Length > 0)
             {
-                // ???ng d?n l?u ?nh trong wwwroot/images
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
                 if (!Directory.Exists(uploadsFolder))
                 {
-                    Directory.CreateDirectory(uploadsFolder); // T?o th? m?c n?u ch?a t?n t?i
+                    Directory.CreateDirectory(uploadsFolder);
                 }
 
-                // T?o tên file duy nh?t ?? tránh trùng l?p
-                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ProfileImage.FileName);
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(profileImage.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
 
-                // L?u file vào th? m?c
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await ProfileImage.CopyToAsync(fileStream);
+                    await profileImage.CopyToAsync(stream);
                 }
 
-                // C?p nh?t ???ng d?n ?nh vào c?t Image
-                existingUser.Image = $"/images/{uniqueFileName}";
+                user.Image = $"/uploads/{fileName}";
+            }
+            else
+            {
+                Console.WriteLine("No profile image uploaded, keeping existing image.");
+                var originalUser = _userService.FindById(Input.UserId); 
+                user.Image = originalUser?.Image; 
             }
 
-            // C?p nh?t thông tin ng??i dùng
-            existingUser.FullName = Input.FullName;
-            if (isEmailChanged)
+            try
             {
-                existingUser.Email = Input.NewEmail;
+                _userService.UpdateUser(user);
+
+                if (user.UserType == "Patient")
+                {
+                    var patient = _patientService.GetPatientById(Input.UserId);
+                    if (patient != null)
+                    {
+                        patient.DateOfBirth = Input.DateOfBirth;
+                        patient.Gender = Input.Gender;
+                        _patientService.UpdatePatient(patient);
+                    }
+                    else
+                    {
+                        patient = new Patient
+                        {
+                            PatientId = Input.UserId,
+                            DateOfBirth = Input.DateOfBirth,
+                            Gender = Input.Gender
+                        };
+                        _patientService.CreatePatient(patient);
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToPage();
             }
-            existingUser.PhoneNumber = Input.PhoneNumber;
-            existingUser.BankAccount = Input.BankAccount;
-            existingUser.Status = Input.Status;
-            existingUser.UpdatedAt = DateTime.Now;
-
-            _userService.UpdateUser(existingUser);
-
-            // C?p nh?t session v?i thông tin m?i
-            var claims = new List<Claim>
+            catch (Exception ex)
             {
-                new Claim(ClaimTypes.Name, existingUser.FullName),
-                new Claim(ClaimTypes.Email, existingUser.Email),
-                new Claim(ClaimTypes.Role, existingUser.UserType)
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-            TempData["SuccessMessage"] = "Profile updated successfully!";
-            return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = $"Failed to update profile: {ex.Message}";
+                return Page();
+            }
         }
 
-        public IActionResult OnPostChangePassword()
+        public IActionResult OnPostChangePassword(string oldPassword, string newPassword, string confirmNewPassword)
         {
-            ModelState.Remove("Input.FullName");
-            ModelState.Remove("Input.Email");
-            ModelState.Remove("Input.NewEmail");
-            ModelState.Remove("Input.PhoneNumber");
-            ModelState.Remove("Input.BankAccount");
-            ModelState.Remove("Input.Status");
-            ModelState.Remove("Input.UserType");
-            ModelState.Remove("Password");
-            if (!ModelState.IsValid)
+            if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmNewPassword))
             {
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "All password fields are required.";
+                return RedirectToPage();
             }
 
-            var existingUser = _userService.FindById(Input.UserId);
-            if (existingUser == null)
+            if (newPassword != confirmNewPassword)
             {
-                TempData["ErrorMessage"] = "User not found!";
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "New password and confirmation do not match.";
+                return RedirectToPage();
             }
 
-            if (!string.IsNullOrEmpty(OldPassword) && !_userService.ValidatePassword(existingUser.Email, OldPassword))
+            var user = _userService.FindById(Input.UserId);
+            if (user == null)
             {
-                TempData["ErrorMessage"] = "Sai m?t kh?u c?!";
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToPage();
             }
 
-            if (string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(ConfirmNewPassword) || NewPassword != ConfirmNewPassword)
+            if (user.Password != oldPassword)
             {
-                TempData["ErrorMessage"] = "New password and confirmation do not match or are empty!";
-                return RedirectToPage("EditSelfProfile");
+                TempData["ErrorMessage"] = "Old password is incorrect.";
+                return RedirectToPage();
             }
 
-            _userService.UpdateUser(existingUser);
-            _userService.ChangePassword(existingUser.Email, NewPassword);
-
-            TempData["SuccessMessage"] = "Password changed successfully!";
-            return RedirectToPage("EditSelfProfile");
+            try
+            {
+                user.Password = newPassword;
+                _userService.UpdateUser(user);
+                TempData["SuccessMessage"] = "Password changed successfully!";
+                return RedirectToPage();
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Failed to change password: {ex.Message}";
+                return RedirectToPage();
+            }
         }
     }
 }

@@ -30,13 +30,19 @@ namespace MedicaiFacility.RazorPage.Pages.Users
 
             [Required]
             [DataType(DataType.Password)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string Password { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string RePassword { get; set; }
 
             [Phone]
             public string PhoneNumber { get; set; }
 
             [Required]
-            public string UserType { get; set; } 
+            public string UserType { get; set; }
         }
 
         public List<SelectListItem> UserTypeOptions { get; set; }
@@ -55,7 +61,6 @@ namespace MedicaiFacility.RazorPage.Pages.Users
         {
             if (!ModelState.IsValid)
             {
-                // T?i l?i danh sách UserTypeOptions n?u validation th?t b?i
                 UserTypeOptions = new List<SelectListItem>
                 {
                     new SelectListItem { Value = "Patient", Text = "Patient" },
@@ -70,9 +75,9 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 {
                     FullName = Input.FullName,
                     Email = Input.Email,
-                    Password = Input.Password,
+                    Password = Input.Password, 
                     PhoneNumber = Input.PhoneNumber,
-                    UserType = Input.UserType 
+                    UserType = Input.UserType
                 };
                 _userService.SignUp(user);
                 return RedirectToPage("/Users/Login");

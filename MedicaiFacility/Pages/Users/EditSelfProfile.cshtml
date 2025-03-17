@@ -53,21 +53,43 @@
         <span asp-validation-for="Input.BankAccount" class="text-danger"></span>
     </div>
 
-    <!-- Thêm phần upload ảnh -->
+    <!-- Thêm phần upload ảnh (không bắt buộc) -->
     <div class="mb-3">
-        <label class="form-label">Profile Image</label>
+        <label class="form-label">Profile Image <span class="text-muted">(Optional)</span></label>
         @if (!string.IsNullOrEmpty(Model.Input.Image))
         {
             <div>
                 <img src="@Model.Input.Image" alt="Profile Image" style="max-width: 200px; max-height: 200px;" />
             </div>
         }
-        <input type="file" name="ProfileImage" accept="image/*" class="form-control" />
+        <input type="file" name="ProfileImage" accept="image/*" class="form-control" data-val="false" />
     </div>
+
+    <!-- Thêm các trường Patient nếu UserType là Patient -->
+    @if (Model.Input.UserType == "Patient")
+    {
+        <h3>Patient Information</h3>
+        <div class="mb-3">
+            <label asp-for="Input.DateOfBirth" class="form-label">Date of Birth</label>
+            <input asp-for="Input.DateOfBirth" class="form-control" type="date" required />
+            <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Gender" class="form-label">Gender</label>
+            <select asp-for="Input.Gender" class="form-select" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="Input.Gender" class="text-danger"></span>
+        </div>
+    }
 
     <div class="mb-3">
         <label asp-for="Password" class="form-label">Password</label>
-        <input asp-for="Password" class="form-control" type="password" required placeholder="Input password to change email" />
+        <input asp-for="Password" class="form-control" type="password" required placeholder="Input password to save" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
@@ -172,4 +194,11 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            // Tắt client-side validation cho ProfileImage
+            $("input[name='ProfileImage']").removeAttr("data-val-required");
+            $("input[name='ProfileImage']").attr("data-val", "false");
+        });
+    </script>
 }
