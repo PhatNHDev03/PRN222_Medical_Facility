@@ -29,7 +29,9 @@ public partial class User
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<Conversation> Conversations { get; set; } = new List<Conversation>();
+    public virtual ICollection<Conversation> ConversationAdmins { get; set; } = new List<Conversation>();
+
+    public virtual ICollection<Conversation> ConversationPatients { get; set; } = new List<Conversation>();
 
     public virtual MedicalExpert MedicalExpert { get; set; }
 
