@@ -39,14 +39,45 @@ namespace MedicaiFacility.DataAccess
 
         public void DeleteMedicalFacility(int id)
         {
-            var medicalFacility = _Context.MedicalFacilities.Find(id);
-            if (medicalFacility == null)
+            using var transaction = _Context.Database.BeginTransaction();
+            try
             {
-                throw new InvalidOperationException($"MedicalFacility with ID {id} not found.");
+                // Step 1: Find the medical facility
+                var medicalFacility = _Context.MedicalFacilities.Find(id);
+                if (medicalFacility == null)
+                {
+                    throw new InvalidOperationException($"MedicalFacility with ID {id} not found.");
+                }
+
+                // Step 2: Set IsActive = false for the medical facility
+                medicalFacility.IsActive = false;
+                _Context.MedicalFacilities.Update(medicalFacility);
+
+                // Step 3: Find all MedicalExperts associated with this facility
+                var medicalExperts = _Context.MedicalExperts
+                    .Include(me => me.Expert) // Include the associated User
+                    .Where(me => me.FacilityId == id)
+                    .ToList();
+
+                // Step 4: Update the Status of each associated MedicalExpert's User to false
+                foreach (var expert in medicalExperts)
+                {
+                    if (expert.Expert != null)
+                    {
+                        expert.Expert.Status = false;
+                        _Context.Users.Update(expert.Expert);
+                    }
+                }
+
+                // Step 5: Save all changes
+                _Context.SaveChanges();
+                transaction.Commit();
             }
-            medicalFacility.IsActive = false;
-            _Context.MedicalFacilities.Update(medicalFacility);
-            _Context.SaveChanges();
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new Exception($"Failed to delete MedicalFacility and update associated experts: {ex.Message}", ex);
+            }
         }
 
         public (List<MedicalFacility>, int totalItem) FindAllWithPagination(int pg, int pageSize)
