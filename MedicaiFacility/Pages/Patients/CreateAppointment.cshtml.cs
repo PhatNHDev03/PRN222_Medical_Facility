@@ -41,7 +41,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
 
             // Lấy danh sách các StartDate đã được đặt
             BookedSlots = _appointmentService.GetAllByExpertId((int)expertId)
-                            .Where(x => x.Status == "Confirmed" && x.EndDate.HasValue)
+                            .Where(x => x.Status == "Confirmed" && x.EndDate.HasValue&&x.StartDate>=DateTime.Now)
                             .Select(x => "Start Date: "+ x.StartDate.ToString("yyyy-MM-ddTHH:mm") +" End Date: " + x.EndDate.Value.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
                             .ToList();
             StartBookedSlot = _appointmentService.GetAllByExpertId((int)expertId)
