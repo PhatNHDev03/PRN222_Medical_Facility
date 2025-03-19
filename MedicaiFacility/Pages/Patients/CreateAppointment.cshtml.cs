@@ -12,6 +12,10 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
         public Patient Patient { get; set; }
         public int PatientId { get; set; }
         public MedicalExpert MedicalExpert { get; set; }
+        public List<string> WorkingDays { get; set; }
+        public List<string> BookedSlots { get; set; }
+        public List<string> StartBookedSlot { get; set; }
+        public List<string> EndBookedSlot { get; set; }
         public int TransactionId { get; set; }
         private readonly IAppointmentService _appointmentService;
         private readonly IPatientService _patientService;
@@ -31,6 +35,23 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             Patient = _patientService.getById(PatientId);
             MedicalExpert = _medicalExpertService.getById((int)expertId);
             var check = MedicalExpert.Facility.FacilityName;
+            WorkingDays = MedicalExpert.MedicalExpertSchedules
+                       .Select(x => x.DayOfWeek)
+                       .ToList();
+
+            // Lấy danh sách các StartDate đã được đặt
+            BookedSlots = _appointmentService.GetAllByExpertId((int)expertId)
+                            .Where(x => x.Status == "Confirmed" && x.EndDate.HasValue)
+                            .Select(x => "Start Date: "+ x.StartDate.ToString("yyyy-MM-ddTHH:mm") +" End Date: " + x.EndDate.Value.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
+                            .ToList();
+            StartBookedSlot = _appointmentService.GetAllByExpertId((int)expertId)
+                .Where(x => x.Status == "Confirmed")
+                .Select(x => x.StartDate.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
+                .ToList();
+            EndBookedSlot = _appointmentService.GetAllByExpertId((int)expertId)
+               .Where(x => x.Status == "Confirmed"&&x.EndDate.HasValue)
+               .Select(x => x.EndDate.Value.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
+               .ToList();
         }
         public IActionResult OnPost()
         {
