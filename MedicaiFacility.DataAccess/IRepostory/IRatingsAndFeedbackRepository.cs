@@ -11,6 +11,8 @@ namespace MedicaiFacility.DataAccess.IRepostory
     {
         public List<RatingsAndFeedback> GetAll();
         public RatingsAndFeedback FindById(int id);
+
+        public void Add(RatingsAndFeedback ratingsAndFeedback);
         public void Save(RatingsAndFeedback ratingsAndFeedback);
         public void Update(RatingsAndFeedback ratingsAndFeedback);
         public void Delete(int id);

@@ -7,7 +7,7 @@
 
 <h1>Edit</h1>
 
-<h4>RatingsAndFeedback</h4>
+<h4>Ratings And Feedback</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,8 +20,16 @@
                 <span asp-validation-for="RatingsAndFeedback.MedicalHistoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RatingsAndFeedback.Rating" class="control-label"></label>
-                <input asp-for="RatingsAndFeedback.Rating" class="form-control" />
+                <label class="control-label">Rating</label>
+                <div id="rating-stars">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <button type="button" class="star-btn" onclick="setRating(@i)">
+                            &#9733;
+                        </button>
+                    }
+                </div>
+                <input type="hidden" asp-for="RatingsAndFeedback.Rating" id="rating-input" />
                 <span asp-validation-for="RatingsAndFeedback.Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,9 +43,10 @@
                 <span asp-validation-for="RatingsAndFeedback.CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RatingsAndFeedback.IsActive" class="control-label"></label>
-                <input asp-for="RatingsAndFeedback.IsActive" class="form-control" />
-                <span asp-validation-for="RatingsAndFeedback.IsActive" class="text-danger"></span>
+                <button type="button" id="toggle-active" class="btn btn-secondary" onclick="toggleIsActive()">
+                    @(Model.RatingsAndFeedback.IsActive == true ? "Deactivate" : "Activate")
+                </button>
+                <input type="hidden" asp-for="RatingsAndFeedback.IsActive" id="isActiveInput" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -51,5 +60,33 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function setRating(rating) {
+            document.getElementById("rating-input").value = rating;
+            let stars = document.querySelectorAll(".star-btn");
+            stars.forEach((star, index) => {
+                star.style.color = index < rating ? "gold" : "gray";
+            });
+        }
+
+        function toggleIsActive() {
+            let isActiveInput = document.getElementById("isActiveInput");
+            let button = document.getElementById("toggle-active");
+
+            isActiveInput.value = isActiveInput.value === "True" ? "False" : "True";
+            button.textContent = isActiveInput.value === "True" ? "Deactivate" : "Activate";
+        }
+    </script>
+    <style>
+        .star-btn {
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: gray;
+        }
+    </style>
 }

@@ -1,11 +1,13 @@
 ﻿using MedicaiFacility.BusinessObject;
+using MedicaiFacility.DataAccess.IRepostory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MedicaiFacility.DataAccess
 {
-    public class RatingsAndFeedbackRepository
+    public class RatingsAndFeedbackRepository : IRatingsAndFeedbackRepository
     {
         private readonly AppDbContext _context;
 
@@ -14,36 +16,59 @@ namespace MedicaiFacility.DataAccess
             _context = context;
         }
 
-        public List<RatingsAndFeedback> GetAll()
+        public void Add(RatingsAndFeedback ratingsAndFeedback)
         {
-            return _context.RatingsAndFeedbacks.ToList();
-        }
-
-        public RatingsAndFeedback GetById(int id)
-        {
-            return _context.RatingsAndFeedbacks.FirstOrDefault(r => r.FeedbackId == id);
-        }
-
-        public void Add(RatingsAndFeedback feedback)
-        {
-            _context.RatingsAndFeedbacks.Add(feedback);
-            _context.SaveChanges();
-        }
-
-        public void Update(RatingsAndFeedback feedback)
-        {
-            _context.RatingsAndFeedbacks.Update(feedback);
+            _context.RatingsAndFeedbacks.Add(ratingsAndFeedback);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var feedback = _context.RatingsAndFeedbacks.FirstOrDefault(r => r.FeedbackId == id);
-            if (feedback != null)
+            var item = _context.RatingsAndFeedbacks.FirstOrDefault(x => x.FeedbackId == id);
+            if (item != null)
             {
-                _context.RatingsAndFeedbacks.Remove(feedback);
+                _context.RatingsAndFeedbacks.Remove(item);
                 _context.SaveChanges();
             }
+        }
+
+        public List<RatingsAndFeedback> GetAll()
+        {
+            return _context.RatingsAndFeedbacks
+                .Include(r => r.MedicalHistory) // Sửa lỗi Include
+                .ToList();
+        }
+
+        public RatingsAndFeedback FindById(int id)
+        {
+            return _context.RatingsAndFeedbacks
+                .Include(r => r.MedicalHistory) 
+                .FirstOrDefault(r => r.FeedbackId == id);
+        }
+
+        public (List<RatingsAndFeedback>, int totalItem) FindAllWithPagination(int pg, int pageSize)
+        {
+            var list = _context.RatingsAndFeedbacks
+                .Include(r => r.MedicalHistory) 
+                .ToList();
+
+            var total = list.Count();
+            int skip = (pg - 1) * pageSize;
+            var data = list.Skip(skip).Take(pageSize).ToList();
+
+            return (data, total);
+        }
+
+        public void Save(RatingsAndFeedback ratingsAndFeedback)
+        {
+            _context.RatingsAndFeedbacks.Add(ratingsAndFeedback);
+            _context.SaveChanges();
+        }
+
+        public void Update(RatingsAndFeedback ratingsAndFeedback)
+        {
+            _context.RatingsAndFeedbacks.Update(ratingsAndFeedback);
+            _context.SaveChanges();
         }
     }
 }

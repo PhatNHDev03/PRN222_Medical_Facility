@@ -1,6 +1,7 @@
 ﻿using MedicaiFacility.DataAccess;
 using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
+using MedicaiFacility.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,8 @@ namespace MedicaiFacility.Service
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IMedicalHistoryRepository, MedicalHistoryRepository>();
             services.AddScoped<IMedicalExpertRepository, MedicalExpertRepository>();
-			return services;
+            services.AddScoped<IRatingsAndFeedbackRepository, RatingsAndFeedbackRepository>();
+            return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
@@ -37,14 +39,16 @@ namespace MedicaiFacility.Service
             services.AddScoped<IDiseaseService, DiseaseService>();
             services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
             services.AddScoped<IFacilityDepartmentService, FacilityDepartmentService>();
-            services.AddScoped<IHealthArticleService,HealthArticleService>();
-			services.AddScoped<IUserService, UserService>();
-			services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IHealthArticleService, HealthArticleService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
             services.AddScoped<IMedicalExpertService, MedicalExpertService>();
-			return services;
+            services.AddScoped<IRatingsAndFeedbackService, RatingsAndFeedbackService>();
+            return services;
         }
+
 
         public static IServiceCollection AddDatabaseAndConfiguration(this IServiceCollection services, IConfiguration configuration)
         {

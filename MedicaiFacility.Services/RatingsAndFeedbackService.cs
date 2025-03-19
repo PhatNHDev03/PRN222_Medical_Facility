@@ -1,41 +1,60 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.DataAccess;
+using MedicaiFacility.DataAccess.IRepostory;
 using System.Collections.Generic;
+using MedicaiFacility.Services;
+using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.Services
 {
-    public class RatingsAndFeedbackService
+    public class RatingsAndFeedbackService : IRatingsAndFeedbackService
     {
-        private readonly RatingsAndFeedbackRepository _repository;
+        private readonly IRatingsAndFeedbackRepository _repository;
 
-        public RatingsAndFeedbackService(RatingsAndFeedbackRepository repository)
+        public RatingsAndFeedbackService(IRatingsAndFeedbackRepository repository)
         {
             _repository = repository;
         }
 
-        public List<RatingsAndFeedback> GetAllFeedbacks()
+        public async Task<RatingsAndFeedback?> GetFeedbackAsync(int id)
+        {
+            return await Task.FromResult(_repository.FindById(id));
+        }
+
+        public List<RatingsAndFeedback> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public RatingsAndFeedback GetFeedbackById(int id)
+        public RatingsAndFeedback FindById(int id)
         {
-            return _repository.GetById(id);
+            return _repository.FindById(id);
         }
 
-        public void AddFeedback(RatingsAndFeedback feedback)
+        public void Save(RatingsAndFeedback feedback)
         {
-            _repository.Add(feedback);
+            _repository.Save(feedback);
         }
 
-        public void UpdateFeedback(RatingsAndFeedback feedback)
+        public void Udpate(RatingsAndFeedback feedback)
         {
             _repository.Update(feedback);
         }
 
-        public void DeleteFeedback(int id)
+        public void Add(RatingsAndFeedback feedback)
+        {
+            _repository.Add(feedback);
+        }
+
+
+        public void deleteById(int id)
         {
             _repository.Delete(id);
+        }
+
+        public async Task<(List<RatingsAndFeedback>, int totalItem)> FindAllWithPaginationAsync(int pg, int pageSize)
+        {
+            return await Task.FromResult(_repository.FindAllWithPagination(pg, pageSize));
         }
     }
 }

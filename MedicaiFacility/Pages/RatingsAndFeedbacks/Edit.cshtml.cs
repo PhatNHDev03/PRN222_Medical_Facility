@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MedicaiFacility.BusinessObject;
-using MedicaiFacility.DataAccess;
+using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
     public class EditModel : PageModel
     {
-        private readonly MedicaiFacility.DataAccess.AppDbContext _context;
+        private readonly IRatingsAndFeedbackService _ratingsService;
+        private readonly IMedicalHistoryService _medicalHistoryService;
 
-        public EditModel(MedicaiFacility.DataAccess.AppDbContext context)
+        public EditModel(IRatingsAndFeedbackService ratingsService, IMedicalHistoryService medicalHistoryService)
         {
-            _context = context;
+            _ratingsService = ratingsService;
+            _medicalHistoryService = medicalHistoryService;
         }
 
         [BindProperty]
@@ -30,18 +30,17 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
                 return NotFound();
             }
 
-            var ratingsandfeedback =  await _context.RatingsAndFeedbacks.FirstOrDefaultAsync(m => m.FeedbackId == id);
-            if (ratingsandfeedback == null)
+            var ratingsAndFeedback = _ratingsService.FindById(id.Value);
+            if (ratingsAndFeedback == null)
             {
                 return NotFound();
             }
-            RatingsAndFeedback = ratingsandfeedback;
-           ViewData["MedicalHistoryId"] = new SelectList(_context.MedicalHistories, "HistoryId", "HistoryId");
+
+            RatingsAndFeedback = ratingsAndFeedback;
+            ViewData["MedicalHistoryId"] = new SelectList(_medicalHistoryService.GetAll(), "HistoryId", "HistoryId");
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -49,15 +48,13 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
                 return Page();
             }
 
-            _context.Attach(RatingsAndFeedback).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _ratingsService.Udpate(RatingsAndFeedback);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!RatingsAndFeedbackExists(RatingsAndFeedback.FeedbackId))
+                if (!_ratingsService.FindById(RatingsAndFeedback.FeedbackId).Equals(null))
                 {
                     return NotFound();
                 }
@@ -68,11 +65,6 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool RatingsAndFeedbackExists(int id)
-        {
-            return _context.RatingsAndFeedbacks.Any(e => e.FeedbackId == id);
         }
     }
 }

@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using MedicaiFacility.BusinessObject;
-using MedicaiFacility.DataAccess;
+using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
     public class DetailsModel : PageModel
     {
-        private readonly MedicaiFacility.DataAccess.AppDbContext _context;
+        private readonly IRatingsAndFeedbackService _ratingsService;
 
-        public DetailsModel(MedicaiFacility.DataAccess.AppDbContext context)
+        public DetailsModel(IRatingsAndFeedbackService ratingsService)
         {
-            _context = context;
+            _ratingsService = ratingsService;
         }
 
         public RatingsAndFeedback RatingsAndFeedback { get; set; } = default!;
@@ -28,15 +25,13 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
                 return NotFound();
             }
 
-            var ratingsandfeedback = await _context.RatingsAndFeedbacks.FirstOrDefaultAsync(m => m.FeedbackId == id);
-            if (ratingsandfeedback == null)
+            var ratingsAndFeedback = _ratingsService.FindById(id.Value);
+            if (ratingsAndFeedback == null)
             {
                 return NotFound();
             }
-            else
-            {
-                RatingsAndFeedback = ratingsandfeedback;
-            }
+
+            RatingsAndFeedback = ratingsAndFeedback;
             return Page();
         }
     }

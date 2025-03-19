@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using MedicaiFacility.BusinessObject;
-using MedicaiFacility.DataAccess;
+using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
     public class IndexModel : PageModel
     {
-        private readonly MedicaiFacility.DataAccess.AppDbContext _context;
+        private readonly IRatingsAndFeedbackService _service;
 
-        public IndexModel(MedicaiFacility.DataAccess.AppDbContext context)
+        public IndexModel(IRatingsAndFeedbackService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        public IList<RatingsAndFeedback> RatingsAndFeedback { get;set; } = default!;
+        public List<RatingsAndFeedback> RatingsAndFeedback { get; private set; } = new List<RatingsAndFeedback>();
 
         public async Task OnGetAsync()
         {
-            RatingsAndFeedback = await _context.RatingsAndFeedbacks
-                .Include(r => r.MedicalHistory).ToListAsync();
+            RatingsAndFeedback = _service.GetAll();
         }
     }
 }
