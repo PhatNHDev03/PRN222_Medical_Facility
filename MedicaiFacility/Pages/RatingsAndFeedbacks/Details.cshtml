@@ -2,73 +2,69 @@
 @model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Detail";
 }
 
-<h1>Edit</h1>
+<h1>Details</h1>
 
 <h4>RatingsAndFeedback</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RatingsAndFeedback.FeedbackId" />
 
             <div class="form-group">
                 <label asp-for="RatingsAndFeedback.MedicalHistoryId" class="control-label"></label>
-                <select asp-for="RatingsAndFeedback.MedicalHistoryId" class="form-control" asp-items="ViewBag.MedicalHistoryId"></select>
-                <span asp-validation-for="RatingsAndFeedback.MedicalHistoryId" class="text-danger"></span>
+                <select asp-for="RatingsAndFeedback.MedicalHistoryId" class="form-control" asp-items="ViewBag.MedicalHistoryId" disabled></select>
             </div>
 
             <div class="form-group">
                 <label class="control-label">Rating</label>
-                <div>
+                <div class="star-rating">
                     @for (int i = 1; i <= 5; i++)
                     {
-                        <button type="button" class="star-button" onclick="setRating(@i)">
-                            &#9733;
-                        </button>
+                        if (i <= Model.RatingsAndFeedback.Rating)
+                        {
+                            <i class="fas fa-star text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-star text-warning"></i>
+                        }
                     }
                 </div>
-                <input type="hidden" asp-for="RatingsAndFeedback.Rating" id="ratingInput" />
-                <span asp-validation-for="RatingsAndFeedback.Rating" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="RatingsAndFeedback.Feedback" class="control-label"></label>
-                <input asp-for="RatingsAndFeedback.Feedback" class="form-control" />
-                <span asp-validation-for="RatingsAndFeedback.Feedback" class="text-danger"></span>
+                <input asp-for="RatingsAndFeedback.Feedback" class="form-control" readonly />
             </div>
 
             <div class="form-group">
                 <label asp-for="RatingsAndFeedback.CreatedAt" class="control-label"></label>
-                <input asp-for="RatingsAndFeedback.CreatedAt" class="form-control" />
-                <span asp-validation-for="RatingsAndFeedback.CreatedAt" class="text-danger"></span>
+                <input asp-for="RatingsAndFeedback.CreatedAt" class="form-control" readonly />
             </div>
 
             <br>
             <div class="form-group">
                 <label class="control-label">Is Active</label>
                 <br>
-                <button type="button" class="btn btn-secondary" id="toggleActive" onclick="toggleActive()">
-                    @(Model.RatingsAndFeedback.IsActive == true ? "Active" : "Inactive")
+                <button type="button" class="btn @(Model.RatingsAndFeedback.IsActive==true ? "btn-success" : "btn-secondary")" disabled>
+                    @(Model.RatingsAndFeedback.IsActive==true ? "Active" : "Inactive")
                 </button>
-                <input type="hidden" asp-for="RatingsAndFeedback.IsActive" id="isActiveInput" />
             </div>
 
             <br>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
+<!-- Include Font Awesome for star icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
