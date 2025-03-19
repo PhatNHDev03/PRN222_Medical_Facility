@@ -136,6 +136,16 @@
 		if (!input) return;
 
 		let date = new Date(input);
+		let now = new Date();
+		let minTime = new Date(now.getTime() + (30 * 60 * 1000)); // Current time + 30 minutes
+
+		// Check if selected time is at least 30 minutes in the future
+		if (date < minTime) {
+			alert("Appointments must be scheduled at least 30 minutes ahead of the current time.");
+			this.value = ""; // Clear invalid value
+			endDateInput.value = "";
+			return;
+		}
 		let dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' });
 
 		// Kiểm tra ngày có nằm trong danh sách lịch làm việc không
@@ -149,7 +159,6 @@
 		// Lấy giờ và phút
 		let inputHour = date.getHours();
 		let inputMinute = date.getMinutes();
-
 		// Kiểm tra giới hạn thời gian (07:00 - 22:00)
 		if (inputHour < 7 || inputHour >= 22) {
 			alert("Appointments can only be scheduled between 07:00 and 22:00.");
@@ -214,4 +223,4 @@
 		endDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
 	});
 </script>
-  sửa lại check thêm input startDate phải lớn hơn DateTimenow có time >2 giờ hiện tại
+  
