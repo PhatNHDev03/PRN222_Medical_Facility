@@ -32,7 +32,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<ISystemBalanceRepository, SystemBalanceRepository>();
             services.AddScoped<IHealthRecordDiseasesRepository, HealthRecordDiseasesRepository>();
-			return services;
+		
             services.AddScoped<IRatingsAndFeedbackRepository, RatingsAndFeedbackRepository>();
             return services;
         }
@@ -50,8 +50,7 @@ namespace MedicaiFacility.Service
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
             services.AddScoped<IMedicalExpertService, MedicalExpertService>();
-            services.AddScoped<IRatingsAndFeedbackService, RatingsAndFeedbackService>();
-            return services;
+            services.AddScoped<IRatingsAndFeedbackService, RatingsAndFeedbackService>();  
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<ISystemBalanceService, SystembalanceService>();
             services.AddScoped<IHealthRecordDiseasesService,HealthRecordDiseasesService>();
