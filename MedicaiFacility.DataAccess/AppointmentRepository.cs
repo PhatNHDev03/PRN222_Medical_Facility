@@ -59,10 +59,36 @@ namespace MedicaiFacility.DataAccess
 				.FirstOrDefault(x => x.AppointmentId == id);
 		}
 
+		public List<Appointment> GetAllByExpertId(int expertId) => _context.Appointments.Where(x => x.ExpertId == expertId).ToList();
 		public void Update(Appointment appointment)
 		{
 			_context.Appointments.Update(appointment);
 			_context.SaveChanges();
 		}
-	}
+
+
+        public (List<Appointment> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize,int patientId)
+        {
+            var list = _context.Appointments.Where(x=>x.PatientId== patientId).OrderByDescending(x => x.AppointmentId).Include(x => x.Transaction)
+                .Include(x => x.Expert).ThenInclude(x => x.Expert).Include(x => x.Patient).ThenInclude(x => x.PatientNavigation).Include(x => x.Facility)
+                .ToList();
+            var total = list.Count();
+			
+            int skip = (pg - 1) * pageSize;
+            var data = list.Skip(skip).Take(pageSize).ToList();
+            return (data, total);
+        }
+
+        public (List<Appointment> list, int totalItems) GetALlPagainationsByExpertId(int pg, int pageSize, int expertId)
+        {
+            var list = _context.Appointments.Where(x => x.ExpertId == expertId).OrderByDescending(x => x.AppointmentId).Include(x => x.Transaction)
+                .Include(x => x.Expert).ThenInclude(x => x.Expert).Include(x => x.Patient).ThenInclude(x => x.PatientNavigation).Include(x => x.Facility)
+                .ToList();
+            var total = list.Count();
+
+            int skip = (pg - 1) * pageSize;
+            var data = list.Skip(skip).Take(pageSize).ToList();
+            return (data, total);
+        }
+    }
 }

@@ -38,6 +38,16 @@ namespace MedicaiFacility.Service
             return _medicalHistoryRepository.GetALlPagainations(pg, pageSize);
         }
 
+        public (List<MedicalHistory> list, int totalItems) GetALlPagainationsByExpertId(int pg, int pageSize, int expertId)
+        {
+           return _medicalHistoryRepository.GetALlPagainationsByExpertId(pg, pageSize, expertId);
+        }
+
+        public (List<MedicalHistory> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize, int patientId)
+        {
+            return _medicalHistoryRepository.GetALlPagainationsByPatientId(pg, pageSize, patientId);
+        }
+
         public MedicalHistory GetById(int id)
         {
             return _medicalHistoryRepository.GetById(id);

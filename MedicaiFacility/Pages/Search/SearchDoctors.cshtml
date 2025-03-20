@@ -1,0 +1,151 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Search.SearchDoctorsModel
+@{
+}
+<style>
+    .doctor-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: #fff;
+        transition: all 0.3s ease;
+    }
+
+        .doctor-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+        }
+
+    /* Ảnh bác sĩ */
+    .doctor-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .doctor-card:hover .doctor-image {
+        transform: scale(1.05);
+    }
+
+    /* Thông tin bác sĩ */
+    .doctor-info {
+        flex-grow: 1;
+    }
+
+        .doctor-info h5 {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .doctor-info p {
+            margin: 2px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+    /* Nút đặt lịch & xem chi tiết */
+    .book-now, .view-detail {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 25px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .book-now {
+        background-color: #ff5733;
+        color: white;
+        margin-left: 10px;
+    }
+
+        .book-now:hover {
+            background-color: #d63d1e;
+            transform: scale(1.05);
+        }
+
+    .view-detail {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+        .view-detail:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+        }
+
+    /* Thanh tìm kiếm */
+    .search-bar {
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+    }
+
+        .search-bar .form-control {
+            border-radius: 20px;
+            padding-left: 15px;
+            height: 45px;
+            font-size: 14px;
+        }
+
+        .search-bar .btn {
+            border-radius: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+        }
+
+            .search-bar .btn:hover {
+                background-color: #217dbb;
+            }
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold mb-4">Search Doctor</h1>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <form method="post" class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"></span> <!-- Placeholder for icon -->
+            </div>
+            <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Search doctor" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Doctor List -->
+    @foreach (var doctor in Model.Doctors)
+    {
+        <div class="doctor-card d-flex align-items-center">
+            <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image" />
+            <div class="doctor-info">
+                <h5>@doctor.FullName</h5>
+                <p><strong>Specialization:</strong> @doctor.Specialization</p> 
+                @* <p><strong>Experience:</strong> @doctor.ExperienceYears Years</p> *@
+                @* <p><strong>Department:</strong> @doctor.DepartmentName</p> *@
+                <p><strong>Medical Facility:</strong> @doctor.FacilityName</p> 
+                @* <p><strong>Address:</strong> @doctor.Address</p> *@
+                <p><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
+            </div>
+            <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="view-detail">View Detail</a>
+            
+        </div>
+    }
+
+    @if (!Model.Doctors.Any())
+    {
+        <h5 class="text-center text-muted fw-bold my-xxl-5">Cannot find doctor as your expected.</h5>
+    }
+</div>

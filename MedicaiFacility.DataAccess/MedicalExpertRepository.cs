@@ -18,7 +18,39 @@ namespace MedicaiFacility.DataAccess
         }    
         public MedicalExpert getById(int id)
         {
-            return _context.MedicalExperts.Include(x=>x.Facility).Include(x=>x.Expert).FirstOrDefault(x => x.ExpertId == id);
+            return _context.MedicalExperts.Include(x=>x.MedicalExpertSchedules).Include(x=>x.Facility).Include(x=>x.Expert).FirstOrDefault(x => x.ExpertId == id);
+        }
+        public List<MedicalExpert> SearchDoctors(string searchTerm)
+        {
+            searchTerm = searchTerm?.ToLower();
+
+            var query = _context.MedicalExperts
+                .Include(me => me.Expert)
+                .Include(me => me.Facility)
+                .Where(me => string.IsNullOrEmpty(searchTerm) ||
+                             me.Expert.FullName.ToLower().Contains(searchTerm) ||
+                             me.Specialization.ToLower().Contains(searchTerm) ||
+                             me.ExperienceYears.ToString().Contains(searchTerm) ||
+                             me.Facility.FacilityName.ToLower().Contains(searchTerm) ||
+                             me.Facility.Address.ToLower().Contains(searchTerm) ||
+                             me.PriceBooking.ToString().Contains(searchTerm));
+
+            return query.ToList();
+        }
+        public List<string> GetScheduleByExpertId(int expertId)
+        {
+            return _context.MedicalExpertSchedules
+                .Where(s => s.ExpertId == expertId)
+                .Select(s => s.DayOfWeek)
+                .ToList();
+        }
+        public List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId)
+        {
+            return _context.RatingsAndFeedbacks
+                .Include(rf => rf.MedicalHistory)
+                .ThenInclude(mh => mh.Appointment)
+                .Where(rf => rf.MedicalHistory != null && rf.MedicalHistory.Appointment != null && rf.MedicalHistory.Appointment.ExpertId == expertId)
+                .ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MedicaiFacility.DataAccess;
+﻿
+using MedicaiFacility.DataAccess;
 using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
 using MedicaiFacility.Services;
@@ -28,6 +29,10 @@ namespace MedicaiFacility.Service
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IMedicalHistoryRepository, MedicalHistoryRepository>();
             services.AddScoped<IMedicalExpertRepository, MedicalExpertRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<ISystemBalanceRepository, SystemBalanceRepository>();
+            services.AddScoped<IHealthRecordDiseasesRepository, HealthRecordDiseasesRepository>();
+			return services;
             services.AddScoped<IRatingsAndFeedbackRepository, RatingsAndFeedbackRepository>();
             return services;
         }
@@ -47,6 +52,10 @@ namespace MedicaiFacility.Service
             services.AddScoped<IMedicalExpertService, MedicalExpertService>();
             services.AddScoped<IRatingsAndFeedbackService, RatingsAndFeedbackService>();
             return services;
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<ISystemBalanceService, SystembalanceService>();
+            services.AddScoped<IHealthRecordDiseasesService,HealthRecordDiseasesService>();
+			return services;
         }
 
 

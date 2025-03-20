@@ -1,75 +1,100 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.Appointments.DetailModel
 @{
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout="~/Pages/Shared/_Layout.cshtml";
+    }
 }
 
-<div class="container">
-    <h2 class="text-center my-4">Appointment Details</h2>
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-4">Appointment Details</h2>
 
-    <div class="row">
-        <div class="mb-3 col-6">
-            <label class="form-label">Appointment ID</label>
-            <input class="form-control" asp-for="AppointmentViewModel.AppointmentId" disabled="disabled" />
-        </div>
+    <div class="card shadow-sm rounded p-4">
+        <div class="row gx-4">
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Appointment ID</label>
+                <input class="form-control" asp-for="AppointmentViewModel.AppointmentId" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Patient Name</label>
-            <input class="form-control" asp-for="AppointmentViewModel.PatientName" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Patient Name</label>
+                <input class="form-control" asp-for="AppointmentViewModel.PatientName" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Expert Name</label>
-            <input class="form-control" asp-for="AppointmentViewModel.ExpertName" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Patient Phone</label>
+                <input class="form-control" asp-for="AppointmentViewModel.PatientPhone" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Facility Name</label>
-            <input class="form-control" asp-for="AppointmentViewModel.FacilityName" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Expert Name</label>
+                <input class="form-control" asp-for="AppointmentViewModel.ExpertName" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Facility Address</label>
-            <input class="form-control" asp-for="AppointmentViewModel.Address" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Expert Department</label>
+                <input class="form-control" asp-for="AppointmentViewModel.ExpertDepartment" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Start Date</label>
-            <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.StartDate" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Expert Phone</label>
+                <input class="form-control" asp-for="AppointmentViewModel.ExpertPhone" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">End Date</label>
-            <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.EndDate" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Facility Name</label>
+                <input class="form-control" asp-for="AppointmentViewModel.FacilityName" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Status</label>
-            <input class="form-control" asp-for="AppointmentViewModel.Status" disabled="disabled" />
-        </div>
-    </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Facility Address</label>
+                <input class="form-control" asp-for="AppointmentViewModel.Address" disabled />
+            </div>
 
-    <h3 class="mt-4">Transaction Details</h3>
-    <div class="row">
-        <div class="mb-3 col-6">
-            <label class="form-label">Transaction ID</label>
-            <input class="form-control" asp-for="AppointmentViewModel.TransactionId" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Start Date</label>
+                <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.StartDate" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Payment Method</label>
-            <input class="form-control" asp-for="AppointmentViewModel.PaymentMethod" disabled="disabled" />
-        </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">End Date</label>
+                <input class="form-control" type="datetime-local" asp-for="AppointmentViewModel.EndDate" disabled />
+            </div>
 
-        <div class="mb-3 col-6">
-            <label class="form-label">Amount</label>
-            <input class="form-control" type="number" asp-for="AppointmentViewModel.Amount" disabled="disabled" />
-        </div>
-
-        <div class="mb-3 col-6">
-            <label class="form-label">Transaction Status</label>
-            <input class="form-control" asp-for="AppointmentViewModel.TransactionStatus" disabled="disabled" />
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Status</label>
+                <input class="form-control" asp-for="AppointmentViewModel.Status" disabled />
+            </div>
         </div>
     </div>
 
+    <h3 class="mt-5 fw-bold text-success">Transaction Details</h3>
+    <div class="card shadow-sm rounded p-4 mt-3">
+        <div class="row gx-4">
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Transaction ID</label>
+                <input class="form-control" asp-for="AppointmentViewModel.TransactionId" disabled />
+            </div>
 
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Payment Method</label>
+                <input class="form-control" asp-for="AppointmentViewModel.PaymentMethod" disabled />
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Amount</label>
+                <input class="form-control" type="number" asp-for="AppointmentViewModel.Amount" disabled />
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label fw-semibold">Transaction Status</label>
+                <input class="form-control" asp-for="AppointmentViewModel.TransactionStatus" disabled />
+            </div>
+        </div>
+    </div>
 </div>

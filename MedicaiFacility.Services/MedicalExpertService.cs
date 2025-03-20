@@ -21,5 +21,22 @@ namespace MedicaiFacility.Service
         {
            return _medicalExpertRepository.getById(id);
         }
+
+        public List<MedicalExpert> SearchDoctors(string searchTerm)
+        {
+            return _medicalExpertRepository.SearchDoctors(searchTerm);
+        }
+
+        public List<string> GetScheduleByExpertId(int expertId)
+        {
+            return _medicalExpertRepository.GetScheduleByExpertId(expertId);
+        }
+
+
+        public List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId)
+        {
+            return _medicalExpertRepository.GetFeedbacksByExpertId(expertId);
+        }
+
     }
 }

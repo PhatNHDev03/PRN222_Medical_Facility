@@ -13,5 +13,6 @@ namespace MedicaiFacility.DataAccess.IRepostory
         void RegisterUser(User user);
         IEnumerable<User> GetAllUsers();
         void UpdateUser(User user); // Thêm phương thức này
+        User GetUserByPatientId(int patientId);
     }
 }

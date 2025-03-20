@@ -14,48 +14,71 @@
         <div class="row">
             <div class="mb-3 col-6">
                 <label class="form-label">Patient ID</label>
-                <input type="number" class="form-control" asp-for="Appointment.PatientId" required />
+                <input type="number" class="form-control" asp-for="Appointment.PatientId" readonly />
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Transaction ID</label>
-                <input type="number" class="form-control" asp-for="Appointment.TransactionId" required />
+                <input type="number" class="form-control" asp-for="Appointment.TransactionId" readonly />
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Expert ID</label>
-                <input type="number" class="form-control" asp-for="Appointment.ExpertId" required />
+                <input type="number" class="form-control" asp-for="Appointment.ExpertId" readonly />
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Facility ID</label>
-                <input type="number" class="form-control" asp-for="Appointment.FacilityId" required />
+                <input type="number" class="form-control" asp-for="Appointment.FacilityId" readonly />
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Start Date</label>
-                <input type="datetime-local" class="form-control" asp-for="Appointment.StartDate" required />
+                <input type="datetime-local" class="form-control" asp-for="Appointment.StartDate"
+                       readonly="@(User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")" />
+
+
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">End Date</label>
-                <input type="datetime-local" class="form-control" asp-for="Appointment.EndDate" />
+                <input type="datetime-local" class="form-control" asp-for="Appointment.EndDate"
+                       readonly="@(User.FindFirstValue(ClaimTypes.Role)=="MedicalExpert")" />
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Status</label>
-                <select class="form-control" asp-for="Appointment.Status" required>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-           
-                </select>
+                @if (User.FindFirst(ClaimTypes.Role)?.Value == "MedicalExpert")
+                {
+                    <select asp-for="Appointment.Status" class="form-control">
+                        <option value="Pending" selected="@(Model.Appointment.Status == "Pending")">Pending</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Confirmed")">Confirmed</option>               
+                    </select>
+                }
+                else if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+                {
+                    <select asp-for="Appointment.Status" class="form-control">
+                        <option value="Pending" selected="@(Model.Appointment.Status == "Pending")">Pending</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Confirmed")">Confirmed</option>
+                        <option value="Confirmed" selected="@(Model.Appointment.Status == "Complete")">Confirmed</option>
+                        <option value="Cancelled" selected="@(Model.Appointment.Status == "Cancelled")">Cancelled</option>
+                    </select>
+                }
+                else
+                {
+
+                    <div class="mb-3 col-6">
+                        <label class="form-label">Appointment status</label>
+                        <input type="text" class="form-control" asp-for="Appointment.Status" value="@Model.Appointment.Status" readonly />
+                    </div>
+                
+                }
+
             </div>
 
             <div class="mb-3 col-6">
                 <label class="form-label">Updated At</label>
-                <input type="datetime-local" class="form-control" asp-for="Appointment.UpdatedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" disabled="disabled" />
+                <input type="datetime-local" class="form-control" asp-for="Appointment.UpdatedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
             </div>
         </div>
 

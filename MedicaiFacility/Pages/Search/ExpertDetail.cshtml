@@ -1,0 +1,195 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Search.ExpertDetailModel
+@{
+    ViewData["Title"] = "Expert Details";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <!-- Doctor Details Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Doctor Information</h3>
+            <a href="@Url.Page("/Patients/CreateTransaction", new { expertId = Model.Doctor.ExpertId })" class="book-now">Book now</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="@Model.Doctor.Image" alt="Doctor Image" class="img-fluid rounded" style="max-width: 150px;" />
+                </div>
+                <div class="col-md-4">
+                    <p class="m-1"><strong>Full Name:</strong> @Model.Doctor.FullName</p>
+                    <p class="m-1"><strong>Address:</strong> @Model.Doctor.Address</p>
+                    <p class="m-1"><strong>Phone Number:</strong> @Model.Doctor.PhoneNumber</p>
+                    <p class="m-1"><strong>Email:</strong> @Model.Doctor.Email</p>
+                </div>
+                <div class="col-md-5">
+                    <p class="m-1"><strong>Specialization:</strong> @Model.Doctor.Specialization</p>
+                    <p class="m-1"><strong>Experience (Years):</strong> @Model.Doctor.ExperienceYears</p>
+                    <p class="m-1"><strong>Department:</strong> @Model.Doctor.DepartmentName</p>
+                    <p class="m-1"><strong>Facility:</strong> @Model.Doctor.FacilityName</p>
+                    <p class="m-1"><strong>Price (Booking):</strong> $@Model.Doctor.PriceBooking.ToString("N0")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Schedule</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Schedule != null && Model.Schedule.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var day in Model.Schedule)
+                    {
+                        <li class="list-group-item">@day</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No schedule available.</p>
+            }
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Booked Appointment Slots</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.BookedSlots != null && Model.BookedSlots.Any())
+            {
+                <div class="booked-slots-container">
+                    @foreach (var slot in Model.BookedSlots)
+                    {
+                        <div class="booked-slot-item">
+                            <i class="far fa-calendar-alt"></i> @slot
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No booked appointments at this time.</p>
+            }
+        </div>
+    </div>
+    <!-- Feedback Section -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Feedback</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+            {
+                foreach (var feedback in Model.Feedbacks)
+                {
+                    <div class="feedback-card">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                @feedback.UserName.Substring(0, 1)
+                            </div>
+                            <div>
+                                <div><strong>@feedback.UserName</strong></div>
+                                <div class="feedback-date">@feedback.CreatedAt.ToString("MMM dd, yyyy")</div>
+                            </div>
+                        </div>
+                        <div>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= feedback.Rating)
+                                {
+                                    <i class="fas fa-star star-rating"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star star-rating"></i>
+                                }
+                            }
+                        </div>
+                        <div class="feedback-text">
+                            @feedback.Feedback
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No feedback available.</p>
+            }
+            <!-- Add Write a Review Button -->
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-danger">Write a review</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+    .book-now {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background-color: #ff5733;
+        color: white;
+        font-weight: bold;
+        padding: 8px 24px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+        .book-now:hover {
+            background-color: #C74422;
+            transform: scale(1.05);
+        }
+    .star-rating {
+        color: #FFCC00;
+        font-size: 15px;
+        margin-right: 5px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: #666;
+    }
+
+    .feedback-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .feedback-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .feedback-text {
+        margin-top: 10px;
+    }
+</style>

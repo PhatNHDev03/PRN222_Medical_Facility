@@ -15,5 +15,6 @@ namespace MedicaiFacility.Service.IService
 		void DeleteById(int id);
 		(List<Transaction>, int totalItems) GetListByPagination(int pg, int pagesize);
 		void Create(Transaction transaction);
+		(List<Transaction>, int totalItems) GetListByPaginationWithPatientId(int pg, int pageSize, int patientId);
 	}
 }

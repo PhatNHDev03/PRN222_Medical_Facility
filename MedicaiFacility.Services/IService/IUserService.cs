@@ -10,5 +10,6 @@ namespace MedicaiFacility.Service.IService
         void SignUp(User user);
         IEnumerable<User> GetAllUsers();
         void UpdateUser(User user); // Thêm phương thức này
+        User GetUserByPatientId(int patientId);
     }
 }

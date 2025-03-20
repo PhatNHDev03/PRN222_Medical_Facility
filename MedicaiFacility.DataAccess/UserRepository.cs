@@ -1,5 +1,6 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.DataAccess.IRepostory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,15 @@ namespace MedicaiFacility.DataAccess
             existingUser.UpdatedAt = DateTime.Now;
 
             _context.SaveChanges();
+        }
+        public User GetUserByPatientId(int patientId)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.PatientId == patientId);
+            if (patient == null)
+            {
+                return null;
+            }
+            return _context.Users.FirstOrDefault(u => u.UserId == patient.PatientId);
         }
     }
 }

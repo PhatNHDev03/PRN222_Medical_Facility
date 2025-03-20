@@ -15,5 +15,7 @@ namespace MedicaiFacility.Service.IService
         void Update(MedicalHistory medicalHistory);
         void DeleteById(int id);
         (List<MedicalHistory> list, int totalItems) GetALlPagainations(int pg, int pageSize);
+        (List<MedicalHistory> list, int totalItems) GetALlPagainationsByPatientId(int pg, int pageSize, int patientId);
+        (List<MedicalHistory> list, int totalItems) GetALlPagainationsByExpertId(int pg, int pageSize, int expertId);
     }
 }

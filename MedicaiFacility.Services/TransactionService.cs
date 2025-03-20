@@ -43,6 +43,11 @@ namespace MedicaiFacility.Service
 			return _transactionRepository.GetListByPagination(pg, pagesize);
 		}
 
+		public (List<Transaction>, int totalItems) GetListByPaginationWithPatientId(int pg, int pageSize, int patientId)
+		{
+			return _transactionRepository.GetListByPaginationWithPatientId(pg, pageSize,patientId);
+		}
+
 		public void Update(Transaction transaction)
 		{
 			_transactionRepository.Update(transaction);
