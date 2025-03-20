@@ -31,7 +31,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             }
 
             // Fetch all available departments
-            AvailableDepartments = _departmentService.GetAllDepartment();
+            AvailableDepartments = _departmentService.GetAllDepartment().Where(x => x.IsActive == true).ToList();
 
             // Fetch the currently associated department IDs for this facility
             SelectedDepartmentIds = _medicalFacilityService.GetDepartmentIdsByFacilityId(id);

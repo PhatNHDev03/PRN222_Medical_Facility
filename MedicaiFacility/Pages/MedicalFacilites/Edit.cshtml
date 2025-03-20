@@ -22,7 +22,7 @@
     <div class="mb-3">
         <label asp-for="MedicalFacility.FacilityType" class="form-label">Facility Type</label>
         <select id="FacilityType" name="MedicalFacility.FacilityType" class="form-control" required>
-            @foreach (var facilityType in new[] { "Clinic", "Public Hospital", "Private Hospital" })
+            @foreach (var facilityType in new[] { "Clinic", "Medical center", "Hospital" })
             {
                 if (facilityType == Model.MedicalFacility.FacilityType)
                 {

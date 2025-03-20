@@ -29,7 +29,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
                 Verified = true,  
                 IsActive = true    
             };
-            AvailableDepartments = _departmentService.GetAllDepartment(); 
+            AvailableDepartments = _departmentService.GetAllDepartment().Where(x=>x.IsActive==true).ToList(); 
             SelectedDepartmentIds = new List<int>();
             return Page();
         }
@@ -47,7 +47,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
                 return new JsonResult(new { success = false, message = "Please select at least one department." });
             }
 
-            var validFacilityTypes = new[] { "Public Hospital", "Private Hospital", "Clinic" };
+            var validFacilityTypes = new[] { "Clinic", "Medical center", "Hospital" };
             if (string.IsNullOrEmpty(MedicalFacility.FacilityType) || !validFacilityTypes.Contains(MedicalFacility.FacilityType))
             {
                 ModelState.AddModelError("MedicalFacility.FacilityType", "Invalid Facility Type. Must be one of: " + string.Join(", ", validFacilityTypes));

@@ -18,7 +18,8 @@ namespace MedicaiFacility.DataAccess
         }
         public List<MedicalFacility> GetAllMedicalFacility()
         {
-            return _Context.MedicalFacilities.ToList();
+            return _Context.MedicalFacilities
+                .Include(x=>x.FacilityDepartments).ThenInclude(x=>x.Department).ToList();
         }
         public MedicalFacility FindById(int id)
         {
@@ -96,7 +97,7 @@ namespace MedicaiFacility.DataAccess
         public (List<MedicalFacility>, Dictionary<int, List<string>>, int totalItem) FindAllWithDepartmentsAndPagination(int pg, int pageSize)
         {
             // Step 1: Fetch paginated medical facilities
-            var facilitiesQuery = _Context.MedicalFacilities;
+            var facilitiesQuery = _Context.MedicalFacilities.OrderByDescending(x => x.FacilityId).ToList();
             int totalItem = facilitiesQuery.Count();
 
             var facilities = facilitiesQuery

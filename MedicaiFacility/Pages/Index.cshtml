@@ -1,11 +1,212 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
-    
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row mt-4 justify-content-center">
+
+	<form method="get" class="bg-light p-3 rounded shadow-sm">
+		<div class="row g-3 align-items-end">
+			<div class="col-md-4">
+				<label class="form-label">Search Information</label>
+				<input type="text" class="form-control" name="searchTerm" value="@Model.SearchTerm" placeholder="Search for medical facility">
+			</div>
+			<div class="col-md-4">
+				<label class="form-label">Department</label>
+				<select id="departmentSelect" name="selectedDepartments" class="form-select" multiple>
+					@foreach (var department in Model.DepartmentOptions)
+					{
+						<option value="@department.Value" selected="@(Model.SelectedDepartments?.Contains(department.Value) ?? false)">
+							@department.Text
+						</option>
+					}
+				</select>
+			</div>
+			<div class="col-md-2">
+				<label class="form-label d-block">Category</label>
+				<div class="dropdown">
+					<button id="dropdownButton" class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+						@Model.Option
+					</button>
+					<ul class="dropdown-menu w-100">
+						@foreach (var option in new[] { "Facility", "Hospital", "Clinic", "Medical center", "Verified", "Department" })
+						{
+							<li><a class="dropdown-item" href="#" onclick="setOption('@option')">@option</a></li>
+						}
+					</ul>
+				</div>
+				<input type="hidden" id="selectedOption" name="option" value="@Model.Option">
+			</div>
+			<div class="col-md-2 text-end">
+				<button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+			</div>
+		</div>
+	</form>
+
+
+
+
+	<!-- Medical Facilities List -->
+	<div class="row mt-4">
+		@foreach (var item in Model.MedicalFacilityViewModels)
+		{
+			<div class="col-md-6 col-lg-4 mb-3 rounded-3">
+				<div class="hospital-card shadow-sm p-3 bg-white rounded d-flex">
+					<img src="~/imgs/facility.jpeg" alt="Facility Logo" class="hospital-logo">
+					<div class="ms-3 flex-grow-1">
+						<h5 class="hospital-name">🏥 @item.FacilityName</h5>
+						<p class="text-muted mb-1"><i class="bi bi-geo-alt-fill"></i> @item.Address</p>
+						<p class="text-muted"><i class="bi bi-building"></i> Type: @item.FacilityType</p>
+						<p class="text-muted">
+							<i class="bi bi-shield-check"></i>
+							@if (item.Verified == true)
+							{
+								<span class='text-success fw-bold'>Verified</span>
+							}
+							else
+							{
+								<span class='text-danger fw-bold'>Not Verified</span>
+							}
+						</p>
+						<p class="text-muted"><i class="bi bi-telephone"></i> @item.ContactInfo</p>
+						<p class="text-muted">
+							<i class="bi bi-door-open"></i>
+							@if (item.IsActive == true)
+							{
+								<span class='status-open'>Open</span>
+							}
+							else
+							{
+								<span class='status-closed'>Closed</span>
+							}
+						</p>
+
+						<div class="departments">
+							@foreach (var x in item.DepartmentName)
+							{
+								<span class="bg-primary text-white rounded-3">@x</span>
+							}
+						</div>
+
+						<div class="mt-2">
+							<button class="btn btn-outline-primary btn-custom">View Details</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 </div>
+@if (Model.TotalPages > 1)
+{
+	<nav>
+		<ul class="pagination">
+			@for (int i = 1; i <= Model.TotalPages; i++)
+			{
+				string selectedDepartmentsQuery = Model.SelectedDepartments != null && Model.SelectedDepartments.Any()
+				? $"&selectedDepartments={string.Join("&selectedDepartments=", Model.SelectedDepartments)}"
+				: "";
+
+				<li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+					<a class="page-link" href="/Index?searchTerm=@Model.SearchTerm&option=@Model.Option&pg=@i@selectedDepartmentsQuery">@i</a>
+				</li>
+			}
+		</ul>
+	</nav>
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+	/* Main Container */
+	.container-hospital {
+		max-width: 1100px;
+		margin: 0 auto; /* Căn giữa container */
+	}
+
+	.row {
+		display: flex;
+		justify-content: center; /* Căn giữa các thẻ con */
+	}
+	/* Search Bar */
+	.search-bar {
+		display: flex;
+		justify-content: space-between;
+		background: #f8f9fa;
+		padding: 10px;
+		border-radius: 10px;
+	}
+
+	.search-input {
+		flex-grow: 1;
+		border-radius: 5px;
+	}
+
+	/* Filter Buttons */
+	.filter-buttons {
+		gap: 10px;
+	}
+
+	/* Medical Facility Card */
+	.hospital-card {
+		display: flex;
+		align-items: center;
+		background: #fff;
+		border-radius: 10px;
+		padding: 15px;
+		transition: 0.3s;
+		border: 1px solid #ddd;
+	}
+
+		.hospital-card:hover {
+			transform: translateY(-3px);
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+		}
+
+	.hospital-logo {
+		width: 80px;
+		height: 80px;
+		object-fit: contain;
+		border-radius: 50%;
+		border: 2px solid #007bff;
+	}
+
+	.hospital-name {
+		font-size: 1.2rem;
+		font-weight: bold;
+	}
+
+	.text-muted {
+		font-size: 0.9rem;
+	}
+
+	.status-open {
+		color: green;
+		font-weight: bold;
+	}
+
+	.status-closed {
+		color: red;
+		font-weight: bold;
+	}
+
+	.btn-custom {
+		border-radius: 20px;
+		padding: 5px 15px;
+	}
+
+	/* Department List */
+	.departments span {
+		background: #f0f0f0;
+		padding: 5px 10px;
+		margin: 3px;
+		border-radius: 5px;
+		display: inline-block;
+	}
+</style>
+<script>
+	function setOption(value) {
+		document.getElementById("selectedOption").value = value;
+		document.getElementById("dropdownButton").innerText = value; // Cập nhật text của dropdown
+	}
+</script>
