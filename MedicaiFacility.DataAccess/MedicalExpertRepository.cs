@@ -18,7 +18,7 @@ namespace MedicaiFacility.DataAccess
         }    
         public MedicalExpert getById(int id)
         {
-            return _context.MedicalExperts.Include(x=>x.Facility).Include(x=>x.Expert).FirstOrDefault(x => x.ExpertId == id);
+            return _context.MedicalExperts.Include(x=>x.MedicalExpertSchedules).Include(x=>x.Facility).Include(x=>x.Expert).FirstOrDefault(x => x.ExpertId == id);
         }
         public List<MedicalExpert> SearchDoctors(string searchTerm)
         {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
+using MedicaiFacility.Service;
 
 namespace MedicaiFacility.RazorPage.Pages.Search
 {
@@ -12,15 +13,17 @@ namespace MedicaiFacility.RazorPage.Pages.Search
     {
         private readonly IMedicalExpertService _medicalExpertService;
         private readonly IUserService _userService;
-
-        public ExpertDetailModel(IMedicalExpertService medicalExpertService, IUserService userService)   
+        private readonly IAppointmentService _appointmentService;   
+        public ExpertDetailModel(IMedicalExpertService medicalExpertService, IUserService userService, IAppointmentService appointmentService)   
         {
             _medicalExpertService = medicalExpertService;
             _userService = userService;
+            _appointmentService = appointmentService;
         }
 
         public DoctorViewModel Doctor { get; set; }
         public List<string> Schedule { get; set; }
+        public List<string> BookedSlots { get; set; }
         public List<FeedbackViewModel> Feedbacks { get; set; }
 
         public IActionResult OnGet(int expertId)
@@ -48,7 +51,10 @@ namespace MedicaiFacility.RazorPage.Pages.Search
             };
 
             Schedule = _medicalExpertService.GetScheduleByExpertId(expertId);
-
+            BookedSlots = _appointmentService.GetAllByExpertId((int)expertId)
+                            .Where(x => x.Status == "Confirmed" && x.EndDate.HasValue && x.StartDate>=DateTime.Now)
+                            .Select(x => "Start Date: " + x.StartDate.ToString("yyyy-MM-ddTHH:mm") + " End Date: " + x.EndDate.Value.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
+                            .ToList();
             var feedbacks = _medicalExpertService.GetFeedbacksByExpertId(expertId);
             Feedbacks = feedbacks.Select(f => new FeedbackViewModel
             {

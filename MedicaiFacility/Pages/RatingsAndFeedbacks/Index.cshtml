@@ -1,0 +1,59 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rating</th>
+            <th>Feedback</th>
+            <th>Created At</th>
+            <th>Is Active</th>
+            <th>Medical History</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RatingsAndFeedback)
+        {
+            <tr>
+                <td>
+                    <span class="star-rating">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= item.Rating)
+                            {
+                                <i class="fas fa-star text-warning"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-star text-warning"></i>
+                            }
+                        }
+                    </span>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Feedback)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                <td>@Html.DisplayFor(modelItem => item.MedicalHistory.HistoryId)</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.FeedbackId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.FeedbackId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.FeedbackId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Include Font Awesome for star icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

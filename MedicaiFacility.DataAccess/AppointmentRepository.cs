@@ -59,6 +59,7 @@ namespace MedicaiFacility.DataAccess
 				.FirstOrDefault(x => x.AppointmentId == id);
 		}
 
+		public List<Appointment> GetAllByExpertId(int expertId) => _context.Appointments.Where(x => x.ExpertId == expertId).ToList();
 		public void Update(Appointment appointment)
 		{
 			_context.Appointments.Update(appointment);
