@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.Pages
 {
@@ -12,9 +13,13 @@ namespace MedicaiFacility.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            if(User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+                return RedirectToPage("/Users/Index");
+            }
+            return Page();
         }
     }
 }

@@ -2,9 +2,14 @@
 @model MedicaiFacility.RazorPage.Pages.Users.IndexModel
 @{
     ViewData["Title"] = "Users List";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
 <h2>Users List</h2>
+@if (TempData["Error"] != null)
+{
+    <p class="text-danger">@TempData["Error"]</p>
+}
 
 @if (Model.Users == null || !Model.Users.Any())
 {
