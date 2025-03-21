@@ -19,6 +19,10 @@
 			<th>Appointment Status</th>
 			<th>Patient Info</th>
 			<th>Expert Info</th>
+			@if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+			{
+				<th>Pay</th>
+			}
 			<th>Actions</th>
 		</tr>
 	</thead>
@@ -36,6 +40,10 @@
 				<td>@(history.AppointmentStatus ?? "N/A")</td>
 				<td>@(history.patientInfor ?? "Unknown")</td>
 				<td>@(history.ExpertInfor ?? "Unknown")</td>
+				@if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+				{
+					<td>@(history.Pay == true ? "Paid" : "not yet paid")</td>
+				}
 				<td>
 					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'"> History Detail</button>
 					@if (history.Status == "Completed")
@@ -262,87 +270,4 @@
         border-top: none;
     }
 </style>
-@if (Model.Pager.TotalPages > 0)
-{
-	<ul class="pagination justify-content-end">
-		@if (Model.Pager.CurrentPage > 1)
-		{
-			<li class="page-item">
-				<a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.StartPage)">First</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
-			</li>
-		}
-		@for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
-		{
-			<li class="page-item @(pge == Model.Pager.CurrentPage ? "active" : "")">
-				<a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@pge">@pge</a>
-			</li>
-		}
-		@if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
-		{
-			<li class="page-item">
-				<a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" asp-page="/MedicalHistories/MyMedicalHistory" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
-			</li>
-		}
-	</ul>
-}
 
-
-<style>
-	/* Căn chỉnh bảng */
-	.table {
-		margin-top: 20px;
-		text-align: center;
-		vertical-align: middle;
-	}
-
-		/* Tăng khoảng cách giữa các dòng */
-		.table tbody tr {
-			height: 50px;
-		}
-
-		/* Căn chỉnh các tiêu đề cột */
-		.table thead th {
-			background-color: #343a40 !important;
-			color: white !important;
-			text-align: center;
-		}
-
-	/* Định dạng cho các nút hành động */
-	.btn {
-		margin: 2px;
-	}
-
-	/* Modal */
-	.modal-header {
-		border-bottom: none;
-	}
-
-	.modal-body {
-		text-align: center;
-	}
-
-	/* Định dạng cho pagination */
-	.pagination {
-		margin-top: 20px;
-	}
-
-	.page-item.active .page-link {
-		background-color: #007bff;
-		border-color: #007bff;
-	}
-
-	.page-link {
-		color: #007bff;
-	}
-
-		.page-link:hover {
-			background-color: #e9ecef;
-		}
-
-</style>

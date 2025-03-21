@@ -8,45 +8,48 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MedicaiFacility.styles.css" asp-append-version="true" />
     <style>
+        /* Minimal custom CSS - Bootstrap handles most styling */
         .sidebar {
-            width: 250px;
             height: 100vh;
-            position: fixed;
-           
-            color: white;
             padding-top: 20px;
         }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            display: block;
-        }
-        .sidebar a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-        }
+
+            .sidebar a {
+                color: white;
+                text-decoration: none;
+                padding: 10px 15px;
+                display: block;
+            }
+
+                .sidebar a:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    color: white;
+                }
     </style>
 </head>
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <div class="sidebar bg-primary">
-            <h4 class="text-center"><a href="/MedicalFacilites/Index">Medical Facility</a></h4>
-            <hr>
-            <a asp-area="" asp-page="/Users/Index"> Users Management</a>
-            <a asp-area="" asp-page="/MedicalFacilites/Index"> Facilities Management</a>
-            <a asp-area="" asp-page="/Departments/Index"> Department Management</a>
-            <a asp-area="" asp-page="/Diseases/Index"> Diseases Management</a>
-            <a asp-area="" asp-page="/Users/Logout"> Logout</a>
-            
+        <div class="sidebar bg-primary col-md-3 col-lg-2 d-md-block collapse">
+            <h4 class="text-center"><a href="/MedicalFacilites/Index" class="text-white">Medical Facility</a></h4>
+            <hr class="bg-white">
+            <nav class="nav flex-column">
+                <a class="nav-link" asp-area="" asp-page="/Users/Index">Users Management</a>
+                <a class="nav-link" asp-area="" asp-page="">Health Article</a>
+                <a class="nav-link" asp-area="" asp-page="/MedicalFacilites/Index">Facilities Management</a>
+                <a class="nav-link" asp-area="" asp-page="/Departments/Index">Department Management</a>
+                <a class="nav-link" asp-area="" asp-page="/Transactions/Index">Transaction Management</a>
+                <a class="nav-link" asp-area="" asp-page="/Appointments/Index">Appointment Management</a>
+                <a class="nav-link" asp-area="" asp-page="/MedicalHistories/Index">Medical History Management</a>
+                <a class="nav-link" asp-area="" asp-page="/Diseases/Index">Diseases Management</a>
+                <a class="nav-link" asp-area="" asp-page="">Health Record</a>
+                <a class="nav-link" asp-area="" asp-page="">Rating and Feedback Management</a>
+                <a class="nav-link" asp-area="" asp-page="/Users/Logout">Logout</a>
+            </nav>
         </div>
 
         <!-- Main content -->
-        <div class="content flex-grow-1">
+        <div class="flex-grow-1 ms-md-3 p-4">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
@@ -55,7 +58,7 @@
 
     <footer class="border-top footer text-muted text-center mt-4">
         <div class="container">
-            &copy; 2025 - MedicaiFacility - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            © 2025 - MedicaiFacility - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

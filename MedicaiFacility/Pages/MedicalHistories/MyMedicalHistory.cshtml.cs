@@ -95,7 +95,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                 AppointmentStatus = item.Appointment?.Status,
                 patientId = item.Appointment.PatientId,
                 expertId = item.Appointment.ExpertId,
-
+                Pay = (bool)item.Payed,
                 patientInfor = item.Appointment?.Patient?.PatientNavigation != null
                     ? $"{item.Appointment.Patient.PatientNavigation.FullName} {item.Appointment.Patient.PatientNavigation.PhoneNumber} {item.Appointment.Patient.PatientNavigation.Email}"
                     : "N/A",

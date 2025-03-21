@@ -41,6 +41,7 @@ namespace MedicaiFacility.DataAccess
         {
             var list = _Context.MedicalHistories.OrderByDescending(x=>x.HistoryId).Include(x => x.Appointment).ThenInclude(x=>x.Expert).ThenInclude(x=>x.Expert)
               .Include(x => x.Appointment).ThenInclude(x => x.Patient).ThenInclude(x => x.PatientNavigation)
+              .Include(x=>x.Appointment).ThenInclude(x=>x.Transaction)
                 .ToList();
             int total = list.Count();  
            Pager pager = new Pager(total,pg,pageSize);

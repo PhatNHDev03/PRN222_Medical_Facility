@@ -81,6 +81,7 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                 AppointmentId = item.AppointmentId,
                    Description = description,
                    Status = "Pending",
+                   Payed = false,
                    CreatedAt = DateTime.Now,
                    UpdatedAt = DateTime.Now
                };

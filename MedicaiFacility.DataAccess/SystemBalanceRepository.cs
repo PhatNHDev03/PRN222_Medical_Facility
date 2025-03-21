@@ -20,8 +20,9 @@ namespace MedicaiFacility.DataAccess
         }
         public void update(int SystemId, decimal amount)
         {
+           
             var system = _context.SystemBalances.FirstOrDefault(x=>x.BalanceId == SystemId);
-            system.TotalBalance += amount;
+            system.TotalBalance = (int)system.TotalBalance + (int)amount;
             _context.SystemBalances.Update(system);
             _context.SaveChanges();
         }

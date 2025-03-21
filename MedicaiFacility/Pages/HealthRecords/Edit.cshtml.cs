@@ -66,6 +66,10 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 
                 HealthRecord.FilePath = "/imgPatient/" + file.FileName;
             }
+            else
+            {
+                HealthRecord.FilePath = existHealthRecord.FilePath;
+            }
 
             existHealthRecord.FilePath = HealthRecord.FilePath;
             var diseaseIdsToDelete = existHealthRecord.HealthRecordDiseases

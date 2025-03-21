@@ -52,7 +52,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
         }
         public IActionResult OnPost()
         {
-            var check = Appointment;
+           
             Appointment.Status = "Pending";
             Appointment.CreatedAt = DateTime.Now;
             Appointment.UpdatedAt = DateTime.Now;

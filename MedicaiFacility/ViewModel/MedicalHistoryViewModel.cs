@@ -16,13 +16,14 @@ namespace MedicaiFacility.RazorPage.ViewModel
         //appoinment
 
         public DateTime StartDate { get; set; }
-
+        public bool Pay { get; set; }
         public DateTime? EndDate { get; set; }
 
         public int? AppointmentId { get; set; }
         public int? HealthRecordId { get; set; }
         public string? AppointmentStatus { get; set; }
         //user
+        public decimal? amount { get; set; }
         public int? patientId { get; set; }
         public int? expertId { get; set; }
         public string? patientInfor { get; set; }
