@@ -18,7 +18,7 @@ namespace MedicaiFacility.DataAccess
         }
         public List<MedicalFacility> GetAllMedicalFacility()
         {
-            return _Context.MedicalFacilities
+            return _Context.MedicalFacilities.Include(x=>x.MedicalExperts).ThenInclude(x=>x.MedicalExpertSchedules)
                 .Include(x=>x.FacilityDepartments).ThenInclude(x=>x.Department).ToList();
         }
         public MedicalFacility FindById(int id)

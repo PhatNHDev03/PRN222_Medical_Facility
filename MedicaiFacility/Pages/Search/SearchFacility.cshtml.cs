@@ -35,7 +35,8 @@ namespace MedicaiFacility.RazorPage.Pages.Search
                 Text = x.DepartmentName
             }).ToList();
             SelectedDepartments = selectedDepartments ?? new List<string>();
-            var listItem = _medicalFacilityService.GetAllMedicalFacility().OrderByDescending(x => x.FacilityId).Where(x => x.IsActive == true).ToList();
+            var listItem = _medicalFacilityService.GetAllMedicalFacility()
+                .OrderByDescending(x => x.FacilityId).Where(x => x.IsActive == true && x.MedicalExperts.Any()).ToList();
             //filter by departMent
 
             var selectedDepartmentIds = SelectedDepartments
