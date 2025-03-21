@@ -34,8 +34,8 @@
 				<td>@transaction.PaymentMethod</td>
 				<td>@transaction.Amount.ToString("C")</td>
 				<td>@transaction.TransactionStatus</td>
-				<td>@transaction.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
-				<td>@transaction.UpdateAt?.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@transaction.CreatedAt</td>
+				<td>@transaction.UpdateAt</td>
 				<td>@transaction.TransactionType</td>
 				<td>
 					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/Transactions/Detail", new { id = transaction.TransactionId })'">Detail</button>

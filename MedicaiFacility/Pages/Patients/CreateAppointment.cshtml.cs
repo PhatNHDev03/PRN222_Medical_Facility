@@ -28,17 +28,14 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
         }
         public void OnGet(int? patientId,int? transactionId,int? expertId)
         {
-          
-
             PatientId =(int) patientId;
             TransactionId = (int)transactionId;
             Patient = _patientService.getById(PatientId);
             MedicalExpert = _medicalExpertService.getById((int)expertId);
-            var check = MedicalExpert.Facility.FacilityName;
+            var check = MedicalExpert.StartHour;
             WorkingDays = MedicalExpert.MedicalExpertSchedules
                        .Select(x => x.DayOfWeek)
                        .ToList();
-
             // Lấy danh sách các StartDate đã được đặt
             BookedSlots = _appointmentService.GetAllByExpertId((int)expertId)
                             .Where(x => x.Status == "Confirmed" && x.EndDate.HasValue&&x.StartDate>=DateTime.Now)

@@ -54,8 +54,8 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                             PaymentMethod = "Vn pay",
                             Amount = existingTransaction.Amount,
                             TransactionStatus = "success",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdateAt = DateTime.UtcNow,
+                            CreatedAt = DateTime.Now,
+                            UpdateAt = DateTime.Now,
                             TransactionType = "RefundTransaction"
                         };
 

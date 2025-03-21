@@ -1,226 +1,217 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.Patients.CreateAppointmentModel
-
 <style>
-	.create-appointment-container {
-		max-width: 800px;
-		margin: auto;
-	}
+    .create-appointment-container {
+        max-width: 800px;
+        margin: auto;
+    }
 
-	.booked-slot {
-		background-color: #ffcccc;
-		padding: 5px 10px;
-		border-radius: 5px;
-		display: inline-block;
-		margin: 5px;
-	}
+    .booked-slot {
+        background-color: #ffcccc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 5px;
+    }
 
-	.working-days {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
+    .working-days {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 
-		.working-days span {
-			background-color: #d1ecf1;
-			color: #0c5460;
-			padding: 5px 10px;
-			border-radius: 5px;
-		}
+        .working-days span {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
 </style>
-
 <div class="text-center">
-	<h1 class="display-4">Create Appointment</h1>
+    <h1 class="display-4">Create Appointment</h1>
 </div>
-
 @if (ViewData["ErrorMessage"] != null)
 {
-	<div class="alert alert-danger" role="alert">
-		@ViewData["ErrorMessage"]
-	</div>
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
 }
-
 @if (ViewData["SuccessMessage"] != null)
 {
-	<div class="alert alert-success" role="alert">
-		@ViewData["SuccessMessage"]
-	</div>
+    <div class="alert alert-success" role="alert">
+        @ViewData["SuccessMessage"]
+    </div>
 }
-
 <div class="create-appointment-container">
-	<div class="mb-3 mt-3">
-		<form asp-page="/Patients/CreateAppointment" method="post">
-			<input type="hidden" asp-for="Appointment.PatientId" value="@Model.PatientId" />
-			<input type="hidden" asp-for="Appointment.TransactionId" value="@Model.TransactionId" />
-			<input type="hidden" asp-for="Appointment.ExpertId" value="@Model.MedicalExpert.ExpertId" />
-			<input type="hidden" asp-for="Appointment.FacilityId" value="@Model.MedicalExpert.FacilityId" />
-
-			<div class="mb-3">
-				<label class="form-label">Patient Info</label>
-				<input type="text" class="form-control" value="@Model.Patient.PatientNavigation.FullName (@Model.Patient.PatientNavigation.PhoneNumber)" disabled />
-			</div>
-
-			<div class="mb-3">
-				<label class="form-label">Facility</label>
-				<input type="text" class="form-control" value="@Model.MedicalExpert.Facility.FacilityName" disabled />
-				<input type="text" class="form-control mt-1" value="@Model.MedicalExpert.Facility.Address" disabled />
-				<input type="text" class="form-control mt-1" value="Contact: @Model.MedicalExpert.Facility.ContactInfo" disabled />
-			</div>
-
-			<div class="mb-3">
-				<label class="form-label">Doctor's Schedule:</label>
-				<div class="working-days">
-					@foreach (var item in Model.WorkingDays)
-					{
-						<span>@item</span>
-					}
-				</div>
-			</div>
-
-			<div class="mb-3">
-				<label class="form-label">Booked Time Slots:</label>
-				<div>
-					@foreach (var slot in Model.BookedSlots)
-					{
-						<span class="booked-slot">@slot</span>
-					}
-				</div>
-			</div>
-
-			<div class="mb-3">
-				<label class="form-label">Start Date</label>
-				<p>Note: A medical appointment only lasts <strong>40 minutes</strong> for a medical Expert to examine you.</p>
-				<input type="datetime-local" class="form-control" id="startDate" asp-for="Appointment.StartDate" required />
-			</div>
-
-			<div class="mb-3">
-				<label class="form-label">End Date</label>
-				<input type="datetime-local" class="form-control" id="endDate" asp-for="Appointment.EndDate" readonly />
-			</div>
-
-			<div class="mb-3">
-				<button type="submit" class="btn btn-primary">Create Appointment</button>
-			</div>
-		</form>
-	</div>
+    <div class="mb-3 mt-3">
+        <form id="appointmentForm" asp-page="/Patients/CreateAppointment" method="post">
+            <input type="hidden" asp-for="Appointment.PatientId" value="@Model.PatientId" />
+            <input type="hidden" asp-for="Appointment.TransactionId" value="@Model.TransactionId" />
+            <input type="hidden" asp-for="Appointment.ExpertId" value="@Model.MedicalExpert.ExpertId" />
+            <input type="hidden" asp-for="Appointment.FacilityId" value="@Model.MedicalExpert.FacilityId" />
+            <div class="mb-3">
+                <label class="form-label">Patient Info</label>
+                <input type="text" class="form-control" value="@Model.Patient.PatientNavigation.FullName (@Model.Patient.PatientNavigation.PhoneNumber)" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Facility</label>
+                <input type="text" class="form-control" value="@Model.MedicalExpert.Facility.FacilityName" disabled />
+                <input type="text" class="form-control mt-1" value="@Model.MedicalExpert.Facility.Address" disabled />
+                <input type="text" class="form-control mt-1" value="Contact: @Model.MedicalExpert.Facility.ContactInfo" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Doctor's Schedule:</label>
+                <div class="working-days">
+                    @foreach (var item in Model.WorkingDays)
+                    {
+                        <span>@item</span>
+                    }
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Booked Time Slots:</label>
+                <div>
+                    @foreach (var slot in Model.BookedSlots)
+                    {
+                        <span class="booked-slot">@slot</span>
+                    }
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <p>Note: Expert only working from <strong>@Model.MedicalExpert.StartHour</strong> to <strong>@Model.MedicalExpert.EndHour</strong></p>
+                <p>Note: A medical appointment only lasts <strong>40 minutes</strong> for a medical Expert to examine you.</p>
+                <input type="datetime-local" class="form-control" id="startDate" asp-for="Appointment.StartDate" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" id="endDate" asp-for="Appointment.EndDate" readonly />
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Appointment</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
-	// Lấy danh sách ngày làm việc từ Model và chuyển thành mảng JavaScript
-	var workingDays = @Html.Raw(Json.Serialize(Model.WorkingDays));
-	var bookedStartSlots = @Html.Raw(Json.Serialize(Model.StartBookedSlot));
-	var bookedEndSlots = @Html.Raw(Json.Serialize(Model.EndBookedSlot));
+    // Lấy dữ liệu từ Model
+    var workingDays = @Html.Raw(Json.Serialize(Model.WorkingDays));
+    var bookedStartSlots = @Html.Raw(Json.Serialize(Model.StartBookedSlot));
+    var bookedEndSlots = @Html.Raw(Json.Serialize(Model.EndBookedSlot));
+    var startHour = @Model.MedicalExpert.StartHour; // Giờ bắt đầu làm việc
+    var endHour = @Model.MedicalExpert.EndHour;     // Giờ kết thúc làm việc
 
-	// Lấy input datetime-local
-	let startDateInput = document.getElementById("startDate");
-	let endDateInput = document.getElementById("endDate");
+    // Lấy input datetime-local và form
+    let startDateInput = document.getElementById("startDate");
+    let endDateInput = document.getElementById("endDate");
+    let form = document.getElementById("appointmentForm");
 
-	// Thiết lập giá trị min cho startDate (ngày hiện tại + 2 giờ)
-	function setMinDateTime() {
-		let now = new Date();
-		now.setHours(now.getHours() + 2); // +2 giờ từ thời điểm hiện tại
+    function setMinDateTime() {
+        let now = new Date();
+        now.setMinutes(now.getMinutes() + 30); // +30 phút từ hiện tại
 
-		let year = now.getFullYear();
-		let month = String(now.getMonth() + 1).padStart(2, '0');
-		let day = String(now.getDate()).padStart(2, '0');
-		let hours = String(now.getHours()).padStart(2, '0');
-		let minutes = String(now.getMinutes()).padStart(2, '0');
+        // Nếu thời gian hiện tại + 30 phút vẫn nhỏ hơn giờ bắt đầu làm việc của bác sĩ
+        let workDay = now.getHours() * 60 + now.getMinutes(); // Đổi thành phút
+        let doctorStartTime = startHour * 60; // Giờ bắt đầu làm việc (đổi thành phút)
 
-		startDateInput.min = `${year}-${month}-${day}T${hours}:${minutes}`;
-	}
-	setMinDateTime(); // Gọi khi trang load
+        // Nếu thời gian hiện tại + 30 phút vẫn chưa tới giờ làm việc của bác sĩ
+        if (workDay < doctorStartTime) {
+            now.setHours(startHour, 0, 0); // Thiết lập thành giờ bắt đầu làm việc
+        }
 
-	// Xử lý khi người dùng nhập thời gian bắt đầu
-	startDateInput.addEventListener("input", function () {
-		let input = this.value;
-		if (!input) return;
+        let year = now.getFullYear();
+        let month = String(now.getMonth() + 1).padStart(2, '0');
+        let day = String(now.getDate()).padStart(2, '0');
+        let hours = String(now.getHours()).padStart(2, '0');
+        let minutes = String(now.getMinutes()).padStart(2, '0');
 
-		let date = new Date(input);
-		let now = new Date();
-		let minTime = new Date(now.getTime() + (30 * 60 * 1000)); // Current time + 30 minutes
+        startDateInput.min = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
 
-		// Check if selected time is at least 30 minutes in the future
-		if (date < minTime) {
-			alert("Appointments must be scheduled at least 30 minutes ahead of the current time.");
-			this.value = ""; // Clear invalid value
-			endDateInput.value = "";
-			return;
-		}
-		let dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' });
+    setMinDateTime(); // Gọi khi trang load
 
-		// Kiểm tra ngày có nằm trong danh sách lịch làm việc không
-		if (!workingDays.includes(dayOfWeek)) {
-			alert("This day is not on the doctor's schedule!");
-			this.value = ""; // Xóa giá trị nếu không hợp lệ
-			endDateInput.value = "";
-			return;
-		}
+    // Tự động tính endDate khi nhập startDate (không kiểm tra hợp lệ)
+    startDateInput.addEventListener("input", function () {
+        let input = this.value;
+        if (!input) {
+            endDateInput.value = ""; // Xóa endDate nếu startDate trống
+            return;
+        }
 
-		// Lấy giờ và phút
-		let inputHour = date.getHours();
-		let inputMinute = date.getMinutes();
-		// Kiểm tra giới hạn thời gian (07:00 - 22:00)
-		if (inputHour < 7 || inputHour >= 22) {
-			alert("Appointments can only be scheduled between 07:00 and 22:00.");
-			this.value = ""; // Xóa giá trị nếu không hợp lệ
-			endDateInput.value = "";
-			return;
-		}
+        let startDate = new Date(input);
+        let endDate = new Date(startDate.getTime() + (40 * 60 * 1000)); // +40 phút
 
-		// Chuyển thành timestamp để kiểm tra trùng lịch
-		let inputTime = new Date(input);
+        // Định dạng giá trị cho endDate
+        let year = endDate.getFullYear();
+        let month = String(endDate.getMonth() + 1).padStart(2, '0');
+        let day = String(endDate.getDate()).padStart(2, '0');
+        let hours = String(endDate.getHours()).padStart(2, '0');
+        let minutes = String(endDate.getMinutes()).padStart(2, '0');
+        endDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    });
 
-		for (let i = 0; i < bookedStartSlots.length; i++) {
-			let startTime = new Date(bookedStartSlots[i]);
-			let endTime = new Date(bookedEndSlots[i]);
+    // Kiểm tra hợp lệ khi submit form (dựa trên requirement cũ)
+    form.addEventListener("submit", function (event) {
+        let startDate = new Date(startDateInput.value);
+        let endDate = new Date(endDateInput.value);
+        let now = new Date();
+        let minTime = new Date(now.getTime() + (30 * 60 * 1000)); // +30 phút
 
-			if (inputTime >= startTime && inputTime <= endTime) {
-				alert("This time is already within a booked time slot. Please choose another time slot!");
-				this.value = ""; // Xóa giá trị nếu bị trùng lịch
-				endDateInput.value = "";
-				return;
-			}
-		}
+        // Kiểm tra thời gian tối thiểu (hiện tại + 30 phút)
+        if (startDate < minTime) {
+            alert("Appointments must be scheduled at least 30 minutes ahead of the current time.");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
 
-		// Tính thời gian kết thúc (40 phút sau)
-		let endDate = new Date(inputTime.getTime() + (40 * 60 * 1000));
+        // Kiểm tra ngày làm việc
+        let dayOfWeek = startDate.toLocaleString('en-us', { weekday: 'long' });
+        if (!workingDays.includes(dayOfWeek)) {
+            alert("This day is not on the doctor's schedule!");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
 
-		for (let i = 0; i < bookedStartSlots.length; i++) {
-			let bookedStartTime = new Date(bookedStartSlots[i]);
-			let bookedEndTime = new Date(bookedEndSlots[i]);
+        // Kiểm tra giờ làm việc
+        let startHours = startDate.getHours();
+        if (startHours < startHour || startHours >= endHour) {
+            alert(`Appointments can only be scheduled between ${startHour}:00 and ${endHour}:00.`);
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
 
-			// Kiểm tra chồng lấn lịch hẹn
-			if (endDate > bookedStartTime && endDate <= bookedEndTime) {
-				alert("The appointment would overlap with an existing booking. Please choose another start time!");
-				this.value = "";
-				endDateInput.value = "";
-				return;
-			}
+        // Kiểm tra endDate không vượt quá giờ làm việc (22:00 trong code cũ)
+        if (endDate.getHours() >= 22) {
+            alert("The appointment cannot extend beyond 22:00. Please choose an earlier start time.");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
 
-			if (inputTime <= bookedStartTime && endDate >= bookedEndTime) {
-				alert("The appointment would overlap with an existing booking. Please choose another start time!");
-				this.value = "";
-				endDateInput.value = "";
-				return;
-			}
-		}
+        // Kiểm tra trùng lịch hẹn
+        for (let i = 0; i < bookedStartSlots.length; i++) {
+            let bookedStart = new Date(bookedStartSlots[i]);
+            let bookedEnd = new Date(bookedEndSlots[i]);
 
-		// Đảm bảo endDate không vượt quá 22:00
-		if (endDate.getHours() >= 22) {
-			alert("The appointment cannot extend beyond 22:00. Please choose an earlier start time.");
-			this.value = "";
-			endDateInput.value = "";
-			return;
-		}
+            // Kiểm tra nếu startDate nằm trong khoảng lịch đã đặt
+            if (startDate >= bookedStart && startDate <= bookedEnd) {
+                alert("This time is already within a booked time slot. Please choose another time slot!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
 
-		// Thiết lập giá trị cho endDate
-		let year = endDate.getFullYear();
-		let month = String(endDate.getMonth() + 1).padStart(2, '0');
-		let day = String(endDate.getDate()).padStart(2, '0');
-		let hours = String(endDate.getHours()).padStart(2, '0');
-		let minutes = String(endDate.getMinutes()).padStart(2, '0');
+            // Kiểm tra chồng lấn lịch hẹn
+            if (endDate > bookedStart && endDate <= bookedEnd) {
+                alert("The appointment would overlap with an existing booking. Please choose another start time!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
 
-		endDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-	});
+            if (startDate <= bookedStart && endDate >= bookedEnd) {
+                alert("The appointment would overlap with an existing booking. Please choose another start time!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
+        }
+    });
 </script>
-  
