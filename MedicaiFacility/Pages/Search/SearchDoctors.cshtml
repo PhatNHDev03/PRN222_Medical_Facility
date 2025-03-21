@@ -4,31 +4,25 @@
 }
 <style>
     .doctor-card {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: #fff;
-        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
     }
 
         .doctor-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-3px);
+            transform: scale(1.03);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
         }
+
 
     /* Ảnh bác sĩ */
     .doctor-image {
-        width: 120px;
-        height: 120px;
-        border-radius: 10px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
         object-fit: cover;
-        margin-right: 20px;
-        transition: transform 0.3s ease;
     }
+
 
     .doctor-card:hover .doctor-image {
         transform: scale(1.05);
@@ -87,7 +81,7 @@
     /* Thanh tìm kiếm */
     .search-bar {
         max-width: 600px;
-        margin: 0 auto 30px auto;
+        margin: 0 auto;
     }
 
         .search-bar .form-control {
@@ -110,42 +104,40 @@
 </style>
 
 <div class="container mt-4">
-    <h1 class="text-center fw-bold mb-4">Search Doctor</h1>
+    <h1 class="text-center fw-bold mb-4 text-primary">Search Doctor</h1>
 
     <!-- Search Bar -->
     <div class="search-bar">
         <form method="post" class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"></span> <!-- Placeholder for icon -->
-            </div>
-            <input type="text" class="form-control" asp-for="SearchTerm" placeholder="Search doctor" />
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
+            <input type="text" class="form-control rounded-pill px-3" asp-for="SearchTerm" placeholder="Search doctor">
+            <button type="submit" class="btn btn-primary rounded-pill ms-2 px-4">Search</button>
         </form>
     </div>
 
     <!-- Doctor List -->
-    @foreach (var doctor in Model.Doctors)
-    {
-        <div class="doctor-card d-flex align-items-center">
-            <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image" />
-            <div class="doctor-info">
-                <h5>@doctor.FullName</h5>
-                <p><strong>Specialization:</strong> @doctor.Specialization</p> 
-                @* <p><strong>Experience:</strong> @doctor.ExperienceYears Years</p> *@
-                @* <p><strong>Department:</strong> @doctor.DepartmentName</p> *@
-                <p><strong>Medical Facility:</strong> @doctor.FacilityName</p> 
-                @* <p><strong>Address:</strong> @doctor.Address</p> *@
-                <p><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
+    <div class="row mt-4">
+        @foreach (var doctor in Model.Doctors)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card doctor-card p-3">
+                    <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@doctor.FullName</h5>
+                        <p class="card-text"><strong>Specialization:</strong> @doctor.Specialization</p>
+                        <p class="card-text"><strong>Experience:</strong> @doctor.ExperienceYears Years</p>
+                        <p class="card-text"><strong>Department:</strong> @doctor.DepartmentName</p>
+                        <p class="card-text"><strong>Medical Facility:</strong> @doctor.FacilityName</p>
+                        <p class="card-text"><strong>Address:</strong> @doctor.Address</p>
+                        <p class="card-text"><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
+                        <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="btn btn-success btn-sm w-100 mt-2">View Detail</a>
+                    </div>
+                </div>
             </div>
-            <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="view-detail">View Detail</a>
-            
-        </div>
-    }
+        }
+    </div>
 
     @if (!Model.Doctors.Any())
     {
-        <h5 class="text-center text-muted fw-bold my-xxl-5">Cannot find doctor as your expected.</h5>
+        <h5 class="text-center text-muted fw-bold my-5">Cannot find doctor as your expected.</h5>
     }
 </div>

@@ -13,5 +13,6 @@ namespace MedicaiFacility.Service.IService
         List<MedicalExpert> SearchDoctors(string searchTerm);
         List<string> GetScheduleByExpertId(int expertId);
         List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId);
+        List<MedicalExpert> getExpertsByFacilityId(int facilityId);
     }
 }

@@ -38,5 +38,9 @@ namespace MedicaiFacility.Service
             return _medicalExpertRepository.GetFeedbacksByExpertId(expertId);
         }
 
+        public List<MedicalExpert> getExpertsByFacilityId(int facilityId)
+        {
+           return _medicalExpertRepository.getExpertsByFacilityId((int)facilityId);
+        }
     }
 }

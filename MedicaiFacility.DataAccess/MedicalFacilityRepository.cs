@@ -23,7 +23,7 @@ namespace MedicaiFacility.DataAccess
         }
         public MedicalFacility FindById(int id)
         {
-            return _Context.MedicalFacilities.Find(id);
+            return _Context.MedicalFacilities.Include(x => x.FacilityDepartments).ThenInclude(x => x.Department).FirstOrDefault(x=>x.FacilityId==id);
         }
 
         public void AddMedicalFacility(MedicalFacility medicalFacility)

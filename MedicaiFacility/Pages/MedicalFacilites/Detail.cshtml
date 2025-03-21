@@ -1,0 +1,93 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalFacilites.DetailModel
+@{
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+
+<div class="container mt-4">
+    <!-- Hospital Information -->
+    <div class="card p-4 shadow-sm">
+        <div class="d-flex align-items-center">
+            <img src="~/imgs/facility.jpeg" alt="@Model.MedicalFacilityViewModels.FacilityName" class="hospital-logo rounded-circle me-3" style="width: 100px; height: 100px;">
+            <div>
+                <h2 class="mb-2">@Model.MedicalFacilityViewModels.FacilityName</h2>
+
+                <p class="mb-1"><strong>🏥 Facility Type:</strong> @Model.MedicalFacilityViewModels.FacilityType</p>
+
+                <div class="mb-1">
+                    <strong>🏛 Departments:</strong>
+                    @foreach (var item in Model.MedicalFacilityViewModels.DepartmentName)
+                    {
+                        <span class="badge bg-info text-dark">@item</span>
+                    }
+                </div>
+
+                <p class="mb-1">
+                    <strong>✅ Verification:</strong>
+                    @if (Model.MedicalFacilityViewModels.Verified==true)
+                    {
+                        <span class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> Verified</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger fw-bold"><i class="bi bi-x-circle-fill"></i> Not Verified</span>
+                    }
+                </p>
+
+                <p class="mb-1">
+                    <strong>🔴 Status:</strong>
+                    @if (Model.MedicalFacilityViewModels.IsActive==true)
+                    {
+                        <span class="text-success fw-bold"><i class="bi bi-door-open-fill"></i> Open</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger fw-bold"><i class="bi bi-door-closed-fill"></i> Closed</span>
+                    }
+                </p>
+
+                <p class="mb-1">
+                    <strong>📍 Address:</strong> @Model.MedicalFacilityViewModels.Address
+                </p>
+                <p class="mb-1">
+                    <strong>🕒 Working Hours:</strong> Monday - Sunday (07:00 - 22:00)
+                </p>
+                <p class="mb-1">
+                    <strong>📞 Contact:</strong> <b class="text-primary">@Model.MedicalFacilityViewModels.ContactInfo</b>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor List -->
+    <h3 class="mt-4">Doctors List</h3>
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div class="card doctor-card shadow-sm">
+                <img src="https://cdn.medpro.vn/prod-partner/3ee52d40-60a4-492b-af06-f759cce2d5d2-doctormale.jpg" class="card-img-top" alt="Dr. Vu Dinh Khoi">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Dr. Vu Dinh Khoi</h5>
+                    <p class="text-muted">🩺 Infectious Diseases, Dermatology, Men’s Health</p>
+                    <p class="fw-bold text-danger">💰 150,000 VND</p>
+                    <button class="btn btn-outline-primary w-100">Book Appointment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .doctor-card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .doctor-card:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
