@@ -1,0 +1,109 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.Users.PatientIndexModel
+@{
+    ViewData["Title"] = "Your Patient Profile";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Your Patient Profile</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3>Personal Information</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"><strong>Full Name:</strong></label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@Model.UserInfo.FullName</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"><strong>Email:</strong></label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@Model.UserInfo.Email</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"><strong>Phone Number:</strong></label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@(Model.UserInfo.PhoneNumber ?? "Not provided")</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"><strong>Bank Account:</strong></label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@(Model.UserInfo.BankAccount ?? "Not provided")</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"><strong>Profile Image:</strong></label>
+            <div class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.UserInfo.Image))
+                {
+                    <img src="@Model.UserInfo.Image" alt="Profile Image" style="max-width: 200px; max-height: 200px;" />
+                }
+                else
+                {
+                    <p class="form-control-plaintext">No image uploaded</p>
+                }
+            </div>
+        </div>
+
+        <!-- Hiển thị thông tin Patient nếu UserType là Patient -->
+        @if (Model.UserInfo.UserType == "Patient")
+        {
+            <h3>Patient Information</h3>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label"><strong>Date of Birth:</strong></label>
+                <div class="col-sm-9">
+                    <p class="form-control-plaintext">@(Model.UserInfo.DateOfBirth?.ToString("yyyy-MM-dd") ?? "Not provided")</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label"><strong>Gender:</strong></label>
+                <div class="col-sm-9">
+                    <p class="form-control-plaintext">@(Model.UserInfo.Gender ?? "Not provided")</p>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-footer">
+        <a asp-page="/Users/EditSelfProfile" class="btn btn-primary">Edit Profile</a>
+        <a asp-page="/Users/Logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+
+<style>
+    .card {
+        max-width: 800px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+    }
+
+    .form-control-plaintext {
+        margin-bottom: 0;
+    }
+</style>

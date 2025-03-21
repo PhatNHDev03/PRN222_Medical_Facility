@@ -1,7 +1,12 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MedicaiFacility.Service
 {
@@ -36,8 +41,36 @@ namespace MedicaiFacility.Service
 
         public void UpdateUser(User user)
         {
-            _userRepository.UpdateUser(user); 
+            _userRepository.UpdateUser(user);
         }
+
+        public async Task UpdateUserAndSessionAsync(User user, HttpContext httpContext)
+        {
+            _userRepository.UpdateUser(user);
+
+            var identity = (ClaimsIdentity)httpContext.User.Identity;
+
+            var existingNameClaim = identity.FindFirst(ClaimTypes.Name);
+            if (existingNameClaim != null)
+            {
+                identity.RemoveClaim(existingNameClaim);
+            }
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.FullName ?? string.Empty));
+
+            var existingEmailClaim = identity.FindFirst(ClaimTypes.Email);
+            if (existingEmailClaim != null)
+            {
+                identity.RemoveClaim(existingEmailClaim);
+            }
+            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email ?? string.Empty));
+
+            await httpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity),
+                new AuthenticationProperties { IsPersistent = true }
+            );
+        }
+
         public User FindByEmail(string email)
         {
             return _userRepository.FindByEmail(email);

@@ -49,7 +49,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             public string? BankAccount { get; set; }
 
             [BindNever]
-            public string Image { get; set; } // Không b? binding t? form
+            public string Image { get; set; }
 
             public bool Status { get; set; }
 
@@ -91,7 +91,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 NewEmail = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 BankAccount = user.BankAccount,
-                Image = user.Image, // Gán giá tr? ban ??u t? database
+                Image = user.Image,
                 Status = user.Status ?? false,
                 UserType = user.UserType
             };
@@ -173,13 +173,14 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             else
             {
                 Console.WriteLine("No profile image uploaded, keeping existing image.");
-                var originalUser = _userService.FindById(Input.UserId); 
-                user.Image = originalUser?.Image; 
+                var originalUser = _userService.FindById(Input.UserId);
+                user.Image = originalUser?.Image;
             }
 
             try
             {
-                _userService.UpdateUser(user);
+                // S? d?ng UpdateUserAndSessionAsync ?? c?p nh?t c? DB và session
+                await _userService.UpdateUserAndSessionAsync(user, HttpContext);
 
                 if (user.UserType == "Patient")
                 {
