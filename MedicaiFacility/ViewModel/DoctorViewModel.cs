@@ -5,6 +5,7 @@
         public int ExpertId { get; set; }
         public string FullName { get; set; }
         public string Image { get; set; }
+        public string workHour { get; set; }    
         public string Specialization { get; set; }
         public int ExperienceYears { get; set; }
         public string DepartmentName { get; set; }

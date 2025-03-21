@@ -11,5 +11,9 @@ public partial class SystemBalance
 
     public decimal TotalBalance { get; set; }
 
+    public string BankAccount { get; set; }
+
     public DateTime? LastUpdated { get; set; }
+
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

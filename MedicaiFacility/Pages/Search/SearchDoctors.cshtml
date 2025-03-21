@@ -126,6 +126,7 @@
                         <p class="card-text"><strong>Specialization:</strong> @doctor.Specialization</p>
                         <p class="card-text"><strong>Experience:</strong> @doctor.ExperienceYears Years</p>
                         <p class="card-text"><strong>Department:</strong> @doctor.DepartmentName</p>
+                        <p class="card-text"><strong>working hour:</strong> @doctor.workHour</p>
                         <p class="card-text"><strong>Medical Facility:</strong> @doctor.FacilityName</p>
                         <p class="card-text"><strong>Address:</strong> @doctor.Address</p>
                         <p class="card-text"><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
@@ -141,3 +142,18 @@
         <h5 class="text-center text-muted fw-bold my-5">Cannot find doctor as your expected.</h5>
     }
 </div>
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                
+
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="/Search/SearchDoctors?pg=@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

@@ -29,8 +29,7 @@ namespace MedicaiFacility.DataAccess
                 .Include(me => me.Facility)
                 .Include(me => me.MedicalExpertSchedules)
                 .Where(me =>
-                    me.Expert != null && me.Expert.Status == true &&
-                    me.MedicalExpertSchedules.Any() &&
+                    me.Expert != null && me.Expert.Status == true && me.MedicalExpertSchedules.Any() &&
                     (string.IsNullOrEmpty(searchTerm) ||
                     me.Expert.FullName.ToLower().Contains(searchTerm) ||
                     me.Specialization.ToLower().Contains(searchTerm) ||

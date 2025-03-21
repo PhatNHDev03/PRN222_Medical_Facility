@@ -27,6 +27,7 @@ namespace MedicaiFacility.RazorPage.Pages.Transactions
 			{
 				transactionViewModels.Add(new TransactionViewModel
 				{
+					SystemBankAccount = transaction.Balance.BankAccount,
 					TransactionId = transaction.TransactionId,
 					UserName = transaction.User.FullName,
 					UserEmail = transaction.User.Email,

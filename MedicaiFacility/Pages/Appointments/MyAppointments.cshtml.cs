@@ -46,8 +46,10 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                     var existingTransaction = _transactionService.GetById(item.TransactionId.Value);
                     if (existingTransaction != null)
                     {
+                        var system = _systemBalanceService.GetBalance(1);
                         Transaction refundTransaction = new Transaction
                         {
+                            Balance = system,
                             UserId = item.PatientId,
                             PaymentMethod = "Vn pay",
                             Amount = existingTransaction.Amount,

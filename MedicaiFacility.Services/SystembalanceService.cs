@@ -1,4 +1,5 @@
-﻿using MedicaiFacility.DataAccess.IRepostory;
+﻿using MedicaiFacility.BusinessObject;
+using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,12 @@ namespace MedicaiFacility.Service
         {
             _systemBalanceRepository = systemBalanceRepository;
         }
+
+        public SystemBalance GetBalance(int id)
+        {
+           return _systemBalanceRepository.GetBalance(id);
+        }
+
         public void update(int SystemId, decimal amount)
         {
             _systemBalanceRepository.update(SystemId, amount);

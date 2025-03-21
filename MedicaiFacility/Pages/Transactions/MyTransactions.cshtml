@@ -10,7 +10,8 @@
 			<th>User Name</th>
 			<th>User Email</th>
 			<th>Number Phone</th>
-			<th>Bank Account</th>
+			<th>Transfer Bank Account</th>
+			<th>Receiving Bank Account</th>
 			<th>Payment Method</th>
 			<th>Amount</th>
 			<th>Transaction Status</th>
@@ -28,6 +29,7 @@
 				<td>@(transaction.UserName ?? "Unknown")</td>
 				<td>@(transaction.UserEmail ?? "Unknown")</td>
 				<td>@(transaction.NumberPhone ?? "N/A")</td>
+				<td>@(transaction.SystemBankAccount ?? "N/A")</td>
 				<td>@(transaction.BankAccount ?? "N/A")</td>
 				<td>@transaction.PaymentMethod</td>
 				<td>@transaction.Amount.ToString("C")</td>

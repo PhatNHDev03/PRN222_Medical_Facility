@@ -53,9 +53,10 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             {
                 return RedirectToPage("/Patients/NotFoundProfile");
             }
-
+            var system = _systemBalanceService.GetBalance(1);
             var transaction = new Transaction
             {
+                Balance = system,
                 UserId = int.Parse(userId),
                 PaymentMethod = PaymentMethodSelected,
                 Amount = AmountAccepted,
@@ -68,8 +69,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             // luu amount vao system balance ()
             _systemBalanceService.update(1, AmountAccepted);
 
-            // kiem tra thu Patient cua user co ton tai ko --done
-            //tao transaction done -->appoinment --> HEALTHRECORD
+           
 
 
             return RedirectToPage("/Patients/CreateAppointment", new { patientId = userParse , transactionId = transaction .TransactionId, expertId = MedicalExpert.ExpertId });

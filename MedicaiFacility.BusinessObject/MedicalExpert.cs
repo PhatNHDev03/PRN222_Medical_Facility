@@ -17,6 +17,10 @@ public partial class MedicalExpert
 
     public decimal? PriceBooking { get; set; }
 
+    public int? StartHour { get; set; }
+
+    public int? EndHour { get; set; }
+
     public int? FacilityId { get; set; }
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();

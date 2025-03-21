@@ -41,6 +41,7 @@ namespace MedicaiFacility.RazorPage.Pages.Search
                 FullName = medicalExpert.Expert?.FullName ?? "Unknown",
                 Image = medicalExpert.Expert?.Image ?? "https://cdn.medpro.vn/prod-partner/3ee52d40-60a4-492b-af06-f759cce2d5d2-doctormale.jpg",
                 Specialization = medicalExpert.Specialization ?? "N/A",
+                workHour = "start hour: " + medicalExpert.StartHour + " - EndHour: " + medicalExpert.EndHour,
                 ExperienceYears = medicalExpert.ExperienceYears,
                 DepartmentName = medicalExpert.Department ?? "N/A",
                 FacilityName = medicalExpert.Facility?.FacilityName ?? "N/A",
