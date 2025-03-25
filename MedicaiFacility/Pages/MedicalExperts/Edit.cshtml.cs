@@ -1,7 +1,3 @@
-using MedicaiFacility.BusinessObject;
-using MedicaiFacility.Service.IService;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -124,16 +120,13 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
             var medicalExpert = await _medicalExpertService.GetByIdAsync(id.Value);
             if (medicalExpert == null)
             {
-                        Console.WriteLine($"Failed to create or retrieve Medical Expert with ID {id}.");
                 return NotFound();
             }
 
             var user = _userService.FindById(id.Value);
             if (user == null)
             {
-                    Console.WriteLine($"Error creating Medical Expert: {ex.Message} - InnerException: {ex.InnerException?.Message ?? "none"}");
                 return NotFound();
-            }
             }
 
             // Populate the input model with data from both User and MedicalExpert

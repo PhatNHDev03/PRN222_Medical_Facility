@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Input.UserType" class="control-label"></label>
-                        <input asp-for="Input.UserType" class="form-control"  readonly/>
+                        <input asp-for="Input.UserType" class="form-control" readonly />
 
                         <span asp-validation-for="Input.UserType" class="text-danger"></span>
                     </div>
@@ -118,21 +118,10 @@
                                     <label class="form-check-label">@day</label>
                                 </div>
                             }
-                                <input type="hidden" name="Input.SelectedDays" value="" />
-                            }
-                            else
-                            {
-                                <p class="text-danger">No available days found.</p>
-                            }
-                            <span asp-validation-for="Input.SelectedDays" class="text-danger"></span>
                         </div>
                         <span class="text-danger" asp-validation-for="SelectedDaysFromForm"></span>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
-                </form>
             </div>
 
             <div class="button-group">

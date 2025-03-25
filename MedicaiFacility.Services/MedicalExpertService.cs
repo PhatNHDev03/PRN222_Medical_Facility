@@ -76,15 +76,8 @@ namespace MedicaiFacility.Service
             return _medicalExpertRepository.GetAllMedicalExpert();
         }
 
-        public void UpdateMedicalExpert(MedicalExpert medicalExpert)
-        {
-            _medicalExpertRepository.UpdateMedicalExpert(medicalExpert);
-        }
 
-        public void DeleteMedicalExpert(int id)
-        {
-            _medicalExpertRepository.DeleteMedicalExpert(id);
-        }
+      
 
         public List<MedicalExpert> SearchDoctors(string searchTerm)
         {

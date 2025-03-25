@@ -12,13 +12,12 @@ namespace MedicaiFacility.Service.IService
         MedicalExpert getById(int id);
         void CreateMedicalExpert(MedicalExpert medicalExpert);
         IEnumerable<MedicalExpert> GetAllMedicalExperts();
-        void UpdateMedicalExpert(MedicalExpert medicalExpert);
-        void DeleteMedicalExpert(int id);
+
         void AddMedicalExpertSchedule(MedicalExpertSchedule schedule);
         void DeleteSchedulesByExpertId(int expertId);
             List<MedicalExpert> SearchDoctors(string searchTerm);
         (List<MedicalExpert>, int totalItem) FindAllWithPagination(int pg, int pageSize);
-        List<MedicalExpert> SearchDoctors(string searchTerm);
+ 
         List<string> GetScheduleByExpertId(int expertId);
         List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId);
         Task UpdateScheduleAsync(int expertId, List<string> selectedDays);
