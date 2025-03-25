@@ -47,6 +47,12 @@
 							<li class="nav-item">
 								<span class="nav-link text-white">@User.Identity.Name</span> <!-- Hiển thị tên người dùng -->
 							</li>
+							@if (User.FindFirstValue(ClaimTypes.Role) == "Patient")
+							{
+								<li class="nav-item">
+									<a class="btn btn-primary me-2" asp-area="" asp-page="/Users/EditSelfProfile" asp-route-id="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">My Profile</a>
+								</li>
+							}
 							<li class="nav-item">
 								<a class="btn btn-primary me-2" asp-area="" asp-page="/Users/Logout">Logout</a>
 							</li>

@@ -95,5 +95,14 @@ namespace MedicaiFacility.DataAccess
                 _context.SaveChanges();
             }
         }
+        public User GetUserByPatientId(int patientId)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.PatientId == patientId);
+            if (patient == null)
+            {
+                return null;
+            }
+            return _context.Users.FirstOrDefault(u => u.UserId == patient.PatientId);
+        }
     }
 }

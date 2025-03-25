@@ -12,5 +12,9 @@ namespace MedicaiFacility.DataAccess.IRepostory
         void Delete(int id);
         void AddMedicalExpertSchedule(MedicalExpertSchedule schedule);
         void DeleteSchedulesByExpertId(int expertId);
+        List<MedicalExpert> SearchDoctors(string searchTerm);
+        List<string> GetScheduleByExpertId(int expertId);
+        List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId);
+        List<MedicalExpert> getExpertsByFacilityId(int facilityId);
     }
 }

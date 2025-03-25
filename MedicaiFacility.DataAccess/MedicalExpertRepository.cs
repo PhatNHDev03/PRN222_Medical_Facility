@@ -145,5 +145,46 @@ namespace MedicaiFacility.DataAccess
                 throw;
             }
         }
+        public List<MedicalExpert> SearchDoctors(string searchTerm)
+        {
+            searchTerm = searchTerm?.ToLower();
+
+            var query = _context.MedicalExperts
+                .Include(me => me.Expert)
+                .Include(me => me.Facility)
+                .Include(me => me.MedicalExpertSchedules)
+                .Where(me =>
+                    me.Expert != null && me.Expert.Status == true && me.MedicalExpertSchedules.Any() &&
+                    (string.IsNullOrEmpty(searchTerm) ||
+                    me.Expert.FullName.ToLower().Contains(searchTerm) ||
+                    me.Specialization.ToLower().Contains(searchTerm) ||
+                    me.Department.ToLower().Contains(searchTerm) ||
+                    me.ExperienceYears.ToString().Contains(searchTerm) ||
+                    me.Facility.FacilityName.ToLower().Contains(searchTerm) ||
+                    me.Facility.Address.ToLower().Contains(searchTerm) ||
+                    me.PriceBooking.ToString().Contains(searchTerm)));
+
+            return query.ToList();
+        }
+        public List<string> GetScheduleByExpertId(int expertId)
+        {
+            return _context.MedicalExpertSchedules
+                .Where(s => s.ExpertId == expertId)
+                .Select(s => s.DayOfWeek)
+                .ToList();
+        }
+
+        public List<MedicalExpert> getExpertsByFacilityId(int facilityId)
+        {
+            return _context.MedicalExperts.Where(x => x.FacilityId == facilityId).Include(x => x.Expert).Include(x => x.MedicalExpertSchedules).ToList();
+        }
+        public List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId)
+        {
+            return _context.RatingsAndFeedbacks
+                .Include(rf => rf.MedicalHistory)
+                .ThenInclude(mh => mh.Appointment)
+                .Where(rf => rf.MedicalHistory != null && rf.MedicalHistory.Appointment != null && rf.MedicalHistory.Appointment.ExpertId == expertId)
+                .ToList();
+        }
     }
 }

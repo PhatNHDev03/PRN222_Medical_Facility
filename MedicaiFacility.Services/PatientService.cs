@@ -20,6 +20,10 @@ namespace MedicaiFacility.Service
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
+        public Patient getById(int id)
+        {
+            return _patientRepository.FindById(id);
+        }
         public void CreatePatient(Patient patient)
         {
             var user = _userRepository.FindById(patient.PatientId);

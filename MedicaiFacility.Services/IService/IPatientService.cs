@@ -9,6 +9,7 @@ namespace MedicaiFacility.Service.IService
 {
     public interface IPatientService
     {
+        Patient getById(int id);
         void CreatePatient(Patient patient);
         Patient GetPatientById(int id);
         IEnumerable<Patient> GetAllPatients();

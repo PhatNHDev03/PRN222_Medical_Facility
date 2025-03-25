@@ -18,5 +18,6 @@ namespace MedicaiFacility.Service.IService
         User IsExistEmail(string email);
         bool ValidatePassword(string email, string password);
         void ChangePassword(string email, string newPassword);
+        User GetUserByPatientId(int patientId);
     }
 }
