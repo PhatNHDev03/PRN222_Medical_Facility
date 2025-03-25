@@ -107,9 +107,13 @@ namespace MedicaiFacility.DataAccess
                     (string.IsNullOrEmpty(searchTerm) ||
                     me.Expert.FullName.ToLower().Contains(searchTerm) ||
                     me.Specialization.ToLower().Contains(searchTerm) ||
+                    me.StartHour.ToString().Contains(searchTerm) ||
+                    me.EndHour.ToString().Contains(searchTerm) ||
                     me.Department.ToLower().Contains(searchTerm)|| 
                     me.ExperienceYears.ToString().Contains(searchTerm) ||
                     me.Facility.FacilityName.ToLower().Contains(searchTerm) ||
+                    me.Facility.Address.ToLower().Contains(searchTerm) ||
+                    me.Facility.Address.ToLower().Contains(searchTerm) ||
                     me.Facility.Address.ToLower().Contains(searchTerm) ||
                     me.PriceBooking.ToString().Contains(searchTerm)));
 
