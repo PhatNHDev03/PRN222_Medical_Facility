@@ -23,7 +23,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
             if (id == null)
             {
                 TempData["Error"] = "Invalid Expert ID.";
-                return RedirectToPage("/Users/Index");
+                return RedirectToPage("/MedicalExperts/Index");
             }
 
             try
@@ -33,7 +33,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                 if (medicalExpert == null)
                 {
                     TempData["Error"] = $"Medical Expert with ID {id} not found.";
-                    return RedirectToPage("/Users/Index");
+                    return RedirectToPage("/MedicalExperts/Index");
                 }
 
                 MedicalExpert = medicalExpert;
@@ -43,7 +43,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
             catch (Exception ex)
             {
                 TempData["Error"] = $"An error occurred while fetching the Medical Expert: {ex.Message}";
-                return RedirectToPage("/Users/Index");
+                return RedirectToPage("/MedicalExperts/Index");
             }
         }
     }

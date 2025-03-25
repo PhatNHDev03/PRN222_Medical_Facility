@@ -60,7 +60,7 @@ namespace MedicaiFacility.DataAccess
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users;
         }
 
         public void UpdateUser(User user)

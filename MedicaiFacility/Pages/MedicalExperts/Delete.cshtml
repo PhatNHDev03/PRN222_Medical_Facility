@@ -8,8 +8,8 @@
 
 <h4>Are you sure you want to delete this Expert?</h4>
 
-<form method="post" asp-page="Delete" asp-route-id="@Model.MedicalExpert.ExpertId">
-    <input type="hidden" asp-for="MedicalExpert.ExpertId" />
+<form method="post" asp-page="Delete" asp-route-id="@Model.MedicalExpert.UserId">
+    <input type="hidden" asp-for="MedicalExpert.UserId" />
     <button type="submit" class="btn btn-danger">Delete</button>
     <a asp-page="Index" class="btn btn-secondary">Cancel</a>
 </form>

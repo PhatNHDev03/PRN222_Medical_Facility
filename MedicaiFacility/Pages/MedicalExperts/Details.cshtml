@@ -3,7 +3,11 @@
 
 @{
     ViewData["Title"] = "Medical Expert Details";
-    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
 }
 
 <h4>Medical Expert Details</h4>
@@ -136,7 +140,14 @@ else
 
     <div class="button-group">
         <a asp-page="/MedicalExperts/Edit" asp-route-id="@Model.MedicalExpert.ExpertId" class="btnDetail btn-edit">Edit</a>
-        <a asp-page="/Users/Index" class="btnDetail btn-back">Close</a>
+        @if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+        {
+            <a asp-page="/MedicalExperts/Index" class="btnDetail btn-back">Close</a>
+        } else
+        
+        {
+            <a asp-page="/Index" class="btnDetail btn-back">Close</a>
+        }
     </div>
 }
 

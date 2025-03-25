@@ -52,34 +52,45 @@ namespace MedicaiFacility.RazorPage.Pages.Search
             // Dropdown
             PopulateDropdowns();
 
-            var medicalExperts = _medicalExpertService.SearchDoctors(SearchTerm);
+            var medicalExperts = _medicalExpertService.GetAllMedicalExpert();
+            var filter = medicalExperts.Where(m => string.IsNullOrEmpty(SearchTerm) ||
+                             m.Specialization.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                             (m.Department ?? "").Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                             m.ExperienceYears.ToString().Trim().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                             m.StartHour.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                             m.EndHour.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                             m.Facility.FacilityName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               m.Facility.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+                             )
+                             .OrderByDescending(m => m.ExpertId)
+                             .ToList();
 
             if (!string.IsNullOrEmpty(SelectedSpecialization))
             {
-                medicalExperts = medicalExperts
+                filter = filter
                     .Where(me => me.Specialization != null && me.Specialization.Equals(SelectedSpecialization, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 
             if (!string.IsNullOrEmpty(SelectedDepartment))
             {
-                medicalExperts = medicalExperts
+                filter = filter
                     .Where(me => me.Department != null && me.Department.Equals(SelectedDepartment, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 
             if (SelectedFacilityId.HasValue && SelectedFacilityId.Value > 0)
             {
-                medicalExperts = medicalExperts
+                filter = filter
                     .Where(me => me.FacilityId == SelectedFacilityId.Value)
                     .ToList();
             }
 
             // Pagination logic
             int pageSize = 3;
-            TotalPages = (int)Math.Ceiling((double)medicalExperts.Count / pageSize);
+            TotalPages = (int)Math.Ceiling((double)filter.Count / pageSize);
             CurrentPage = pg;
-            var paginationList = medicalExperts.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
+            var paginationList = filter.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
 
             // Map to DoctorViewModel
             Doctors = paginationList.Select(me => new DoctorViewModel

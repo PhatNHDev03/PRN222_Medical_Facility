@@ -27,17 +27,17 @@ namespace MedicaiFacility.DataAccess
         public List<MedicalExpert> GetAllMedicalExpert()
         {
             return _context.MedicalExperts
-                .Include(me => me.Expert)
-                .Include(me => me.MedicalExpertSchedules)
+                  .Include(me => me.Expert)
                 .Include(me => me.Facility)
+                .Include(me => me.MedicalExpertSchedules)
                 .ToList();
         }
 
-        //public void AddMedicalExpert(MedicalExpert medicalExpert)
-        //{
-        //    _context.MedicalExperts.Add(medicalExpert);
-        //    _context.SaveChanges();
-        //}
+       public void AddMedicalExpert(MedicalExpert medicalExpert)
+        {
+            _context.MedicalExperts.Add(medicalExpert);
+          _context.SaveChanges();
+        }
 
         public void UpdateMedicalExpert(MedicalExpert medicalExpert)
         {
@@ -106,6 +106,7 @@ namespace MedicaiFacility.DataAccess
                     me.Expert != null && me.Expert.Status == true && me.MedicalExpertSchedules.Any() &&
                     (string.IsNullOrEmpty(searchTerm) ||
                     me.Expert.FullName.ToLower().Contains(searchTerm) ||
+                 
                     me.Specialization.ToLower().Contains(searchTerm) ||
                     me.StartHour.ToString().Contains(searchTerm) ||
                     me.EndHour.ToString().Contains(searchTerm) ||

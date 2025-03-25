@@ -13,18 +13,18 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 {
     public class DeleteModel : PageModel
     {
-        private readonly IMedicalExpertService _medicalExpertService;
+        private readonly IUserService _userService;
 
         [BindProperty]
-        public MedicalExpert MedicalExpert { get; set; }
-        public DeleteModel(IMedicalExpertService medicalExpertService)
+        public User MedicalExpert { get; set; }
+        public DeleteModel(IUserService userService)
         {
-            _medicalExpertService = medicalExpertService;
+            _userService = userService;
         }
 
         public IActionResult OnGet(int id)
         {
-            MedicalExpert = _medicalExpertService.getById(id);
+            MedicalExpert = _userService.FindById(id);
             if (MedicalExpert == null)
             {
                 return NotFound();
@@ -41,9 +41,11 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 
             try
             {
-                _medicalExpertService.DeleteMedicalExpert(MedicalExpert.ExpertId);
+                var existing = _userService.FindById(MedicalExpert.UserId);
+                existing.Status = false;
+                _userService.UpdateUser(existing);
                 TempData["SuccessMessage"] = "MedicalExpert deleted successfully!";
-                return RedirectToPage("Index");
+                return RedirectToPage("/MedicalExperts/Index");
             }
             catch (Exception ex)
             {

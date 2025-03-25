@@ -16,6 +16,9 @@
             <th>Department Name</th>
             <th>Price Booking</th>
             <th>Facility Name</th>
+             <th>Email</th>
+            <th>Phone Number</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -28,10 +31,13 @@
                 <td>@item.ExperienceYears</td>
                 <td>@item.Department</td>
                 <td>@item.PriceBooking</td>
+                <td>@item.Expert.Email</td>
+                <td>@item.Expert.PhoneNumber</td>
+                <td>@(item.Expert.Status==true?"Active":"InActive")</td>
                 <td>@(item.Facility?.FacilityName ?? "N/A")</td>
                 <td>
-                    <button class="btn btn-info btn-sm" onclick="openModal('Details', @item.ExpertId)">View Detail</button>
-                    <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.ExpertId)">Edit</button>
+
+                    <a class="btn btn-primary btn-sm" asp-page="/MedicalExperts/Details" asp-route-id="@item.ExpertId">Detail</a>
                     <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.ExpertId)">Delete</button>
                 </td>
             </tr>
