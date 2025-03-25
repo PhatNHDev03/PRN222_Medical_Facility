@@ -31,5 +31,6 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             RatingsAndFeedback = ratingsAndFeedback;
             return Page();
         }
+
     }
 }

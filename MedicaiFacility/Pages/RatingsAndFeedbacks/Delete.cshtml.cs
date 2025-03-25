@@ -46,7 +46,8 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             var ratingsAndFeedback = _ratingsService.FindById(id.Value);
             if (ratingsAndFeedback != null)
             {
-                _ratingsService.deleteById(id.Value);
+               ratingsAndFeedback.IsActive = false;
+                _ratingsService.Udpate(ratingsAndFeedback);
             }
 
             return RedirectToPage("./Index");

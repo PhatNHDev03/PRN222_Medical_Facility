@@ -19,7 +19,7 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 
         public async Task OnGetAsync()
         {
-            RatingsAndFeedback = _service.GetAll();
+            RatingsAndFeedback = _service.GetAll().OrderByDescending(x=>x.FeedbackId).ToList();
         }
     }
 }
