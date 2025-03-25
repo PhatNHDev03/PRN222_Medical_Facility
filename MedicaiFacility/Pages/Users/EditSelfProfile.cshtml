@@ -37,7 +37,7 @@
 
     <div class="mb-3">
         <label asp-for="Input.NewEmail" class="form-label">New Email</label>
-        <input asp-for="Input.NewEmail" class="form-control" required />
+        <input type="email" asp-for="Input.NewEmail" class="form-control" required />
         <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
     </div>
 

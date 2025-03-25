@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MedicaiFacility.RazorPage.Pages.Users
 {
+    [BindProperties]
     public class EditSelfProfileModel : PageModel
     {
         private readonly IUserService _userService;
@@ -27,7 +28,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
 
         [BindProperty]
         public string Password { get; set; }
-
+        public string OldPass { get; set; }
         public class InputModel
         {
             public int UserId { get; set; }
@@ -63,18 +64,10 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             public string Gender { get; set; }
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int id)
         {
-            int userId = int.TryParse(User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out int uid) ? uid : 0;
-            if (userId == 0)
-            {
-                Console.WriteLine("User not authenticated, redirecting to login.");
-                return RedirectToPage("/Users/Login");
-            }
-
-            Console.WriteLine($"Loading profile for UserId: {userId}");
-
-            var user = _userService.FindById(userId);
+       
+            var user = _userService.FindById(id);
             if (user == null)
             {
                 Console.WriteLine("User not found.");
@@ -99,7 +92,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             if (user.UserType == "Patient")
             {
                 Console.WriteLine("User is a Patient, loading Patient info...");
-                var patient = _patientService.GetPatientById(userId);
+                var patient = _patientService.GetPatientById(id);
                 if (patient != null)
                 {
                     Console.WriteLine($"Patient found: DateOfBirth={patient.DateOfBirth}, Gender={patient.Gender}");
@@ -123,28 +116,29 @@ namespace MedicaiFacility.RazorPage.Pages.Users
         {
             ModelState.Remove("Input.Image");
 
-            if (!ModelState.IsValid)
-            {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"Validation error: {error.ErrorMessage}");
-                }
-                return Page();
-            }
+        
 
             var user = _userService.FindById(Input.UserId);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "User not found.";
-                return Page();
-            }
+         
 
             if (user.Password != Password)
             {
                 TempData["ErrorMessage"] = "Incorrect password.";
-                return Page();
-            }
 
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
+            }
+            if (user.Email!= Input.NewEmail && _userService.FindByEmail(Input.Email.Trim()) != null)
+            {
+                TempData["ErrorMessage"] = "Email is alreadly exist";
+
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
+            }
+            if (user.PhoneNumber != Input.PhoneNumber && _userService.FindByPhoneNumber(Input.PhoneNumber.Trim()) != null)
+            {
+                TempData["ErrorMessage"] = "Phone Number is alreadly exist";
+
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
+            }
             user.FullName = Input.FullName;
             user.Email = Input.NewEmail;
             user.PhoneNumber = Input.PhoneNumber;
@@ -204,7 +198,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 }
 
                 TempData["SuccessMessage"] = "Profile updated successfully!";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
             catch (Exception ex)
             {
@@ -218,26 +212,22 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmNewPassword))
             {
                 TempData["ErrorMessage"] = "All password fields are required.";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
 
             if (newPassword != confirmNewPassword)
             {
                 TempData["ErrorMessage"] = "New password and confirmation do not match.";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
 
             var user = _userService.FindById(Input.UserId);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "User not found.";
-                return RedirectToPage();
-            }
+         
 
             if (user.Password != oldPassword)
             {
                 TempData["ErrorMessage"] = "Old password is incorrect.";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
 
             try
@@ -245,12 +235,12 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 user.Password = newPassword;
                 _userService.UpdateUser(user);
                 TempData["SuccessMessage"] = "Password changed successfully!";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = $"Failed to change password: {ex.Message}";
-                return RedirectToPage();
+                return RedirectToPage("/Users/EditSelfProfile", new { id = Input.UserId });
             }
         }
     }
