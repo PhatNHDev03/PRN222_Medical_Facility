@@ -1,11 +1,8 @@
 ﻿@page
-@model MedicaiFacility.RazorPage.Pages.MedicalExperts.IndexModel
+@model MedicaiFacility.RazorPage.Pages.Admin.WaittingToApproveListModel
 @{
-    ViewData["Title"] = "Medical Experts List";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
-
-<h2>Medical Experts List</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -25,10 +22,8 @@
             <th>Experience Years</th>
             <th>Department</th>
             <th>Price Booking</th>
-            <th>Facility Name</th>
+            <th>Facility ID</th>
             <th>Schedule</th>
-            <th>BankAccount</th>
-            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -46,11 +41,10 @@
                 <td>@medicalExpert.PriceBooking?.ToString("F2")</td>
                 <td>@medicalExpert.FacilityName</td>
                 <td>@string.Join(", ", medicalExpert.ScheduleDays)</td>
-                <td>@medicalExpert.BankAccount</td>
-                <td>@medicalExpert.Status</td>
                 <td>
-                    <button type="button" class="btn btn-warning btn-sm" onclick="openEditModal(@medicalExpert.ExpertId)">Edit</button>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="openDeleteModal(@medicalExpert.ExpertId)">Delete</button>
+                    <form method="post" asp-page-handler="Approve" asp-route-id="@medicalExpert.ExpertId">
+                        <button type="submit" class="btn btn-outline-primary">Approve</button>
+                    </form>
                 </td>
             </tr>
         }

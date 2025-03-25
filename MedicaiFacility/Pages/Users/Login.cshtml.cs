@@ -65,9 +65,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-            if (user.UserType == "Admin") {
-                return RedirectToPage("/Admin/Index");
-            }
+            
             return RedirectToPage("/Index");
         }
     }

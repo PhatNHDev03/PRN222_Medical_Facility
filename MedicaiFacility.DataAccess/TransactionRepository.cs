@@ -32,7 +32,7 @@ namespace MedicaiFacility.DataAccess
 
 		public Transaction GetById(int id)
 		{
-			return _Context.Transactions.OrderByDescending(t => t.TransactionId).Include(t => t.User).FirstOrDefault();
+			return _Context.Transactions.FirstOrDefault(x=>x.TransactionId==id);
 		}
 
 		public void Update(Transaction transaction)

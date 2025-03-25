@@ -4,6 +4,7 @@ using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -72,6 +73,13 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             }
 
             existHealthRecord.FilePath = HealthRecord.FilePath;
+            existHealthRecord.FileName = HealthRecord.FileName;
+            existHealthRecord.TestResult = HealthRecord.TestResult;
+            existHealthRecord.Diagnosis = HealthRecord.Diagnosis;
+            existHealthRecord.Prescription = HealthRecord.Prescription;
+            existHealthRecord.SharedLink = HealthRecord.SharedLink;
+            existHealthRecord.UpdatedAt = DateTime.Now;
+
             var diseaseIdsToDelete = existHealthRecord.HealthRecordDiseases
             .Select(d => d.HealthRecordDiseaseId)
             .ToList(); // Chuyển sang List mới để tránh sửa đổi collection gốc

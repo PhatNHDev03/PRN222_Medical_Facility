@@ -33,16 +33,11 @@
             <label class="form-label">Prescription</label>
             <input type="text" class="form-control" asp-for="HealthRecord.Prescription" />
         </div>
-        <div class="mb-3">
-            <label class="form-label">Created At</label>
-            <input type="date" class="form-control" asp-for="HealthRecord.CreatedAt" readonly />
-        </div>
-      
-            <input hidden="hidden" type="date" class="form-control" asp-for="HealthRecord.UpdatedAt" readonly />
+s   
      
         <div class="mb-3">
-            <label class="form-label">UpdatedAt</label>
-            <a href="@Model.HealthRecord.SharedLink">Shared Link</a>
+            <label class="form-label">SharedLink</label>
+            <input type="text" class="form-control" asp-for="HealthRecord.SharedLink"  />
         </div>
         <div class="mb-3">
             <label class="form-label">Diseases - Department</label>
@@ -63,7 +58,7 @@
         </div>
         
         <div class="mb-3">
-            <label class="form-label">UpdatedAt</label>
+            <label class="form-label">IsActice</label>
             <select class="form-control" asp-for="HealthRecord.IsActive">
                 <option value="true" selected="@(Model.HealthRecord.IsActive == true ? "selected" : null)">Active</option>
                 <option value="false" selected="@(Model.HealthRecord.IsActive == false ? "selected" : null)">Inactive</option>

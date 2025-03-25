@@ -16,5 +16,6 @@ namespace MedicaiFacility.Service.IService
 
         // Đổi từ phương thức đồng bộ sang bất đồng bộ
         Task<(List<RatingsAndFeedback>, int totalItem)> FindAllWithPaginationAsync(int pg, int pageSize);
+        RatingsAndFeedback findByHisId(int id);
     }
 }

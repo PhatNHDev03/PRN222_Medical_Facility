@@ -12,11 +12,9 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RatingsAndFeedback.MedicalHistoryId" class="control-label"></label>
-                <select asp-for="RatingsAndFeedback.MedicalHistoryId" class="form-control" asp-items="ViewBag.MedicalHistoryId"></select>
-            </div>
+            <input asp-for="HisId" hidden="hidden" class="form-control" />
+
+           
 
             <!-- Chọn số sao -->
             <div class="form-group">
@@ -38,14 +36,7 @@
                 <span asp-validation-for="RatingsAndFeedback.Feedback" class="text-danger"></span>
             </div>
 
-            <!-- Nút bật/tắt IsActive -->
-            <div class="form-group">
-                <label class="control-label">Is Active</label>
-                <button type="button" id="toggle-is-active" class="btn btn-danger">Inactive</button>
-                <input type="hidden" asp-for="RatingsAndFeedback.IsActive" id="is-active-value" />
-                <span asp-validation-for="RatingsAndFeedback.IsActive" class="text-danger"></span>
-            </div>
-
+           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

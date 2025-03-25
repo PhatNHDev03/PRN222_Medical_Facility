@@ -56,5 +56,10 @@ namespace MedicaiFacility.Services
         {
             return await Task.FromResult(_repository.FindAllWithPagination(pg, pageSize));
         }
+
+        public RatingsAndFeedback findByHisId(int id)
+        {
+         return  _repository.findByHisId(id);
+        }
     }
 }

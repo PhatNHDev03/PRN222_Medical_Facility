@@ -13,12 +13,9 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RatingsAndFeedback.FeedbackId" />
-            <div class="form-group">
-                <label asp-for="RatingsAndFeedback.MedicalHistoryId" class="control-label"></label>
-                <select asp-for="RatingsAndFeedback.MedicalHistoryId" class="form-control" asp-items="ViewBag.MedicalHistoryId"></select>
-                <span asp-validation-for="RatingsAndFeedback.MedicalHistoryId" class="text-danger"></span>
-            </div>
+            <input hidden="hidden" asp-for="RatingsAndFeedback.FeedbackId" />
+            <input hidden="hidden" asp-for="RatingsAndFeedback.MedicalHistoryId" />
+           
             <div class="form-group">
                 <label class="control-label">Rating</label>
                 <div id="rating-stars">

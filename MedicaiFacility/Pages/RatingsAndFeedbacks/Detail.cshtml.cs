@@ -1,33 +1,30 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using MedicaiFacility.BusinessObject;
+using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MedicaiFacility.BusinessObject;
-using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
-    public class DetailsModel : PageModel
+    public class DetailModel : PageModel
     {
         private readonly IRatingsAndFeedbackService _ratingsService;
 
-        public DetailsModel(IRatingsAndFeedbackService ratingsService)
+        public DetailModel(IRatingsAndFeedbackService ratingsService)
         {
             _ratingsService = ratingsService;
         }
 
         public RatingsAndFeedback RatingsAndFeedback { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int id) // Đổi async Task thành IActionResult vì không cần await
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Console.WriteLine($"OnGetAsync called with intHis={id}");
+          
 
-            var ratingsAndFeedback = _ratingsService.FindById(id.Value);
+            var ratingsAndFeedback = _ratingsService.FindById(id);
             if (ratingsAndFeedback == null)
             {
+                Console.WriteLine("RatingsAndFeedback not found");
                 return NotFound();
             }
 

@@ -7,25 +7,29 @@ using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
+    [BindProperties]
     public class CreateModel : PageModel
     {
+       
         private readonly IRatingsAndFeedbackService _ratingsService;
         private readonly IMedicalHistoryService _medicalHistoryService;
-
+        public int HisId { get; set; }
+        public RatingsAndFeedback RatingsAndFeedback { get; set; } = default!;
         public CreateModel(IRatingsAndFeedbackService ratingsService, IMedicalHistoryService medicalHistoryService)
         {
             _ratingsService = ratingsService;
             _medicalHistoryService = medicalHistoryService;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int intHis)
         {
+            HisId = intHis;
             ViewData["MedicalHistoryId"] = new SelectList(_medicalHistoryService.GetAll(), "HistoryId", "HistoryId");
             return Page();
         }
 
-        [BindProperty]
-        public RatingsAndFeedback RatingsAndFeedback { get; set; } = default!;
+      
+   
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -33,10 +37,11 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             {
                 return Page();
             }
-
+            RatingsAndFeedback.MedicalHistoryId = HisId;
+            RatingsAndFeedback.IsActive = true;
             _ratingsService.Add(RatingsAndFeedback);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/MedicalHistories/MyMedicalHistory");
         }
     }
 }

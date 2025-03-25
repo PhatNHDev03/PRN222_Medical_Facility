@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
+    [BindProperties]
     public class EditModel : PageModel
     {
         private readonly IRatingsAndFeedbackService _ratingsService;
@@ -20,7 +22,7 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             _medicalHistoryService = medicalHistoryService;
         }
 
-        [BindProperty]
+
         public RatingsAndFeedback RatingsAndFeedback { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -47,10 +49,14 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
             {
                 return Page();
             }
-
+            var exist = _ratingsService.FindById(RatingsAndFeedback.FeedbackId);
+            int check  = RatingsAndFeedback.Rating;
+            exist.Rating = RatingsAndFeedback.Rating;
+            exist.Feedback = RatingsAndFeedback.Feedback;
+            exist.IsActive = RatingsAndFeedback.IsActive;
             try
             {
-                _ratingsService.Udpate(RatingsAndFeedback);
+                _ratingsService.Udpate(exist);
             }
             catch (Exception)
             {
@@ -64,7 +70,13 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
                 }
             }
 
-            return RedirectToPage("./Index");
+            if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+            {
+                return RedirectToPage("./Index");
+            }
+            else {
+                return RedirectToPage("/RatingsAndFeedbacks/Detail", new { id = exist.FeedbackId });
+            }
         }
     }
 }

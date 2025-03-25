@@ -1,37 +1,28 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.RazorPage.ViewModel;
-using MedicaiFacility.Service;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
+namespace MedicaiFacility.RazorPage.Pages.Admin
 {
     [BindProperties]
-    public class IndexModel : PageModel
+    public class WaittingToApproveListModel : PageModel
     {
-        private readonly IUserService _userService;
-        private readonly IMedicalExpertScheduleService _medicalExpertScheduleService; // Thêm service cho MedicalExpertSchedule
         public int TotalPages { get; set; }
         public int CurrentPage { get; set; }
-        public IndexModel(
-            IUserService userService,
-            IMedicalExpertScheduleService medicalExpertScheduleService)
+        private readonly IUserService _userService;
+        private readonly IMedicalExpertScheduleService _medicalExpertScheduleService;
+       public List<MedicalExpertViewModel> MedicalExperts { get; set; }
+        public WaittingToApproveListModel(IUserService userService, IMedicalExpertScheduleService medicalExpertScheduleService)
         {
             _userService = userService;
-            _medicalExpertScheduleService = medicalExpertScheduleService ;
+            _medicalExpertScheduleService = medicalExpertScheduleService;
         }
-
-        public List<MedicalExpertViewModel> MedicalExperts { get; set; } = new List<MedicalExpertViewModel>();
-
-
-        public void OnGet(int pg = 1)
+        public void OnGet(int pg=1)
         {
             CurrentPage = pg;
-            var medicalExperts = _userService.GetAllUsers().Where(x => x.IsApprove == true && x.UserType == "MedicalExpert").ToList();
+            var medicalExperts = _userService.GetAllUsers().Where(x=>x.IsApprove==false&&x.UserType== "MedicalExpert").ToList();
             MedicalExperts = medicalExperts
         .Select(expert =>
         {
@@ -40,14 +31,12 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                 ExpertId = expert.UserId,
                 FullName = expert.FullName,
                 Email = expert.Email,
-                PhoneNumber = expert.PhoneNumber,
+                PhoneNumber = expert.PhoneNumber,   
                 Specialization = expert.MedicalExpert.Specialization,
                 ExperienceYears = expert.MedicalExpert.ExperienceYears,
                 Department = expert.MedicalExpert.Department,
                 PriceBooking = expert.MedicalExpert.PriceBooking,
-                FacilityName = expert.MedicalExpert.Facility.FacilityName,
-                BankAccount = expert.BankAccount,
-                Status = expert.Status
+                FacilityName = expert.MedicalExpert.Facility.FacilityName
             };
 
             // Lấy danh sách ngày từ MedicalExpertSchedule
@@ -62,10 +51,19 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
         })
         .ToList();
 
-            int pageSize = 4;
+            int pageSize = 5;
             TotalPages = (int)Math.Ceiling((double)MedicalExperts.Count / pageSize);
             CurrentPage = pg;
             MedicalExperts = MedicalExperts.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
         }
+
+        public IActionResult OnPostApprove(int id) {
+
+            var user = _userService.FindById(id);
+            user.IsApprove = true;
+            _userService.UpdateUser(user);
+            return RedirectToPage("/Users/index");
+        }
+
     }
 }

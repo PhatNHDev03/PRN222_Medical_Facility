@@ -30,10 +30,11 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 
 		public IActionResult OnPost()
 		{
+			var exsisting  =  _medicalHistoryService.GetById(MedicalHistory.HistoryId);
+			exsisting.Status = MedicalHistory.Status;
+            exsisting.UpdatedAt = DateTime.Now;
 
-			MedicalHistory.UpdatedAt = DateTime.Now;
-
-			_medicalHistoryService.Update(MedicalHistory);
+			_medicalHistoryService.Update(exsisting);
 			if (MedicalHistory.Status == "Processing")
 			{
                 TempData["SuccessMessage"] = "System is updated and you can update this medical examination";
@@ -44,7 +45,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 			
 					TempData["SuccessMessage"] = "Please update health record about this medical examination";
 
-                    return RedirectToPage("/HealthRecords/Create");
+                    return RedirectToPage("/HealthRecords/Create", new { hisId = exsisting.HistoryId });
 				
 			}
 			if (User.FindFirstValue(ClaimTypes.Role) != "Admin")

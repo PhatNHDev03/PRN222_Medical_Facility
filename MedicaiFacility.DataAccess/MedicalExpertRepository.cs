@@ -46,7 +46,7 @@ namespace MedicaiFacility.DataAccess
                 .Include(x => x.Expert)
                 .Include(x => x.MedicalExpertSchedules)
                 .ToList();
-            Console.WriteLine($"GetAllMedicalExperts: Loaded {experts.Count} experts.");
+          
             return experts;
         }
 

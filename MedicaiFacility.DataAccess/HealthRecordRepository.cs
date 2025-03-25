@@ -64,7 +64,7 @@ namespace MedicaiFacility.DataAccess
         }
 
 
-        public HealthRecord findByMedicalHistoryId(int hisId) => _Context.HealthRecords.FirstOrDefault(x => x.MedicalHistoryId == hisId);
+        public HealthRecord findByMedicalHistoryId(int hisId) => _Context.HealthRecords.Include(x => x.HealthRecordDiseases).ThenInclude(x => x.Disease).ThenInclude(x => x.Department).FirstOrDefault(x => x.MedicalHistoryId == hisId);
 
 
     }

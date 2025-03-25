@@ -66,6 +66,12 @@
             <option value="false" selected="@(Model.HealthRecord.IsActive ==true ? null : "selected")">Inactive</option>
         </select>
     </div>
+    @if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+    {
+
+        <button class="btn btn-danger" onclick="window.location.href='@Url.Page("/HealthRecords/Edit", new { id = Model.HealthRecord.MedicalHistoryId })'">Health record Edit</button>
+
+    }
 </div>
 
 

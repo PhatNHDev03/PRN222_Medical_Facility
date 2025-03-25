@@ -11,6 +11,8 @@
 </div>
 <div class="container">
     <form asp-page="/HealthRecords/Create" method="post" enctype="multipart/form-data">
+        <input hidden="hidden" class="form-control"  asp-for="HistoryId" />
+
         <div class="mb-3">
             <label class="form-label">File Name</label>
             <input type="text" class="form-control" asp-for="HealthRecord.FileName" />

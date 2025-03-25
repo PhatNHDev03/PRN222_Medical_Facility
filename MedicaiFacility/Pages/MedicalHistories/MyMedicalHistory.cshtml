@@ -5,8 +5,11 @@
 {
 	<div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-
-<table class="table table-bordered">
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<table class="table table-hover table-striped table-bordered table-responsive">
 	<thead class="thead-dark">
 		<tr>
 			<th>History ID</th>
@@ -48,8 +51,13 @@
 					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'"> History Detail</button>
 					@if (history.Status == "Completed")
 					{
-						<button class="btn btn-dark" onclick="window.location.href='@Url.Page("/HealthRecords/Detail", new { id = history.HistoryId })'">Health record Detail</button>
+                        <button class="btn btn-primary" onclick="window.location.href='@Url.Page("/HealthRecords/Detail", new { id = history.HistoryId })'"> Health Record Detail</button>
 
+
+                        <form asp-page-handler="MyCreate" asp-route-id="@history.HistoryId" method="post">
+
+                            <button type="submit">View Rating and feedback</button>
+                        </form>
 					}
 
 					@if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
@@ -60,8 +68,7 @@
 						}
 						if (history.Status == "Completed")
 						{
-							<button class="btn btn-danger" onclick="window.location.href='@Url.Page("/HealthRecords/Edit", new { id = history.HistoryId })'">Health record Edit</button>
-						}
+                        }
 
 					}
 
@@ -71,84 +78,9 @@
 	</tbody>
 </table>
 
-    <!-- Modal Bootstrap -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Cancellation</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Are you sure you want to cancel this appointment?</p>
-                    <p class="text-muted">Please make sure you have the patient's consent!</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <form method="post" asp-page-handler="CancelMyMedicalHistory">
-                        <input type="hidden" name="hid" id="deleteHistoryId" />
-                        <button type="submit" class="btn btn-danger">Confirm Cancel</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Modal Confirm -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header bg-danger text-white">
-				<h5 class="modal-title" id="deleteModalLabel">Update history</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body" id="modalForm">
-				<p>Loading...</p> <!-- Sẽ được thay thế bằng nội dung form -->
-			</div>
-
-		</div>
-	</div>
-</div>
-
-    <script>
-        function openModal(event, historyId) {
-            event.preventDefault();
-            document.getElementById("deleteHistoryId").value = historyId;
-            var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            myModal.show();
-        }
-    </script>
 
 
-<script>
-	async function openModal(id = null) {
-		let url = `/MedicalHistories/Edit?id=${id}`;
 
-		try {
-			let response = await fetch(url);
-			let data = await response.text();
-
-			let modalForm = document.getElementById("modalForm");
-			modalForm.innerHTML = data;
-			let modal = new bootstrap.Modal(document.getElementById("confirmModal"));
-			modal.show();
-
-		} catch (error) {
-			console.error("Error loading modal:", error);
-		}
-	}
-
-	function closeModal() {
-		let modalElement = document.getElementById("confirmModal");
-		let modal = bootstrap.Modal.getInstance(modalElement);
-		if (modal) {
-			modal.hide();
-		}
-		document.getElementById("modalForm").innerHTML = "";
-	}
-
-
-</script>
 
     @if (Model.Pager.TotalPages > 0)
     {
@@ -185,59 +117,64 @@
 
 <!-- Custom CSS -->
 <style>
+    /* Table Styling */
     .table-custom {
         width: 100%;
         margin-top: 20px;
-        border-collapse: separate;
-        border-spacing: 0 10px;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-        .table-custom th,
-        .table-custom td {
-            padding: 12px;
-            text-align: left;
-            vertical-align: middle;
-            background-color: #fff;
-            border: none;
-        }
-
-        .table-custom th {
+        /* Table header */
+        .table-custom thead {
             background-color: #343a40;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
         }
 
-        .table-custom tr {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        /* Table header and cells */
+        .table-custom th, .table-custom td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
-        .table-custom td:first-child,
-        .table-custom th:first-child {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
+            /* Bo góc cho ô đầu và cuối mỗi hàng */
+            .table-custom td:first-child,
+            .table-custom th:first-child {
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+            }
+
+            .table-custom td:last-child,
+            .table-custom th:last-child {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+
+        /* Hover Effect */
+        .table-custom tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1); /* Làm nổi bật hàng khi hover */
+            transition: background 0.3s ease-in-out;
         }
 
-        .table-custom td:last-child,
-        .table-custom th:last-child {
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
+    /* Button spacing */
     .btn-action {
         margin-right: 5px;
         margin-bottom: 5px;
     }
 
+    /* Trạng thái */
     .status-confirmed {
-        background-color: #28a745; /* Green background */
-        color: #fff; /* White text for contrast */
-        padding: 2px 8px;
-        border-radius: 4px;
-        display: inline-block;
+        background-color: #28a745;
+        color: #fff;
+        padding: 3px 10px;
+        border-radius: 5px;
     }
 
+    /* Pagination */
     .pagination {
         margin-top: 20px;
     }
@@ -250,6 +187,7 @@
             color: #007bff;
             background-color: #fff;
             border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
         .pagination .page-item.active .page-link {
@@ -258,16 +196,12 @@
             border-color: #007bff;
         }
 
-    .modal-dialog {
-        max-width: 400px;
-    }
+        /* Hover cho nút chuyển trang */
+        .pagination .page-link:hover {
+            background-color: rgba(0, 123, 255, 0.2);
+        }
 
-    .modal-header {
-        border-bottom: none;
-    }
 
-    .modal-footer {
-        border-top: none;
-    }
+   
 </style>
 

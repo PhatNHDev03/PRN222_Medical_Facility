@@ -41,9 +41,10 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                 item.Status = "Cancelled";
                 _appointmentService.Update(item);
 
-                if (item.TransactionId.HasValue)
-                {
-                    var existingTransaction = _transactionService.GetById(item.TransactionId.Value);
+               
+          
+                    var existingTransaction = _transactionService.GetById((int)item.TransactionId);
+                
                     if (existingTransaction != null)
                     {
                         var system = _systemBalanceService.GetBalance(1);
@@ -64,7 +65,7 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
 
                         _systemBalanceService.update(1, -existingTransaction.Amount);
                     }
-                }
+                
             }
 
             PreLoadPage(1);

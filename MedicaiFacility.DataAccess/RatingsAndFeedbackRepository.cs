@@ -70,5 +70,10 @@ namespace MedicaiFacility.DataAccess
             _context.RatingsAndFeedbacks.Update(ratingsAndFeedback);
             _context.SaveChanges();
         }
+
+        public RatingsAndFeedback findByHisId(int id)
+        {
+          return  _context.RatingsAndFeedbacks.FirstOrDefault(x => x.MedicalHistoryId == id);
+        }
     }
 }

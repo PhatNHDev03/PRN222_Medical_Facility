@@ -47,7 +47,7 @@ namespace MedicaiFacility.DataAccess
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users.OrderByDescending(x=>x.UserId).Include(x => x.MedicalExpert).ThenInclude(x => x.Facility).Include(x=>x.MedicalExpert).ThenInclude(x=>x.MedicalExpertSchedules).ToList();
         }
 
         public void UpdateUser(User user)

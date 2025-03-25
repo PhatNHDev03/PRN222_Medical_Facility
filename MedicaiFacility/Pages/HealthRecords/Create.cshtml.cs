@@ -15,9 +15,9 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
     {
         [BindProperty]
         public string SelectedDiseaseIds { get; set; } = "";
-
+ 
         public List<SelectListItem> Diseases { get; set; }
-
+        public int HistoryId { get; set; }
         private readonly IHealthRecordService _healthRecordService;
         private readonly IDiseaseService _diseaseService;
 
@@ -29,8 +29,9 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 
         public HealthRecord HealthRecord { get; set; }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int hisId)
         {
+            HistoryId = hisId;
             Diseases = _diseaseService.GetAllDisease()
                 .Where(d => d.IsActive==true)
                 .Select(d => new SelectListItem { Value = d.DiseaseId.ToString(), Text = d.DiseaseName+"- "+d.Department.DepartmentName})
@@ -70,7 +71,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             HealthRecord.HealthRecordDiseases = diseaseIds
                 .Select(diseaseId => new HealthRecordDisease { RecordId = HealthRecord.RecordId, DiseaseId = diseaseId })
                 .ToList();
-
+            HealthRecord.MedicalHistoryId = HistoryId;
             HealthRecord.CreatedAt = DateTime.Now;
             HealthRecord.UpdatedAt = DateTime.Now;
             HealthRecord.IsActive = true;

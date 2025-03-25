@@ -17,12 +17,14 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
         private readonly ISystemBalanceService _systemBalanceService;
         private readonly ITransactionService _transactionService;
         private readonly IHealthRecordService _healthRecordService;
-        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService,IHealthRecordService healthRecordService)
+        private readonly IRatingsAndFeedbackService _ratingsAndFeedbackService;
+        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService,IHealthRecordService healthRecordService, IRatingsAndFeedbackService ratingsAndFeedbackService)
         {
             _medicalHistoryService = medicalHistoryService;
             _systemBalanceService = systemBalanceService;
             _transactionService = transactionService;
             _healthRecordService = healthRecordService;
+            _ratingsAndFeedbackService = ratingsAndFeedbackService;
         }
         public void OnGet(int pg = 1)
         {
@@ -105,7 +107,18 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
             }).ToList();
 
         }
-
+        public IActionResult OnPostMyCreate(int id) {
+            var rating = _ratingsAndFeedbackService.findByHisId(id);
+            if (rating==null) {
+                if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+                {
+                    TempData["ErrorMessage"] = "Please waiting for updating rating and feedback from patient";
+                    return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+                }
+                return RedirectToPage("/RatingsAndFeedbacks/Create", new { intHis = id });
+            }
+            return RedirectToPage("/RatingsAndFeedbacks/Detail", new { id = rating.FeedbackId });
+        }
     }
 
   

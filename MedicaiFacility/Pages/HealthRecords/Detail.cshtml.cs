@@ -4,6 +4,7 @@ using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 {
@@ -20,10 +21,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
         }
 		public void OnGet(int? id)
 		{
-		
-
-			HealthRecord = _healthRecordService.FindById((int)id);
-
+            HealthRecord = _healthRecordService.findByMedicalHistoryId((int)id);
 			if (HealthRecord != null)
 			{
 				// Lấy danh sách tất cả bệnh
@@ -39,11 +37,27 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 		}
 
 
+       /* public IActionResult OnGetHisId(int? id)
+        {
+        
 
-		public IActionResult OnGetHisId(int? id) { 
-            
             HealthRecord = _healthRecordService.findByMedicalHistoryId((int)id);
+
+            if (HealthRecord != null)
+            {
+                // Lấy danh sách tất cả bệnh
+                var allDiseases = _diseaseService.GetAllDisease()
+                    .ToDictionary(d => d.DiseaseId, d => d.DiseaseName + " - " + d.Department.DepartmentName);
+
+                // Lọc danh sách bệnh đã chọn từ HealthRecord
+                SelectedDiseases = HealthRecord.HealthRecordDiseases
+                    .Where(d => d.DiseaseId.HasValue && allDiseases.ContainsKey(d.DiseaseId.Value)) // Kiểm tra DiseaseId hợp lệ
+                    .Select(d => new SelectListItem { Value = d.DiseaseId.ToString(), Text = allDiseases[d.DiseaseId.Value] })
+                    .ToList();
+            }
             return Page();
-        }
+
+        }*/
+
     }
 }
