@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedicaiFacility.RazorPage.Pages.Users
 {
+    [BindProperties]
     public class SignUpModel : PageModel
     {
         private readonly IUserService _userService;
@@ -43,12 +44,17 @@ namespace MedicaiFacility.RazorPage.Pages.Users
 
             [Required]
             public string UserType { get; set; }
+
+            public string BankAccount { get; set; }
         }
 
         public List<SelectListItem> UserTypeOptions { get; set; }
 
         public void OnGet()
         {
+            Pre();
+        }
+        private void Pre() {
             // T?o danh sách l?a ch?n cho UserType
             UserTypeOptions = new List<SelectListItem>
             {
@@ -56,7 +62,6 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 new SelectListItem { Value = "MedicalExpert", Text = "Medical Expert" }
             };
         }
-
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
@@ -68,7 +73,17 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 };
                 return Page();
             }
-
+            if (_userService.FindByEmail(Input.Email.Trim())!=null) {
+                TempData["Error"] = "Email is alreadly exist";
+                Pre();
+                return Page();
+            }
+            if (_userService.FindByPhoneNumber(Input.PhoneNumber.Trim()) != null)
+            {
+                TempData["Error"] = "Phone Number is alreadly exist";
+                Pre();
+                return Page();
+            }
             try
             {
                 var user = new User
@@ -77,10 +92,18 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                     Email = Input.Email,
                     Password = Input.Password, 
                     PhoneNumber = Input.PhoneNumber,
-                    UserType = Input.UserType
+                    UserType = Input.UserType,
+                    CreatedAt= DateTime.Now,
+                    UpdatedAt= DateTime.Now,
+                    IsApprove = (Input.UserType== "Patient")?true:false,
+                    BankAccount = Input.BankAccount,
+                    Status = true
                 };
-                _userService.SignUp(user);
-                return RedirectToPage("/Users/Login");
+                _userService.Add(user);
+                if (user.UserType== "Patient") {
+                    return RedirectToPage("/Patients/Create", new {id = user.UserId });
+                }
+                return RedirectToPage("/MedicalExperts/Create",new { id= user.UserId});
             }
             catch (Exception ex)
             {
@@ -90,6 +113,7 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                     new SelectListItem { Value = "Patient", Text = "Patient" },
                     new SelectListItem { Value = "MedicalExpert", Text = "Medical Expert" }
                 };
+                Pre();
                 return Page();
             }
         }

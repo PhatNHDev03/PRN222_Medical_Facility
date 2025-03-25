@@ -19,5 +19,5 @@ public partial class Conversation
 
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual Patient Patient { get; set; }
+    public virtual User Patient { get; set; }
 }

@@ -59,26 +59,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
             var medicalExpert = _medicalExpertService.getById(id);
             if (medicalExpert == null)
             {
-                Console.WriteLine($"Medical Expert with ID {id} not found. Attempting to create...");
-                var user = _userService.FindById(id);
-                if (user == null)
-                {
-                    Console.WriteLine($"User with ID {id} not found. Creating default User.");
-                    user = new User
-                    {
-                        UserId = id,
-                        FullName = $"Default Expert {id}",
-                        Email = $"expert{id}@example.com",
-                        PhoneNumber = $"123456{id}",
-                        Password = "default123",
-                        UserType = "MedicalExpert",
-                        Status = true,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = DateTime.Now
-                    };
-                    _userService.SignUp(user);
-                    Console.WriteLine($"Created default User with ID {id}");
-                }
+                
 
                 medicalExpert = new MedicalExpert
                 {

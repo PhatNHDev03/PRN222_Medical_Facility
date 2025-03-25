@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Sign Up";
 }
+@if (TempData["Error"]!=null)
+{
+    <p class="text-danger">@TempData["Error"]</p>
 
+}
 <h2>Sign Up</h2>
 <form method="post">
     <div class="form-group">
@@ -28,8 +32,13 @@
     </div>
     <div class="form-group">
         <label asp-for="Input.PhoneNumber">Phone Number</label>
-        <input asp-for="Input.PhoneNumber" class="form-control" />
+        <input asp-for="Input.PhoneNumber" class="form-control" required />
         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.BankAccount">BankAccount</label>
+        <input asp-for="Input.BankAccount" class="form-control" required />
+        <span asp-validation-for="Input.BankAccount" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Input.UserType">User Type</label>

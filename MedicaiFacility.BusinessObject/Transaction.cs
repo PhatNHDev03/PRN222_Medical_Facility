@@ -9,6 +9,8 @@ public partial class Transaction
 {
     public int TransactionId { get; set; }
 
+    public int? BalanceId { get; set; }
+
     public int? UserId { get; set; }
 
     public string PaymentMethod { get; set; }
@@ -24,6 +26,8 @@ public partial class Transaction
     public string TransactionType { get; set; }
 
     public virtual Appointment Appointment { get; set; }
+
+    public virtual SystemBalance Balance { get; set; }
 
     public virtual User User { get; set; }
 }

@@ -42,20 +42,7 @@ namespace MedicaiFacility.DataAccess
             return null;
         }
 
-        public void RegisterUser(User user)
-        {
-            if (FindByEmail(user.Email) != null)
-            {
-                throw new Exception("Email already exists!");
-            }
-
-            user.Image = null;
-            user.CreatedAt = DateTime.Now;
-            user.UpdatedAt = DateTime.Now;
-            user.Status = true;
-
-            Add(user);
-        }
+       
 
         public IEnumerable<User> GetAllUsers()
         {

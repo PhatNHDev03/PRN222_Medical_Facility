@@ -1,4 +1,4 @@
-using MedicaiFacility.BusinessObject;
+Ôªøusing MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,110 +10,66 @@ using System.Linq;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 {
-    [Authorize(Roles = "MedicalExpert")]
+    [BindProperties]
+
     public class CreateModel : PageModel
     {
         private readonly IMedicalExpertService _medicalExpertService;
         private readonly IDepartmentService _departmentService;
         private readonly IMedicalFacilityService _medicalFacilityService;
-
+        private readonly IUserService _userService;
         public CreateModel(
             IMedicalExpertService medicalExpertService,
             IDepartmentService departmentService,
-            IMedicalFacilityService medicalFacilityService)
+            IMedicalFacilityService medicalFacilityService,
+            IUserService userService
+            )
         {
-            _medicalExpertService = medicalExpertService ?? throw new ArgumentNullException(nameof(medicalExpertService));
-            _departmentService = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
-            _medicalFacilityService = medicalFacilityService ?? throw new ArgumentNullException(nameof(medicalFacilityService));
+            _medicalExpertService = medicalExpertService ;
+            _departmentService = departmentService ;
+            _medicalFacilityService = medicalFacilityService ;
+            _userService = userService ;
         }
-
-        [BindProperty]
+        public MedicalExpert MedicalExpert { get; set; }
         public InputModel Input { get; set; }
-
-        public SelectList DepartmentList { get; set; }
-        public SelectList FacilityList { get; set; }
+        public List<SelectListItem> Specialization { get; set; }
+        public List<SelectListItem> DepartmentList { get; set; }
+        public List<SelectListItem> FacilityList { get; set; }
 
         public List<string> AvailableDays { get; set; }
-
+        public int UserId { get; set; } 
         public class InputModel
         {
-            [Required]
-            public string Specialization { get; set; }
-
-            [Required]
-            [Range(0, int.MaxValue, ErrorMessage = "Experience Years must be a positive number.")]
-            public int ExperienceYears { get; set; }
-
-            [Required]
-            public string Department { get; set; }
-
-            [Range(0.00, double.MaxValue, ErrorMessage = "Price Booking must be a positive number.")]
-            public decimal? PriceBooking { get; set; }
-
-            [Required]
-            public int? FacilityId { get; set; }
+           
 
             public string[] SelectedDays { get; set; }
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-            {
-                return RedirectToPage("/Users/Login");
-            }
-
-            Console.WriteLine($"Current UserId: {parsedUserId}");
-
-            var departments = _departmentService.GetAllDepartment()
-                .Where(d => d.IsActive == true);
-            DepartmentList = new SelectList(departments, "DepartmentName", "DepartmentName");
-
-            var facilities = _medicalFacilityService.GetAllMedicalFacility()
-                .Where(f => f.IsActive == true);
-            FacilityList = new SelectList(facilities, "FacilityId", "FacilityName");
-
-            AvailableDays = new List<string>
-            {
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday"
-            };
-            Console.WriteLine($"AvailableDays count: {AvailableDays.Count}, Days: {string.Join(", ", AvailableDays)}");
-
-            Input = new InputModel { FacilityId = null };
+            UserId = _userService.FindById(id).UserId;
+            LoadDropdowns();
             return Page();
         }
+  
 
         public IActionResult OnPost()
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-            {
-                ModelState.AddModelError("", "Invalid user session.");
-                Console.WriteLine("Invalid user session.");
-                LoadDropdowns();
-                return Page();
-            }
 
-            if (string.IsNullOrEmpty(Input.Specialization))
+            var check = UserId;
+            if (string.IsNullOrEmpty(MedicalExpert.Specialization))
             {
                 ModelState.AddModelError("Input.Specialization", "Specialization is required.");
             }
-            if (Input.ExperienceYears <= 0)
+            if (MedicalExpert.ExperienceYears <= 0)
             {
                 ModelState.AddModelError("Input.ExperienceYears", "Experience Years must be a positive number.");
             }
-            if (string.IsNullOrEmpty(Input.Department))
+            if (string.IsNullOrEmpty(MedicalExpert.Department))
             {
                 ModelState.AddModelError("Input.Department", "Department is required.");
             }
-            if (!Input.FacilityId.HasValue)
+            if (!MedicalExpert.FacilityId.HasValue)
             {
                 ModelState.AddModelError("Input.FacilityId", "Facility is required.");
             }
@@ -122,40 +78,27 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                 ModelState.AddModelError("Input.SelectedDays", "Please select at least one day.");
             }
 
-            if (!ModelState.IsValid)
-            {
-                Console.WriteLine("ModelState is invalid. Errors: " + string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
-                LoadDropdowns();
-                return Page();
-            }
+            
 
             try
             {
-                Console.WriteLine($"Creating MedicalExpert for UserId: {parsedUserId}");
                 var medicalExpert = new MedicalExpert
                 {
-                    ExpertId = parsedUserId,
-                    Specialization = Input.Specialization,
-                    ExperienceYears = Input.ExperienceYears,
-                    Department = Input.Department,
-                    PriceBooking = Input.PriceBooking,
-                    FacilityId = Input.FacilityId
+                    ExpertId = UserId,
+                    Specialization = MedicalExpert.Specialization,
+                    ExperienceYears = MedicalExpert.ExperienceYears,
+                    Department = MedicalExpert.Department,
+                    StartHour = MedicalExpert.StartHour,
+                    EndHour = MedicalExpert.EndHour,
+                    PriceBooking = MedicalExpert.PriceBooking,
+                    FacilityId = MedicalExpert.FacilityId
                 };
 
-                Console.WriteLine($"MedicalExpert data: Specialization={Input.Specialization}, ExperienceYears={Input.ExperienceYears}, Department={Input.Department}, PriceBooking={Input.PriceBooking}, FacilityId={Input.FacilityId}");
                 _medicalExpertService.CreateMedicalExpert(medicalExpert);
 
-                var createdExpert = _medicalExpertService.getById(parsedUserId);
-                if (createdExpert == null)
-                {
-                    throw new Exception("Failed to create MedicalExpert in database.");
-                }
+            
 
-                // Log gi· tr? c?a Input.SelectedDays
-                Console.WriteLine($"SelectedDays: {(Input.SelectedDays != null ? string.Join(", ", Input.SelectedDays) : "null")}");
-
-                Console.WriteLine($"Adding schedules for ExpertId: {parsedUserId}");
-                // L?c b? c·c gi· tr? khÙng h?p l? (chu?i r?ng)
+              
                 var validDays = Input.SelectedDays.Where(day => !string.IsNullOrWhiteSpace(day)).ToArray();
                 if (validDays.Length == 0)
                 {
@@ -168,15 +111,14 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                 {
                     var schedule = new MedicalExpertSchedule
                     {
-                        ExpertId = parsedUserId,
+                        ExpertId = UserId,
                         DayOfWeek = day
                     };
-                    Console.WriteLine($"Adding schedule: ExpertId={parsedUserId}, Day={day}");
                     _medicalExpertService.AddMedicalExpertSchedule(schedule);
                 }
 
                 TempData["SuccessMessage"] = "Medical Expert created successfully!";
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/Login");
             }
             catch (Exception ex)
             {
@@ -189,13 +131,29 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 
         private void LoadDropdowns()
         {
+            Specialization = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "General practitioner", Text= "General practitioner" },
+                new SelectListItem { Value = "Specialist doctor", Text= "Specialist doctor" },
+                new SelectListItem { Value = "Senior specialist", Text= "Senior specialist" }
+            };
             var departments = _departmentService.GetAllDepartment()
-                .Where(d => d.IsActive == true);
-            DepartmentList = new SelectList(departments, "DepartmentName", "DepartmentName");
+                .Where(d => d.IsActive == true).ToList();
+            DepartmentList = departments.Select(x => new SelectListItem
+            {
+                Value = x.DepartmentId.ToString(), // Chuy·ªÉn int th√†nh string
+                Text = x.DepartmentName
+            }).ToList();
+
+
 
             var facilities = _medicalFacilityService.GetAllMedicalFacility()
-                .Where(f => f.IsActive == true);
-            FacilityList = new SelectList(facilities, "FacilityId", "FacilityName");
+                .Where(f => f.IsActive == true).ToList();
+            FacilityList = facilities.Select(x => new SelectListItem
+            {
+                Value = x.FacilityId.ToString(), // Chuy·ªÉn int th√†nh string
+                Text = x.FacilityName
+            }).ToList();
 
             AvailableDays = new List<string>
             {

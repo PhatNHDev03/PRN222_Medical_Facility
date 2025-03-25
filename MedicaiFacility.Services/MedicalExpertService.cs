@@ -23,30 +23,8 @@ namespace MedicaiFacility.Service
 
         public void CreateMedicalExpert(MedicalExpert medicalExpert)
         {
-            Console.WriteLine($"Creating MedicalExpert with ExpertId: {medicalExpert.ExpertId}");
-            var user = _userRepository.FindById(medicalExpert.ExpertId);
-            if (user == null)
-            {
-                Console.WriteLine("User not found!");
-                throw new Exception("User not found!");
-            }
-
-            if (user.UserType != "MedicalExpert")
-            {
-                Console.WriteLine("User is not a MedicalExpert!");
-                throw new Exception("Selected user is not a medical expert!");
-            }
-
-            try
-            {
-                _medicalExpertRepository.Add(medicalExpert);
-                Console.WriteLine($"MedicalExpert saved to database with ExpertId: {medicalExpert.ExpertId}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving MedicalExpert: {ex.Message} - InnerException: {ex.InnerException?.Message}");
-                throw;
-            }
+            _medicalExpertRepository.Add(medicalExpert);
+            
         }
 
         public IEnumerable<MedicalExpert> GetAllMedicalExperts()

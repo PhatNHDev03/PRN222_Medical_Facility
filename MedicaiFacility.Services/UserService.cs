@@ -29,9 +29,9 @@ namespace MedicaiFacility.Service
             return _userRepository.ValidateLogin(identifier, password);
         }
 
-        public void SignUp(User user)
+        public void Add(User user)
         {
-            _userRepository.RegisterUser(user);
+            _userRepository.Add(user);
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -94,6 +94,11 @@ namespace MedicaiFacility.Service
         public void ChangePassword(string email, string newPassword)
         {
             _userRepository.ChangePassword(email, newPassword);
+        }
+
+        public User FindByPhoneNumber(string phoneNumber)
+        {
+           return _userRepository.FindByPhoneNumber(phoneNumber);
         }
     }
 }

@@ -3,12 +3,13 @@ using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MedicaiFacility.RazorPage.Pages.Patients
 {
-    [Authorize(Roles = "Patient")] // Ch? cho phép ng??i dùng có role "Patient"
+    [BindProperties]
     public class CreateModel : PageModel
     {
         private readonly IPatientService _patientService;
@@ -18,9 +19,9 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             _patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
 
+        public InputModel Input { get; set; }
+        public int UserId { get; set; }
         public class InputModel
         {
             public DateTime? DateOfBirth { get; set; }
@@ -30,19 +31,15 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             public string MedicalHistory { get; set; }
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int  id)
         {
             // L?y UserId t? thông tin ??ng nh?p
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToPage("/Users/Login");
-            }
-
+            UserId = id;
+          
             return Page();
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -51,16 +48,12 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
 
             try
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-                {
-                    ModelState.AddModelError("", "Invalid user session.");
-                    return Page();
-                }
+               
+            
 
                 var patient = new Patient
                 {
-                    PatientId = parsedUserId,
+                    PatientId = UserId,
                     DateOfBirth = Input.DateOfBirth,
                     Gender = Input.Gender,
                     MedicalHistory = Input.MedicalHistory
@@ -69,7 +62,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
                 _patientService.CreatePatient(patient);
 
                 TempData["SuccessMessage"] = "Patient created successfully!";
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Users/Login");
             }
             catch (Exception ex)
             {

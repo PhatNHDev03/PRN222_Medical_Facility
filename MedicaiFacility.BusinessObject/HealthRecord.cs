@@ -9,7 +9,7 @@ public partial class HealthRecord
 {
     public int RecordId { get; set; }
 
-    public int? AppointmentId { get; set; }
+    public int? MedicalHistoryId { get; set; }
 
     public string FileName { get; set; }
 
@@ -29,7 +29,7 @@ public partial class HealthRecord
 
     public bool? IsActive { get; set; }
 
-    public virtual Appointment Appointment { get; set; }
-
     public virtual ICollection<HealthRecordDisease> HealthRecordDiseases { get; set; } = new List<HealthRecordDisease>();
+
+    public virtual MedicalHistory MedicalHistory { get; set; }
 }

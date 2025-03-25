@@ -9,7 +9,7 @@ public partial class RatingsAndFeedback
 {
     public int FeedbackId { get; set; }
 
-    public int? AppointmentId { get; set; }
+    public int? MedicalHistoryId { get; set; }
 
     public int Rating { get; set; }
 
@@ -19,5 +19,5 @@ public partial class RatingsAndFeedback
 
     public bool? IsActive { get; set; }
 
-    public virtual Appointment Appointment { get; set; }
+    public virtual MedicalHistory MedicalHistory { get; set; }
 }
