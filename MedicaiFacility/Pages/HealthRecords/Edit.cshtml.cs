@@ -1,8 +1,13 @@
 ﻿using MedicaiFacility.BusinessObject;
-using MedicaiFacility.RazorPage.ViewModel;
+using MedicaiFacility.Service;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 {
@@ -11,40 +16,77 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
     {
         public HealthRecord HealthRecord { get; set; }
         private readonly IHealthRecordService _healthRecordService;
-        public EditModel(IHealthRecordService healthRecordService)
+        private readonly IDiseaseService _diseaseService;
+        private readonly IHealthRecordDiseasesService _healthRecordDiseasesService;
+        public List<SelectListItem> Diseases { get; set; }  // Danh sách tất cả bệnh
+        public List<string> SelectedDiseaseIds { get; set; }  // Danh sách ID bệnh đã chọn
+
+        public EditModel(IHealthRecordService healthRecordService, IDiseaseService diseaseService, IHealthRecordDiseasesService healthRecordDiseasesService)
         {
             _healthRecordService = healthRecordService;
+            _diseaseService = diseaseService;
+            _healthRecordDiseasesService = healthRecordDiseasesService;
         }
-        public IActionResult OnGet(int? id)
+
+        public void OnGet(int? id)
         {
             HealthRecord = _healthRecordService.FindById((int)id);
-            
-            return Page();
+            if (HealthRecord != null)
+            {
+                // Lấy danh sách tất cả bệnh
+                Diseases = _diseaseService.GetAllDisease()
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d.DiseaseId.ToString(),
+                        Text = d.DiseaseName + " - " + d.Department.DepartmentName
+                    })
+                    .ToList();
+
+                // Lấy danh sách bệnh đã chọn
+                SelectedDiseaseIds = HealthRecord.HealthRecordDiseases
+                    .Where(d => d.DiseaseId.HasValue)
+                    .Select(d => d.DiseaseId.Value.ToString())
+                    .ToList();
+            }
         }
-        public async Task<IActionResult> OnPost(IFormFile file) {
+
+        public async Task<IActionResult> OnPost(IFormFile file, List<string> SelectedDiseaseIds)
+        {
+            var existHealthRecord = _healthRecordService.FindById(HealthRecord.RecordId);
             if (file != null && file.Length > 0)
             {
-                // Định nghĩa thư mục lưu file
                 var uploadsFolder = Path.Combine("wwwroot", "imgPatient");
-                Directory.CreateDirectory(uploadsFolder); // Đảm bảo thư mục tồn tại
-
-                // Tạo đường dẫn đầy đủ
+                Directory.CreateDirectory(uploadsFolder);
                 var filePath = Path.Combine(uploadsFolder, file.FileName);
 
-                // Lưu file vào thư mục
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
 
-                // Lưu đường dẫn để hiển thị
                 HealthRecord.FilePath = "/imgPatient/" + file.FileName;
             }
+            else
+            {
+                HealthRecord.FilePath = existHealthRecord.FilePath;
+            }
 
-            var check = HealthRecord;
-            _healthRecordService.Udpate(HealthRecord);
-			return RedirectToPage("/HealthRecords/Detail", new { id = HealthRecord.RecordId });
+            existHealthRecord.FilePath = HealthRecord.FilePath;
+            var diseaseIdsToDelete = existHealthRecord.HealthRecordDiseases
+            .Select(d => d.HealthRecordDiseaseId)
+            .ToList(); // Chuyển sang List mới để tránh sửa đổi collection gốc
 
-		}
-	}
+            foreach (var id in diseaseIdsToDelete)
+            {
+                _healthRecordDiseasesService.deleteById(id);
+            }
+
+            existHealthRecord.HealthRecordDiseases = SelectedDiseaseIds
+                .Select(id => new HealthRecordDisease { DiseaseId = int.Parse(id) })
+                .ToList();
+
+            _healthRecordService.Udpate(existHealthRecord);
+            return RedirectToPage("/HealthRecords/Detail", new { id = HealthRecord.RecordId });
+        }
+    }
 }

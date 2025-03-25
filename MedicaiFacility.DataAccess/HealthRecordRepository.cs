@@ -29,7 +29,7 @@ namespace MedicaiFacility.DataAccess
 
         public HealthRecord FindById(int id)
         {
-            return _Context.HealthRecords
+            return _Context.HealthRecords.Include(x=>x.HealthRecordDiseases).ThenInclude(x=>x.Disease).ThenInclude(x=>x.Department)
            .FirstOrDefault(x=>x.RecordId== id);
         }
 
@@ -63,6 +63,9 @@ namespace MedicaiFacility.DataAccess
             _Context.SaveChanges();
         }
 
-        
+
+        public HealthRecord findByMedicalHistoryId(int hisId) => _Context.HealthRecords.FirstOrDefault(x => x.MedicalHistoryId == hisId);
+
+
     }
 }

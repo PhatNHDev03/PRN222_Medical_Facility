@@ -10,12 +10,10 @@ namespace MedicaiFacility.DataAccess
     public class MedicalExpertRepository : IMedicalExpertRepository
     {
         private readonly AppDbContext _context;
-
-        public MedicalExpertRepository(AppDbContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
+    
+        public MedicalExpertRepository(AppDbContext context) { 
+            _context = context; 
+        }    
         public MedicalExpert getById(int id)
         {
             return _context.MedicalExperts

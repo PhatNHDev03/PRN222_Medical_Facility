@@ -1,10 +1,21 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4 text-center">
+    <a href="/Search/SearchFacility" class="btn btn-primary btn-lg m-2">Search Facility</a>
+    <a href="/Search/SearchDoctors" class="btn btn-secondary btn-lg m-2">Search Doctor</a>
 </div>
+
+<style>
+    .btn {
+        border-radius: 25px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+</style>

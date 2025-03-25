@@ -8,21 +8,27 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
 {
     public class IndexModel : PageModel
     {
-        public List<MedicalFacility> MedicalFacilities { get; set; }
-        public Pager Pager { get; set; }
-
         private readonly IMedicalFacilityService _medicalFacilityService;
-        public IndexModel(IMedicalFacilityService medicalFacilityService)
+        private readonly IDepartmentService _departmentService;
+        private readonly IFacilityDepartmentService _facilityDepartmentService;
+
+        public List<MedicalFacility> MedicalFacilities { get; set; }
+        public Dictionary<int, List<string>> FacilityDepartments { get; set; } // To store department names for each facility
+        public Pager Pager { get; set; }
+        public IndexModel(IMedicalFacilityService medicalFacilityService, IFacilityDepartmentService facilityDepartmentService, IDepartmentService departmentService)
         {
             _medicalFacilityService = medicalFacilityService;
-
+            _departmentService = departmentService;
+            _facilityDepartmentService = facilityDepartmentService;
         }
         public void OnGet(int pg = 1)
         {
             int pageSize = 5;
-            var (medicalFacilitiesAll, totalItem) = _medicalFacilityService.FindAllWithPagination(pg, pageSize);
+            var (medicalFacilities, facilityDepartments, totalItem) = _medicalFacilityService.FindAllWithDepartmentsAndPagination(pg, pageSize);
+
             Pager = new Pager(totalItem, pg, pageSize);
-            MedicalFacilities = medicalFacilitiesAll;
+            MedicalFacilities = medicalFacilities;
+            FacilityDepartments = facilityDepartments;
         }
     }
 }

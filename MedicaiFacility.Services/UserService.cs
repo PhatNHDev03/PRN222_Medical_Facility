@@ -100,5 +100,10 @@ namespace MedicaiFacility.Service
         {
            return _userRepository.FindByPhoneNumber(phoneNumber);
         }
+        public User GetUserByPatientId(int patientId)
+        {
+            return _userRepository.GetUserByPatientId(patientId);
+        }
+
     }
 }

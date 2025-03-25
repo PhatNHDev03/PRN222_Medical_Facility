@@ -9,16 +9,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedicaiFacility.RazorPage.Pages.Users
 {
+    [BindProperties]
     public class EditModel : PageModel
     {
         private readonly IUserService _userService;
-
-        public EditModel(IUserService userService)
+        private readonly IMedicalExpertService _medicalExpertService;
+        public EditModel(IUserService userService,IMedicalExpertService medicalExpertService)
         {
             _userService = userService;
+            _medicalExpertService = medicalExpertService;
         }
 
-        [BindProperty]
+ 
         public EditInputModel Input { get; set; } = new EditInputModel();
 
         public class EditInputModel
@@ -105,7 +107,14 @@ namespace MedicaiFacility.RazorPage.Pages.Users
             {
                 return new JsonResult(new { success = false, message = "User not found." });
             }
-
+            var expert = _medicalExpertService.getById(user.UserId);
+            if (expert!=null&& Input.Status==true) {
+                if (expert.Facility != null && expert.Facility.IsActive == false) {
+         
+                      return new JsonResult(new { success = false, message = "Unable to activate specialist because specialist's medical facility is inactive!!" });
+                }
+            }
+            
             try
             {
                 user.FullName = Input.FullName;

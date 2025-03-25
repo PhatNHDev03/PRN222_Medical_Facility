@@ -16,5 +16,8 @@ namespace MedicaiFacility.DataAccess.IRepostory
         public void Udpate (HealthRecord healthRecord);
         public void deleteById(int id);
         (List<HealthRecord>, int totalItem) findAllWithPagination(int pg, int pageSize);
+
+        HealthRecord findByMedicalHistoryId(int hisId);
+
     }
 }

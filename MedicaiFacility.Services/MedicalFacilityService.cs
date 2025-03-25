@@ -46,5 +46,19 @@ namespace MedicaiFacility.Service
         {
             return _medicalFacilityRepository.FindAllWithPagination(pg, pageSize);
         }
+
+        public (List<MedicalFacility>, Dictionary<int, List<string>>, int totalItem) FindAllWithDepartmentsAndPagination(int pg, int pageSize)
+        {
+            return _medicalFacilityRepository.FindAllWithDepartmentsAndPagination(pg, pageSize);
+        }
+
+        public void UpdateMedicalFacilityWithDepartments(MedicalFacility medicalFacility, List<int> selectedDepartmentIds)
+        {
+            _medicalFacilityRepository.UpdateMedicalFacilityWithDepartments(medicalFacility, selectedDepartmentIds);
+        }
+        public List<int?> GetDepartmentIdsByFacilityId(int facilityId)
+        {
+            return _medicalFacilityRepository.GetDepartmentIdsByFacilityId(facilityId);
+        }
     }
 }

@@ -63,5 +63,26 @@ namespace MedicaiFacility.Service
             _medicalExpertRepository.DeleteSchedulesByExpertId(expertId);
             Console.WriteLine($"Schedules deleted for ExpertId: {expertId}");
         }
+
+        public List<MedicalExpert> SearchDoctors(string searchTerm)
+        {
+            return _medicalExpertRepository.SearchDoctors(searchTerm);
+        }
+
+        public List<string> GetScheduleByExpertId(int expertId)
+        {
+            return _medicalExpertRepository.GetScheduleByExpertId(expertId);
+        }
+
+
+        public List<RatingsAndFeedback> GetFeedbacksByExpertId(int expertId)
+        {
+            return _medicalExpertRepository.GetFeedbacksByExpertId(expertId);
+        }
+
+        public List<MedicalExpert> getExpertsByFacilityId(int facilityId)
+        {
+           return _medicalExpertRepository.getExpertsByFacilityId((int)facilityId);
+        }
     }
 }

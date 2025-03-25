@@ -1,0 +1,52 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>RatingsAndFeedback</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingsAndFeedback.Rating)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingsAndFeedback.Rating)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingsAndFeedback.Feedback)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingsAndFeedback.Feedback)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingsAndFeedback.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingsAndFeedback.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingsAndFeedback.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingsAndFeedback.IsActive)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingsAndFeedback.MedicalHistory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatingsAndFeedback.MedicalHistory.HistoryId)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="RatingsAndFeedback.FeedbackId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

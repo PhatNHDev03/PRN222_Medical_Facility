@@ -3,6 +3,9 @@ using MedicaiFacility.DataAccess.IRepostory;
 using MedicaiFacility.Service.IService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MedicaiFacility.Service
 {
@@ -60,11 +63,11 @@ namespace MedicaiFacility.Service
         public void DeletePatient(int id)
         {
             try
-            {
+        {
                 _patientRepository.Delete(id);
-            }
+        }
             catch (Exception ex)
-            {
+        {
                 throw new Exception($"Failed to delete patient with ID {id}: {ex.Message}", ex);
             }
         }

@@ -1,12 +1,11 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.MedicalHistories.IndexModel
 @{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
 <h2>Medical History</h2>
 
-<form asp-page="/MedicalHistories/Create" method="get">
-    <button class="btn btn-sm btn-primary m-2">Add New Medical Record</button>
-</form>
+<p class="fw-bold">Total balance: @Model.TotalBalance</p>
 
 <table class="table table-bordered">
     <thead class="thead-dark">
@@ -21,6 +20,8 @@
             <th>Appointment Status</th>
             <th>Patient Info</th>
             <th>Expert Info</th>
+            <th>Amount</th>
+            <th>Pay</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -38,9 +39,16 @@
                 <td>@(history.AppointmentStatus ?? "N/A")</td>
                 <td>@(history.patientInfor ?? "Unknown")</td>
                 <td>@(history.ExpertInfor ?? "Unknown")</td>
+                <td>@(history.amount)</td>
+                <td>@(history.Pay == true ? "Paid" : "not yet paid")</td>
                 <td>
                     <button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'">Detail</button>
                     <button class="btn btn-secondary" onclick="window.location.href='@Url.Page("/MedicalHistories/Edit", new { id = history.HistoryId })'">Edit</button>
+                    @if (history.Pay==false)
+                    {
+                        <a class="btn btn-primary" asp-page="/MedicalHistories/Index" asp-route-id="@history.HistoryId" asp-page-handler="PayOut">Pay out</a>
+
+                    }
                     <button class="btn btn-danger" onclick="openModal(event, 'Delete', @history.HistoryId)">Delete</button>
                 </td>
             </tr>

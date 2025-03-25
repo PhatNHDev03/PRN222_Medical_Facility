@@ -132,7 +132,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.DepartmentName)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<Disease>(entity =>
@@ -144,7 +144,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.DiseaseName)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
 
             entity.HasOne(d => d.Department).WithMany(p => p.Diseases)
                 .HasForeignKey(d => d.DepartmentId)
@@ -161,7 +161,7 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
             entity.Property(e => e.FacilityId).HasColumnName("FacilityID");
-            entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.Department).WithMany(p => p.FacilityDepartments)
                 .HasForeignKey(d => d.DepartmentId)
@@ -285,8 +285,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.FacilityType)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
-            entity.Property(e => e.Verified).HasDefaultValueSql("((0))");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.Verified).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<MedicalHistory>(entity =>
@@ -305,7 +305,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Payed).HasDefaultValueSql("((0))");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
-                .HasDefaultValueSql("('Pending')");
+                .HasDefaultValue("Pending");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -437,7 +437,7 @@ public partial class AppDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.PhoneNumber).HasMaxLength(15);
-            entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

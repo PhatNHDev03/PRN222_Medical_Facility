@@ -2,11 +2,15 @@
 @model MedicaiFacility.RazorPage.Pages.HealthRecords.EditModel
 @{
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 <div class="container">
     <form asp-page="/HealthRecords/Edit" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">HealthRecordId</label>
-            <input type="text" class="form-control" asp-for="HealthRecord.RecordId" />
+            <input type="text" class="form-control" asp-for="HealthRecord.RecordId" readonly />
         </div>
       
         <div class="mb-3">
@@ -15,7 +19,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">FilePath</label>
-            <input type="file" name="file" class="form-control" asp-for="HealthRecord.FilePath" />
+            <input type="file" name="file" class="form-control" value="@Model.HealthRecord.FilePath" asp-for="HealthRecord.FilePath" />
         </div>
         <div class="mb-3">
             <label class="form-label">TestResult</label>
@@ -30,17 +34,34 @@
             <input type="text" class="form-control" asp-for="HealthRecord.Prescription" />
         </div>
         <div class="mb-3">
-            <label class="form-label">CreatedAt</label>
-            <input type="date" class="form-control" asp-for="HealthRecord.CreatedAt" />
+            <label class="form-label">Created At</label>
+            <input type="date" class="form-control" asp-for="HealthRecord.CreatedAt" readonly />
         </div>
-        <div class="mb-3">
-            <label class="form-label">UpdatedAt</label>
-            <input type="date" class="form-control" asp-for="HealthRecord.UpdatedAt" />
-        </div>
+      
+            <input hidden="hidden" type="date" class="form-control" asp-for="HealthRecord.UpdatedAt" readonly />
+     
         <div class="mb-3">
             <label class="form-label">UpdatedAt</label>
             <a href="@Model.HealthRecord.SharedLink">Shared Link</a>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Diseases - Department</label>
+
+            <div id="selected-diseases-container" class="mb-2">
+                <!-- Hiển thị những bệnh đã chọn -->
+                @foreach (var disease in Model.Diseases)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input disease-checkbox"
+                               id="disease-@disease.Value" value="@disease.Value"
+                               name="SelectedDiseaseIds"
+                        @(Model.SelectedDiseaseIds.Contains(disease.Value) ? "checked" : "") />
+                        <label class="form-check-label" for="disease-@disease.Value">@disease.Text</label>
+                    </div>
+                }
+            </div>
+        </div>
+        
         <div class="mb-3">
             <label class="form-label">UpdatedAt</label>
             <select class="form-control" asp-for="HealthRecord.IsActive">
@@ -52,3 +73,4 @@
    </form>
 
 </div>
+

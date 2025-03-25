@@ -1,130 +1,217 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.Patients.CreateAppointmentModel
-@{
-}
-<div class="container mt-5">
-    <div class="row">
-        <!-- Thông tin cơ sở y tế -->
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Expert Information</h5>
-                </div>
-                <div class="card-body">
-                    <p>
-                        <strong>📌 @Model.MedicalExpert.Specialization</strong><br>
-                        <small class="text-muted">Experience Years: @Model.MedicalExpert.ExperienceYears</small>
-                    </p>
-                    <p><strong>➕ Department:</strong> @Model.MedicalExpert.Department</p>
-                    <p><strong>🩺 Expert: </strong>@Model.MedicalExpert.Expert.FullName</p>
-                </div>
-            </div>
-        </div>
+<style>
+    .create-appointment-container {
+        max-width: 800px;
+        margin: auto;
+    }
 
-        <!-- Chọn dịch vụ -->
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Choose your service: </h5>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name Appointment</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <strong>Appointment: </strong><br>
-                                    <small class="text-muted"><em>Medical examination</em></small>
-                                </td>
-                                <td>@Model.MedicalExpert.PriceBooking</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" onclick="openModal(event)">Book now</button>
+    .booked-slot {
+        background-color: #ffcccc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 5px;
+    }
 
-                                </td>
+    .working-days {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
+        .working-days span {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+</style>
+<div class="text-center">
+    <h1 class="display-4">Create Appointment</h1>
 </div>
-
-<!-- Modal Xác Nhận Thanh Toán -->
-<div id="confirmBookingModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h3>Confirm Payment</h3>
-        <p>Are you sure you want to book this appointment?</p>
-        <p><strong>Expert:</strong> @Model.MedicalExpert.Expert.FullName</p>
-        <p><strong>Price:</strong> @Model.MedicalExpert.PriceBooking</p>
-
-        <form id="paymentForm" method="post" asp-page-handler="ConfirmPayment">
-            <input type="hidden" name="expertId" value="@Model.MedicalExpert.ExpertId">
-            <button type="submit" class="btn btn-success">Confirm & Pay</button>
-            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+@if (ViewData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewData["SuccessMessage"]
+    </div>
+}
+<div class="create-appointment-container">
+    <div class="mb-3 mt-3">
+        <form id="appointmentForm" asp-page="/Patients/CreateAppointment" method="post">
+            <input type="hidden" asp-for="Appointment.PatientId" value="@Model.PatientId" />
+            <input type="hidden" asp-for="Appointment.TransactionId" value="@Model.TransactionId" />
+            <input type="hidden" asp-for="Appointment.ExpertId" value="@Model.MedicalExpert.ExpertId" />
+            <input type="hidden" asp-for="Appointment.FacilityId" value="@Model.MedicalExpert.FacilityId" />
+            <div class="mb-3">
+                <label class="form-label">Patient Info</label>
+                <input type="text" class="form-control" value="@Model.Patient.PatientNavigation.FullName (@Model.Patient.PatientNavigation.PhoneNumber)" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Facility</label>
+                <input type="text" class="form-control" value="@Model.MedicalExpert.Facility.FacilityName" disabled />
+                <input type="text" class="form-control mt-1" value="@Model.MedicalExpert.Facility.Address" disabled />
+                <input type="text" class="form-control mt-1" value="Contact: @Model.MedicalExpert.Facility.ContactInfo" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Doctor's Schedule:</label>
+                <div class="working-days">
+                    @foreach (var item in Model.WorkingDays)
+                    {
+                        <span>@item</span>
+                    }
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Booked Time Slots:</label>
+                <div>
+                    @foreach (var slot in Model.BookedSlots)
+                    {
+                        <span class="booked-slot">@slot</span>
+                    }
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <p>Note: Expert only working from <strong>@Model.MedicalExpert.StartHour</strong> to <strong>@Model.MedicalExpert.EndHour</strong></p>
+                <p>Note: A medical appointment only lasts <strong>40 minutes</strong> for a medical Expert to examine you.</p>
+                <input type="datetime-local" class="form-control" id="startDate" asp-for="Appointment.StartDate" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" id="endDate" asp-for="Appointment.EndDate" readonly />
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create Appointment</button>
+            </div>
         </form>
     </div>
 </div>
+
 <script>
-    function openModal(event) {
-        event.preventDefault(); // Chặn hành vi mặc định của button
-        document.getElementById("confirmBookingModal").style.display = "block";
-    }
+    // Lấy dữ liệu từ Model
+    var workingDays = @Html.Raw(Json.Serialize(Model.WorkingDays));
+    var bookedStartSlots = @Html.Raw(Json.Serialize(Model.StartBookedSlot));
+    var bookedEndSlots = @Html.Raw(Json.Serialize(Model.EndBookedSlot));
+    var startHour = @Model.MedicalExpert.StartHour; // Giờ bắt đầu làm việc
+    var endHour = @Model.MedicalExpert.EndHour;     // Giờ kết thúc làm việc
 
-    function closeModal() {
-        document.getElementById("confirmBookingModal").style.display = "none";
-    }
+    // Lấy input datetime-local và form
+    let startDateInput = document.getElementById("startDate");
+    let endDateInput = document.getElementById("endDate");
+    let form = document.getElementById("appointmentForm");
 
-    window.onclick = function (event) {
-        var modal = document.getElementById("confirmBookingModal");
-        if (event.target === modal) {
-            closeModal();
+    function setMinDateTime() {
+        let now = new Date();
+        now.setMinutes(now.getMinutes() + 30); // +30 phút từ hiện tại
+
+        // Nếu thời gian hiện tại + 30 phút vẫn nhỏ hơn giờ bắt đầu làm việc của bác sĩ
+        let workDay = now.getHours() * 60 + now.getMinutes(); // Đổi thành phút
+        let doctorStartTime = startHour * 60; // Giờ bắt đầu làm việc (đổi thành phút)
+
+        // Nếu thời gian hiện tại + 30 phút vẫn chưa tới giờ làm việc của bác sĩ
+        if (workDay < doctorStartTime) {
+            now.setHours(startHour, 0, 0); // Thiết lập thành giờ bắt đầu làm việc
         }
+
+        let year = now.getFullYear();
+        let month = String(now.getMonth() + 1).padStart(2, '0');
+        let day = String(now.getDate()).padStart(2, '0');
+        let hours = String(now.getHours()).padStart(2, '0');
+        let minutes = String(now.getMinutes()).padStart(2, '0');
+
+        startDateInput.min = `${year}-${month}-${day}T${hours}:${minutes}`;
     }
+
+    setMinDateTime(); // Gọi khi trang load
+
+    // Tự động tính endDate khi nhập startDate (không kiểm tra hợp lệ)
+    startDateInput.addEventListener("input", function () {
+        let input = this.value;
+        if (!input) {
+            endDateInput.value = ""; // Xóa endDate nếu startDate trống
+            return;
+        }
+
+        let startDate = new Date(input);
+        let endDate = new Date(startDate.getTime() + (40 * 60 * 1000)); // +40 phút
+
+        // Định dạng giá trị cho endDate
+        let year = endDate.getFullYear();
+        let month = String(endDate.getMonth() + 1).padStart(2, '0');
+        let day = String(endDate.getDate()).padStart(2, '0');
+        let hours = String(endDate.getHours()).padStart(2, '0');
+        let minutes = String(endDate.getMinutes()).padStart(2, '0');
+        endDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    });
+
+    // Kiểm tra hợp lệ khi submit form (dựa trên requirement cũ)
+    form.addEventListener("submit", function (event) {
+        let startDate = new Date(startDateInput.value);
+        let endDate = new Date(endDateInput.value);
+        let now = new Date();
+        let minTime = new Date(now.getTime() + (30 * 60 * 1000)); // +30 phút
+
+        // Kiểm tra thời gian tối thiểu (hiện tại + 30 phút)
+        if (startDate < minTime) {
+            alert("Appointments must be scheduled at least 30 minutes ahead of the current time.");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
+
+        // Kiểm tra ngày làm việc
+        let dayOfWeek = startDate.toLocaleString('en-us', { weekday: 'long' });
+        if (!workingDays.includes(dayOfWeek)) {
+            alert("This day is not on the doctor's schedule!");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
+
+        // Kiểm tra giờ làm việc
+        let startHours = startDate.getHours();
+        if (startHours < startHour || startHours >= endHour) {
+            alert(`Appointments can only be scheduled between ${startHour}:00 and ${endHour}:00.`);
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
+
+        // Kiểm tra endDate không vượt quá giờ làm việc (22:00 trong code cũ)
+        if (endDate.getHours() >= 22) {
+            alert("The appointment cannot extend beyond 22:00. Please choose an earlier start time.");
+            event.preventDefault(); // Ngăn submit
+            return;
+        }
+
+        // Kiểm tra trùng lịch hẹn
+        for (let i = 0; i < bookedStartSlots.length; i++) {
+            let bookedStart = new Date(bookedStartSlots[i]);
+            let bookedEnd = new Date(bookedEndSlots[i]);
+
+            // Kiểm tra nếu startDate nằm trong khoảng lịch đã đặt
+            if (startDate >= bookedStart && startDate <= bookedEnd) {
+                alert("This time is already within a booked time slot. Please choose another time slot!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
+
+            // Kiểm tra chồng lấn lịch hẹn
+            if (endDate > bookedStart && endDate <= bookedEnd) {
+                alert("The appointment would overlap with an existing booking. Please choose another start time!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
+
+            if (startDate <= bookedStart && endDate >= bookedEnd) {
+                alert("The appointment would overlap with an existing booking. Please choose another start time!");
+                event.preventDefault(); // Ngăn submit
+                return;
+            }
+        }
+    });
 </script>
-<style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: white;
-        margin: 10% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
-        box-shadow: 0px 0px 10px 0px #000;
-        text-align: center;
-    }
-
-    .close-btn {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-        .close-btn:hover {
-            color: black;
-        }
-</style>
-

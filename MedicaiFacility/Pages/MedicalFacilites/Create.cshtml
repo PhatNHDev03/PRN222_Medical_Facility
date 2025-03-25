@@ -19,10 +19,26 @@
         <label for="FacilityType" class="form-label">Facility Type</label>
         <select id="FacilityType" name="MedicalFacility.FacilityType" class="form-control" required>
             <option value="" disabled selected>Select Facility Type</option>
-            <option value="Public Hospital">Clinic</option>
-            <option value="Public Hospital">Public Hospital</option>
-            <option value="Private Hospital">Private Hospital</option>
+            <option value="Clinic">Clinic</option>
+            <option value="Hospital">Hospital</option>
+            <option value="Medical center">Medical center</option>
         </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Select Departments</label>
+        <div class="d-flex flex-wrap" style="max-height: 150px; overflow-y: auto;">
+            @foreach (var dept in Model.AvailableDepartments)
+            {
+                <div class="form-check me-3">
+                    <input type="checkbox" id="dept_@dept.DepartmentId" name="SelectedDepartmentIds" value="@dept.DepartmentId" class="form-check-input" />
+                    <label for="dept_@dept.DepartmentId" class="form-check-label">@dept.DepartmentName</label>
+                </div>
+            }
+        </div>
+        @if (!Model.AvailableDepartments.Any())
+        {
+            <p>No departments available.</p>
+        }
     </div>
     <div class="mb-3">
         <label for="Verified" class="form-label">Verified</label>

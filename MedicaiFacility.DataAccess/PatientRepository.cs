@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MedicaiFacility.DataAccess
 {
@@ -73,12 +75,12 @@ namespace MedicaiFacility.DataAccess
                     {
                         patient.PatientNavigation.Patient = null;
                         _context.Entry(patient.PatientNavigation).State = EntityState.Modified;
-                    }
+        }
 
                     // Xóa Patient
                     _context.Patients.Remove(patient);
                     _context.SaveChanges();
-
+       
                     transaction.Commit();
                 }
                 catch (Exception ex)

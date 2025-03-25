@@ -1,0 +1,111 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.EditModel
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>Details</h1>
+
+<h4>RatingsAndFeedback</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RatingsAndFeedback.FeedbackId" />
+
+            <div class="form-group">
+                <label asp-for="RatingsAndFeedback.MedicalHistoryId" class="control-label"></label>
+                <select asp-for="RatingsAndFeedback.MedicalHistoryId" class="form-control" asp-items="ViewBag.MedicalHistoryId" disabled></select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Rating</label>
+                <div class="star-rating">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Model.RatingsAndFeedback.Rating)
+                        {
+                            <i class="fas fa-star text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-star text-warning"></i>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RatingsAndFeedback.Feedback" class="control-label"></label>
+                <input asp-for="RatingsAndFeedback.Feedback" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RatingsAndFeedback.CreatedAt" class="control-label"></label>
+                <input asp-for="RatingsAndFeedback.CreatedAt" class="form-control" readonly />
+            </div>
+
+            <br>
+            <div class="form-group">
+                <label class="control-label">Is Active</label>
+                <br>
+                <button type="button" class="btn @(Model.RatingsAndFeedback.IsActive==true ? "btn-success" : "btn-secondary")" disabled>
+                    @(Model.RatingsAndFeedback.IsActive==true ? "Active" : "Inactive")
+                </button>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Include Font Awesome for star icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function setRating(rating) {
+            document.getElementById("ratingInput").value = rating;
+            let buttons = document.querySelectorAll(".star-button");
+            buttons.forEach((btn, index) => {
+                btn.style.color = index < rating ? "gold" : "gray";
+            });
+        }
+
+        function toggleActive() {
+            let isActiveInput = document.getElementById("isActiveInput");
+            let button = document.getElementById("toggleActive");
+
+            if (isActiveInput.value === "True") {
+                isActiveInput.value = "False";
+                button.textContent = "Inactive";
+                button.classList.remove("btn-success");
+                button.classList.add("btn-secondary");
+            } else {
+                isActiveInput.value = "True";
+                button.textContent = "Active";
+                button.classList.remove("btn-secondary");
+                button.classList.add("btn-success");
+            }
+        }
+    </script>
+    <style>
+        .star-button {
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: gray;
+        }
+
+            .star-button:hover {
+                color: gold;
+            }
+    </style>
+}

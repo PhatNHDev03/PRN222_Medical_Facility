@@ -1,58 +1,71 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.HealthRecords.DetailModel
-@{
-}
+
+<h2 class="text-center my-4">Health Record Details</h2>
 
 <div class="container">
     <div class="mb-3">
         <label class="form-label">HealthRecordId</label>
-        <input type="text" disabled="disabled" class="form-control" asp-for="HealthRecord.RecordId" />
+        <input type="text" disabled class="form-control" asp-for="HealthRecord.RecordId" />
     </div>
-
     <div class="mb-3">
         <label class="form-label">FileName</label>
-        <input type="text" disabled="disabled" class="form-control" asp-for="HealthRecord.FileName" />
-    </div>
-    <div class="mb-3 d-flex">
-        <label class="form-label">FilePath</label>
-        @if (Model.HealthRecord.FilePath != null)
-        {
-            <img class="w-75" src="@Model.HealthRecord.FilePath" />
-        }
-        else
-        {
-            <img class="w-75" src="/imgs/Error.png" />
-        }
+        <input type="text" disabled class="form-control" asp-for="HealthRecord.FileName" />
     </div>
     <div class="mb-3">
-        <label class="form-label">TestResult</label>
-        <input type="text" disabled="disabled" class="form-control" asp-for="HealthRecord.TestResult" />
+        <label class="form-label">FilePath</label>
+        <div>
+            @if (!string.IsNullOrEmpty(Model.HealthRecord.FilePath))
+            {
+                <img class="w-75" src="@Model.HealthRecord.FilePath" />
+            }
+            else
+            {
+                <img class="w-75" src="/imgs/Error.png" />
+            }
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Test Result</label>
+        <input type="text" disabled class="form-control" asp-for="HealthRecord.TestResult" />
     </div>
     <div class="mb-3">
         <label class="form-label">Diagnosis</label>
-        <input type="text" disabled="disabled" class="form-control" asp-for="HealthRecord.Diagnosis" />
+        <input type="text" disabled class="form-control" asp-for="HealthRecord.Diagnosis" />
     </div>
     <div class="mb-3">
         <label class="form-label">Prescription</label>
-        <input type="text" disabled="disabled" class="form-control" asp-for="HealthRecord.Prescription" />
+        <input type="text" disabled class="form-control" asp-for="HealthRecord.Prescription" />
     </div>
     <div class="mb-3">
-        <label class="form-label">CreatedAt</label>
-        <input type="date" disabled="disabled" class="form-control" asp-for="HealthRecord.CreatedAt" />
+        <label class="form-label">Created At</label>
+        <input type="date" disabled class="form-control" asp-for="HealthRecord.CreatedAt" />
     </div>
     <div class="mb-3">
-        <label class="form-label">UpdatedAt</label>
-        <input type="date" disabled="disabled" class="form-control" asp-for="HealthRecord.UpdatedAt" />
+        <label class="form-label">Updated At</label>
+        <input type="date" disabled class="form-control" asp-for="HealthRecord.UpdatedAt" />
     </div>
     <div class="mb-3">
-        <label class="form-label">UpdatedAt</label>
-        <a href="@Model.HealthRecord.SharedLink">Shared Link</a>
+        <label class="form-label">Shared Link</label>
+        <a href="@Model.HealthRecord.SharedLink" target="_blank">@Model.HealthRecord.SharedLink</a>
     </div>
     <div class="mb-3">
-        <label class="form-label">UpdatedAt</label>
-        <select class="form-control" asp-for="HealthRecord.IsActive" disabled="disabled">
-            <option value="true" selected="@(Model.HealthRecord.IsActive == true ? "selected" : null)">Active</option>
-            <option value="false" selected="@(Model.HealthRecord.IsActive == false ? "selected" : null)">Inactive</option>
+        <label class="form-label">Diseases - Department</label>
+        <select class="form-control" disabled multiple>
+            @foreach (var disease in Model.SelectedDiseases)
+            {
+                <option selected>@disease.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select class="form-control" asp-for="HealthRecord.IsActive" disabled>
+            <option value="true" selected="@(Model.HealthRecord.IsActive ==true ? "selected" : null)">Active</option>
+            <option value="false" selected="@(Model.HealthRecord.IsActive ==true ? null : "selected")">Inactive</option>
         </select>
     </div>
 </div>
+
+
