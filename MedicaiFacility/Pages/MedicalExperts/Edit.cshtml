@@ -1,0 +1,260 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalExperts.EditModel
+
+@{
+    ViewData["Title"] = "Edit Medical Expert";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Edit Medical Expert</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Input.UserId" />
+            <input type="hidden" asp-for="Input.ExpertId" />
+
+            <div class="row">
+                <!-- User Information Section -->
+                <div class="col-md-6 user-section">
+                    <h5>User Information</h5>
+                    <div class="form-group">
+                        <label asp-for="Input.FullName" class="control-label"></label>
+                        <input asp-for="Input.FullName" class="form-control" required />
+                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email" class="control-label"></label>
+                        <input asp-for="Input.Email" class="form-control" type="email" required />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.PhoneNumber" class="control-label"></label>
+                        <input asp-for="Input.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.UserType" class="control-label"></label>
+                        <select asp-for="Input.UserType" asp-items="Model.UserTypeOptions" class="form-control" required>
+                            <option value="">Select User Type</option>
+                        </select>
+                        <span asp-validation-for="Input.UserType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.BankAccount" class="control-label"></label>
+                        <input asp-for="Input.BankAccount" class="form-control" />
+                        <span asp-validation-for="Input.BankAccount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Status" class="control-label"></label>
+                        <select asp-for="Input.Status" asp-items="Model.StatusOptions" class="form-control" required>
+                            <option value="">Select Status</option>
+                        </select>
+                        <span asp-validation-for="Input.Status" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Medical Expert Information Section -->
+                <div class="col-md-6 expert-section">
+                    <h5>Medical Expert Information</h5>
+                    <div class="form-group">
+                        <label asp-for="Input.Specialization" class="control-label"></label>
+                        <select asp-for="Input.Specialization" class="form-control" asp-items="Model.Specializations">
+                            <option value="" disabled>Select a Specialization</option>
+                        </select>
+                        <span asp-validation-for="Input.Specialization" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ExperienceYears" class="control-label"></label>
+                        <input asp-for="Input.ExperienceYears" class="form-control" type="number" min="0" max="100" />
+                        <span asp-validation-for="Input.ExperienceYears" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Department" class="control-label"></label>
+                        <select asp-for="Input.Department" class="form-control" asp-items="@(new SelectList(Model.Departments, "DepartmentName", "DepartmentName", Model.Input.Department))">
+                            <option value="" disabled>Select a Department</option>
+                        </select>
+                        <span asp-validation-for="Input.Department" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.PriceBooking" class="control-label"></label>
+                        <input asp-for="Input.PriceBooking" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="Input.PriceBooking" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.FacilityId" class="control-label"></label>
+                        <select asp-for="Input.FacilityId" class="form-control" asp-items="@(new SelectList(Model.MedicaiFacilities, "FacilityId", "FacilityName", Model.Input.FacilityId))">
+                            <option value="" disabled>Select a Facility</option>
+                        </select>
+                        <span asp-validation-for="Input.FacilityId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.StartHour" class="control-label"></label>
+                        <select asp-for="Input.StartHour" class="form-control" asp-items="Model.HourOptions">
+                            <option value="" disabled>Select Start Hour</option>
+                        </select>
+                        <span asp-validation-for="Input.StartHour" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.EndHour" class="control-label"></label>
+                        <select asp-for="Input.EndHour" class="form-control" asp-items="Model.HourOptions">
+                            <option value="" disabled>Select End Hour</option>
+                        </select>
+                        <span asp-validation-for="Input.EndHour" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Schedule (Select Available Days)</label>
+                        <div class="schedule-checkboxes">
+                            @foreach (var day in Model.DaysOfWeek)
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" name="SelectedDaysFromForm" value="@day"
+                                    @(Model.SelectedDays.Contains(day) ? "checked" : "") />
+                                    <label class="form-check-label">@day</label>
+                                </div>
+                            }
+                        </div>
+                        <span class="text-danger" asp-validation-for="SelectedDaysFromForm"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <input type="submit" value="Save" class="btnEdit btn-save" />
+                <a asp-page="/MedicalExperts/Details" asp-route-id="@Model.Input.ExpertId" class="btnEdit btnEdit-close">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    h4 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #34495e;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #78c2ad;
+        padding-bottom: 5px;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #e0e0e0;
+        margin: 15px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .control-label {
+        font-weight: 500;
+        color: #7f8c8d;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 8px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .button-group {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .btnEdit {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-save {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-save:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+    .btnEdit-close {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        margin-left: 10px;
+    }
+
+        .btnEdit-close:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+    .schedule-checkboxes {
+        margin-top: 10px;
+    }
+
+    .form-check-inline {
+        margin-right: 15px;
+    }
+
+    .form-check-label {
+        font-size: 0.95rem;
+        color: #2c3e50;
+        margin-left: 5px;
+    }
+
+    .user-section, .expert-section {
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .user-section {
+        border-left: 4px solid #3498db;
+    }
+
+    .expert-section {
+        border-left: 4px solid #78c2ad;
+    }
+</style>

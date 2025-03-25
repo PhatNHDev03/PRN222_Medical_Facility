@@ -1,0 +1,201 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalExperts.IndexModel
+
+@{
+    ViewData["Title"] = "MedicalExperts";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Medical Expert List</h2>
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Specialization</th>
+            <th>Experience Years</th>
+            <th>Department Name</th>
+            <th>Price Booking</th>
+            <th>Facility Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MedicalExperts)
+        {
+            <tr>
+                <td>@item.ExpertId</td>
+                <td>@item.Specialization</td>
+                <td>@item.ExperienceYears</td>
+                <td>@item.Department</td>
+                <td>@item.PriceBooking</td>
+                <td>@(item.Facility?.FacilityName ?? "N/A")</td>
+                <td>
+                    <button class="btn btn-info btn-sm" onclick="openModal('Details', @item.ExpertId)">View Detail</button>
+                    <button class="btn btn-warning btn-sm" onclick="openModal('Edit', @item.ExpertId)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('Delete', @item.ExpertId)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.Pager.TotalPages > 0)
+{
+    <ul class="pagination justify-content-end">
+        @if (Model.Pager.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalExperts/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalExperts/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+            </li>
+        }
+        @for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
+        {
+            <li class="page-item @(pge == Model.Pager.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-page="/MedicalExperts/Index" asp-route-pg="@pge">@pge</a>
+            </li>
+        }
+        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalExperts/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" asp-page="/MedicalExperts/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+            </li>
+        }
+    </ul>
+}
+
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">×</span>
+        <div id="modalForm"></div>
+    </div>
+</div>
+
+<script>
+    async function openModal(action, id = null) {
+        let url = action === 'Create' ? '/MedicalExperts/Create' : `/MedicalExperts/${action}?id=${id}`;
+
+        try {
+            let response = await fetch(url);
+            let data = await response.text();
+
+            let modalForm = document.getElementById("modalForm");
+            modalForm.innerHTML = data;
+            document.getElementById("modal").style.display = "block";
+
+            // Attach submit handler for forms (Create, Edit, Delete)
+            if (action === 'Create' || action === 'Edit' || action === 'Delete') {
+                attachSubmitHandler(action, id);
+            }
+        } catch (error) {
+            console.error("Error loading modal:", error);
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("modalForm").innerHTML = "";
+    }
+
+    function attachSubmitHandler(action, id) {
+        // Find the form in the modal (no specific ID required)
+        let form = document.querySelector("#modalForm form");
+        if (!form) return; // Exit if no form is found
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            let formData = new FormData(form);
+
+            // Determine the correct URL based on the action
+            let url = action === 'Create' ? '/MedicalExperts/Create' :
+                      action === 'Edit' ? '/MedicalExperts/Edit' :
+                      '/MedicalExperts/Delete';
+
+            // Append the ID as a query parameter for Edit and Delete
+            if (action !== 'Create') {
+                url += `?id=${id}`;
+            }
+
+            try {
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+
+                // Check if the response is a redirect (e.g., after successful Edit)
+                if (response.redirected) {
+                    closeModal();
+                    location.reload(); // Reload the page to reflect changes
+                    return;
+                }
+
+                let result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error(`Error submitting ${action} form:`, error);
+                alert(`An error occurred while performing the ${action} action.`);
+            }
+        });
+    }
+</script>
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: black;
+        }
+
+    td {
+        max-width: 200px;
+        word-wrap: break-word;
+    }
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
