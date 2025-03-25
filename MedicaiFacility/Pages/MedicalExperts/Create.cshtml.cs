@@ -101,14 +101,14 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
               
                 var validDays = Input.SelectedDays.Where(day => !string.IsNullOrWhiteSpace(day)).ToArray();
                 if (validDays.Length == 0)
-                {
+        {
                     ModelState.AddModelError("Input.SelectedDays", "Please select at least one valid day.");
                     LoadDropdowns();
                     return Page();
                 }
 
                 foreach (var day in validDays)
-                {
+            {
                     var schedule = new MedicalExpertSchedule
                     {
                         ExpertId = UserId,

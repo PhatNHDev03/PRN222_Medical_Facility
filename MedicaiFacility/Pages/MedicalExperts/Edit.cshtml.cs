@@ -6,169 +6,334 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MedicaiFacility.BusinessObject;
+using MedicaiFacility.Service.IService;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 {
     public class EditModel : PageModel
     {
         private readonly IMedicalExpertService _medicalExpertService;
-        private readonly IMedicalExpertScheduleService _medicalExpertScheduleService;
+        private readonly IMedicalFacilityService _medicalFacilityService;
+        private readonly IDepartmentService _departmentService;
         private readonly IUserService _userService;
 
         public EditModel(
             IMedicalExpertService medicalExpertService,
-            IMedicalExpertScheduleService medicalExpertScheduleService,
+            IMedicalFacilityService medicalFacilityService,
+            IDepartmentService departmentService,
             IUserService userService)
         {
-            _medicalExpertService = medicalExpertService ?? throw new ArgumentNullException(nameof(medicalExpertService));
-            _medicalExpertScheduleService = medicalExpertScheduleService ?? throw new ArgumentNullException(nameof(medicalExpertScheduleService));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _medicalExpertService = medicalExpertService;
+            _medicalFacilityService = medicalFacilityService;
+            _departmentService = departmentService;
+            _userService = userService;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public EditInputModel Input { get; set; } = new EditInputModel();
 
-        public List<string> AvailableDays { get; set; }
-
-        public class InputModel
+        public class EditInputModel
         {
+            // User fields
+            public int UserId { get; set; }
+
+            [Required(ErrorMessage = "Full Name is required.")]
+            [StringLength(100, ErrorMessage = "Full Name cannot be longer than 100 characters.")]
+            public string FullName { get; set; }
+
+            [Required(ErrorMessage = "Email is required.")]
+            [EmailAddress(ErrorMessage = "Invalid email format.")]
+            public string Email { get; set; }
+
+            [Phone(ErrorMessage = "Invalid phone number format.")]
+            [StringLength(15, ErrorMessage = "Phone Number cannot be longer than 15 characters.")]
+            public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "User Type is required.")]
+            public string UserType { get; set; }
+
+            [StringLength(50, ErrorMessage = "Bank Account cannot be longer than 50 characters.")]
+            public string? BankAccount { get; set; }
+
+            [Required(ErrorMessage = "Status is required.")]
+            public bool? Status { get; set; }
+
+            // MedicalExpert fields
             public int ExpertId { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Specialization is required.")]
             public string Specialization { get; set; }
 
-            [Required]
-            [Range(0, int.MaxValue, ErrorMessage = "Experience Years must be a positive number.")]
+            [Required(ErrorMessage = "Experience Years is required.")]
+            [Range(0, 100, ErrorMessage = "Experience Years must be between 0 and 100.")]
             public int ExperienceYears { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Department is required.")]
             public string Department { get; set; }
 
-            [Range(0.00, double.MaxValue, ErrorMessage = "Price Booking must be a positive number.")]
-            public decimal? PriceBooking { get; set; }
+            [Required(ErrorMessage = "Price Booking is required.")]
+            [Range(0, 1000000000, ErrorMessage = "Price Booking must be greater than 0.")]
+            public decimal PriceBooking { get; set; }
 
-            [Required]
-            public int? FacilityId { get; set; }
+            [Required(ErrorMessage = "Start Hour is required.")]
+            [Range(0, 24, ErrorMessage = "Start Hour must be from 0 to 24.")]
+            public int StartHour { get; set; }
 
-            public string[] SelectedDays { get; set; }
+            [Required(ErrorMessage = "End Hour is required.")]
+            [Range(0, 24, ErrorMessage = "End Hour must be from 0 to 24.")]
+            public int EndHour { get; set; }
+
+            [Required(ErrorMessage = "Facility is required.")]
+            [Range(1, int.MaxValue, ErrorMessage = "Please select a valid Facility.")]
+            public int FacilityId { get; set; }
         }
 
-        public IActionResult OnGet(int id)
+        public List<MedicalFacility> MedicaiFacilities { get; set; }
+        public List<Department> Departments { get; set; }
+        public SelectList Specializations { get; set; }
+        public List<string> DaysOfWeek { get; set; } = new List<string>
         {
-            Console.WriteLine($"OnGet called for ExpertId: {id}");
-            var medicalExpert = _medicalExpertService.getById(id);
-            if (medicalExpert == null)
-            {
-                
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+        };
+        public List<string> SelectedDays { get; set; } = new List<string>();
+        [BindProperty]
+        public List<string> SelectedDaysFromForm { get; set; } = new List<string>();
 
-                medicalExpert = new MedicalExpert
-                {
-                    ExpertId = id,
-                    Specialization = "Default Specialist",
-                    ExperienceYears = 0,
-                    Department = "Unknown",
-                    PriceBooking = 0.00m,
-                    FacilityId = 1
-                };
-                try
-                {
-                    _medicalExpertService.CreateMedicalExpert(medicalExpert);
-                    medicalExpert = _medicalExpertService.getById(id);
-                    if (medicalExpert == null)
-                    {
-                        Console.WriteLine($"Failed to create or retrieve Medical Expert with ID {id}.");
-                        return NotFound();
-                    }
-                    Console.WriteLine($"Successfully created and retrieved Medical Expert with ID {id}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error creating Medical Expert: {ex.Message} - InnerException: {ex.InnerException?.Message ?? "none"}");
-                    return NotFound();
-                }
+        public List<SelectListItem> UserTypeOptions { get; set; }
+        public List<SelectListItem> StatusOptions { get; set; }
+        public List<SelectListItem> HourOptions { get; set; } // New property for hour dropdowns
+
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            Console.WriteLine($"Medical Expert found: {medicalExpert.ExpertId}, Expert: {medicalExpert.Expert?.UserId.ToString() ?? "null"}");
-            Input = new InputModel
+            var medicalExpert = await _medicalExpertService.GetByIdAsync(id.Value);
+            if (medicalExpert == null)
             {
+                        Console.WriteLine($"Failed to create or retrieve Medical Expert with ID {id}.");
+                return NotFound();
+            }
+
+            var user = _userService.FindById(id.Value);
+            if (user == null)
+            {
+                    Console.WriteLine($"Error creating Medical Expert: {ex.Message} - InnerException: {ex.InnerException?.Message ?? "none"}");
+                return NotFound();
+            }
+            }
+
+            // Populate the input model with data from both User and MedicalExpert
+            Input = new EditInputModel
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                UserType = user.UserType,
+                BankAccount = user.BankAccount,
+                Status = user.Status,
                 ExpertId = medicalExpert.ExpertId,
                 Specialization = medicalExpert.Specialization,
                 ExperienceYears = medicalExpert.ExperienceYears,
                 Department = medicalExpert.Department,
-                PriceBooking = medicalExpert.PriceBooking,
-                FacilityId = medicalExpert.FacilityId,
-                SelectedDays = _medicalExpertScheduleService.GetSchedulesByExpertId(id)
-                    .Select(s => s.DayOfWeek)
-                    .ToArray()
+                StartHour = medicalExpert.StartHour ?? default(int),
+                EndHour = medicalExpert.EndHour ?? default(int),
+                PriceBooking = medicalExpert.PriceBooking ?? default(decimal),
+                FacilityId = medicalExpert.FacilityId ?? default(int)
             };
 
-            AvailableDays = new List<string>
+            // Populate dropdowns
+            MedicaiFacilities = _medicalFacilityService.GetAllMedicalFacility();
+            Departments = _departmentService.GetAllDepartment();
+            var specializationList = new List<string>
             {
-                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+                "Senior specialist",
+                "Specialist doctor",
+                "General practitioner"
             };
+            Specializations = new SelectList(specializationList, Input.Specialization);
+
+            UserTypeOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Patient", Text = "Patient" },
+                new SelectListItem { Value = "MedicalExpert", Text = "Medical Expert" }
+            };
+
+            StatusOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "true", Text = "Active" },
+                new SelectListItem { Value = "false", Text = "Inactive" }
+            };
+
+            // Populate hour dropdown (0 to 24)
+            HourOptions = new List<SelectListItem>();
+            for (int i = 0; i <= 24; i++)
+            {
+                HourOptions.Add(new SelectListItem { Value = i.ToString(), Text = $"{i}:00" });
+            }
+
+            SelectedDays = _medicalExpertService.GetScheduleByExpertId(id.Value) ?? new List<string>();
 
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                AvailableDays = new List<string>
+                MedicaiFacilities = _medicalFacilityService.GetAllMedicalFacility();
+                Departments = _departmentService.GetAllDepartment();
+                var specializationList = new List<string>
                 {
-                    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+                    "Senior specialist",
+                    "Specialist doctor",
+                    "General practitioner"
                 };
+                Specializations = new SelectList(specializationList, Input.Specialization);
+
+                UserTypeOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Patient", Text = "Patient" },
+                    new SelectListItem { Value = "MedicalExpert", Text = "Medical Expert" }
+                };
+
+                StatusOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "true", Text = "Active" },
+                    new SelectListItem { Value = "false", Text = "Inactive" }
+                };
+
+                // Repopulate hour dropdown
+                HourOptions = new List<SelectListItem>();
+                for (int i = 0; i <= 24; i++)
+                {
+                    HourOptions.Add(new SelectListItem { Value = i.ToString(), Text = $"{i}:00" });
+                }
+
+                SelectedDays = SelectedDaysFromForm ?? new List<string>();
                 return Page();
+            }
+
+            // Custom validation: Ensure EndHour is greater than StartHour
+            if (Input.EndHour <= Input.StartHour)
+            {
+                ModelState.AddModelError("Input.EndHour", "End Hour must be greater than Start Hour.");
+                return await ReloadDropdownsAndReturnPage();
+            }
+
+            // Custom validation: Ensure at least one day is selected for the schedule
+            if (SelectedDaysFromForm == null || !SelectedDaysFromForm.Any())
+            {
+                ModelState.AddModelError("SelectedDaysFromForm", "Please select at least one available day for the schedule.");
+                return await ReloadDropdownsAndReturnPage();
             }
 
             try
             {
-                var medicalExpert = new MedicalExpert
+                // Fetch the existing User and MedicalExpert
+                var user = _userService.FindById(Input.UserId);
+                if (user == null)
                 {
-                    ExpertId = Input.ExpertId,
-                    Specialization = Input.Specialization,
-                    ExperienceYears = Input.ExperienceYears,
-                    Department = Input.Department,
-                    PriceBooking = Input.PriceBooking,
-                    FacilityId = Input.FacilityId
-                };
-
-                Console.WriteLine($"Updating Medical Expert: {medicalExpert.ExpertId}, {medicalExpert.Specialization}");
-                _medicalExpertService.UpdateMedicalExpert(medicalExpert);
-
-                // Xóa l?ch trình c?
-                Console.WriteLine($"Deleting schedules for ExpertId: {Input.ExpertId}");
-                _medicalExpertService.DeleteSchedulesByExpertId(Input.ExpertId);
-
-                // Thêm l?ch trình m?i
-                var validDays = Input.SelectedDays?.Where(day => !string.IsNullOrWhiteSpace(day)).ToArray();
-                if (validDays != null && validDays.Any())
-                {
-                    foreach (var day in validDays)
-                    {
-                        var schedule = new MedicalExpertSchedule
-                        {
-                            ExpertId = Input.ExpertId,
-                            DayOfWeek = day
-                        };
-                        Console.WriteLine($"Adding schedule: ExpertId={schedule.ExpertId}, Day={schedule.DayOfWeek}");
-                        _medicalExpertService.AddMedicalExpertSchedule(schedule);
-                    }
+                    ModelState.AddModelError(string.Empty, "User not found.");
+                    return await ReloadDropdownsAndReturnPage();
                 }
 
+                var medicalExpert = await _medicalExpertService.GetByIdAsync(Input.ExpertId);
+                if (medicalExpert == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Medical expert not found.");
+                    return await ReloadDropdownsAndReturnPage();
+                }
+
+                // Check if the facility is active when activating the expert
+                if (Input.Status == true && medicalExpert.Facility != null && medicalExpert.Facility.IsActive == false)
+                {
+                    ModelState.AddModelError(string.Empty, "Unable to activate specialist because the specialist's medical facility is inactive!");
+                    return await ReloadDropdownsAndReturnPage();
+                }
+
+                // Update User properties
+                user.FullName = Input.FullName;
+                user.Email = Input.Email;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.UserType = Input.UserType;
+                user.BankAccount = Input.BankAccount;
+                user.Status = Input.Status;
+                user.UpdatedAt = DateTime.Now;
+
+                // Update MedicalExpert properties
+                medicalExpert.Specialization = Input.Specialization;
+                medicalExpert.ExperienceYears = Input.ExperienceYears;
+                medicalExpert.Department = Input.Department;
+                medicalExpert.PriceBooking = Input.PriceBooking;
+                medicalExpert.FacilityId = Input.FacilityId;
+                medicalExpert.StartHour = Input.StartHour; // Update StartHour
+                medicalExpert.EndHour = Input.EndHour;     // Update EndHour
+
+                // Update the schedule
+                await _medicalExpertService.UpdateScheduleAsync(medicalExpert.ExpertId, SelectedDaysFromForm);
+
+                // Save changes
+                _userService.UpdateUser(user);
+                _medicalExpertService.UpdateMedicalExpert(medicalExpert);
+
                 TempData["SuccessMessage"] = "Medical Expert updated successfully!";
-                return new JsonResult(new { success = true, message = "Medical Expert updated successfully!" });
+                return RedirectToPage("/MedicalExperts/Details", new { id = Input.ExpertId });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in OnPost: {ex.Message} - StackTrace: {ex.StackTrace}");
-                ModelState.AddModelError("", $"Failed to update medical expert: {ex.Message}");
-                AvailableDays = new List<string>
-                {
-                    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-                };
-                return Page();
+                ModelState.AddModelError(string.Empty, $"An error occurred while saving changes: {ex.Message}");
+                return await ReloadDropdownsAndReturnPage();
             }
+        }
+
+        private async Task<IActionResult> ReloadDropdownsAndReturnPage()
+        {
+            MedicaiFacilities = _medicalFacilityService.GetAllMedicalFacility();
+            Departments = _departmentService.GetAllDepartment();
+            var specializationList = new List<string>
+            {
+                "Senior specialist",
+                "Specialist doctor",
+                "General practitioner"
+            };
+            Specializations = new SelectList(specializationList, Input.Specialization);
+
+            UserTypeOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Patient", Text = "Patient" },
+                new SelectListItem { Value = "MedicalExpert", Text = "Medical Expert" }
+            };
+
+            StatusOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "true", Text = "Active" },
+                new SelectListItem { Value = "false", Text = "Inactive" }
+            };
+
+            // Repopulate hour dropdown
+            HourOptions = new List<SelectListItem>();
+            for (int i = 0; i <= 24; i++)
+            {
+                HourOptions.Add(new SelectListItem { Value = i.ToString(), Text = $"{i}:00" });
+            }
+
+            SelectedDays = _medicalExpertService.GetScheduleByExpertId(Input.ExpertId) ?? new List<string>();
+            return Page();
         }
     }
 }

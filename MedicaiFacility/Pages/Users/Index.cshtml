@@ -57,9 +57,18 @@ else
                     <td>@(string.IsNullOrEmpty(user.BankAccount) ? "N/A" : user.BankAccount)</td>
                     <td>@(user.Status.HasValue ? (user.Status.Value ? "Active" : "Inactive") : "N/A")</td>
                     <td>
-                        <button type="button" class="btn btn-warning btn-sm edit-btn" data-userid="@user.UserId" data-bs-toggle="modal" data-bs-target="#editModal">
-                            Edit
-                        </button>
+                        @if (user.UserType == "MedicalExpert")
+                        {
+                            <a asp-page="/MedicalExperts/Details" asp-route-id="@user.UserId" class="btn btn-info btn-sm">Detail</a>
+                            <a asp-page="/MedicalExperts/Edit" asp-route-id="@user.UserId" class="btn btn-warning btn-sm">Edit</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Users/Details" asp-route-id="@user.UserId" class="btn btn-info btn-sm">Detail</a>
+                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-userid="@user.UserId" data-bs-toggle="modal" data-bs-target="#editModal">
+                                Edit
+                            </button>
+                        }
                     </td>
                 </tr>
             }

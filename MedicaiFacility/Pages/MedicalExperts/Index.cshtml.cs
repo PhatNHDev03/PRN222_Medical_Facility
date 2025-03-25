@@ -7,65 +7,51 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using MedicaiFacility.BusinessObject;
+using MedicaiFacility.DataAccess;
+using MedicaiFacility.BusinessObject.Pagination;
+using MedicaiFacility.Service.IService;
+using MedicaiFacility.Service;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 {
     [BindProperties]
     public class IndexModel : PageModel
     {
-        private readonly IUserService _userService;
-        private readonly IMedicalExpertScheduleService _medicalExpertScheduleService; // Thêm service cho MedicalExpertSchedule
-        public int TotalPages { get; set; }
-        public int CurrentPage { get; set; }
-        public IndexModel(
-            IUserService userService,
-            IMedicalExpertScheduleService medicalExpertScheduleService)
+        private readonly IMedicalExpertService _medicalExpertService;
+
+        public List<MedicalExpert> MedicalExperts { get; set; }
+        public Pager Pager { get; set; }
+        public IndexModel(IMedicalExpertService medicalExpertService)
         {
-            _userService = userService;
-            _medicalExpertScheduleService = medicalExpertScheduleService ;
+            _medicalExpertService = medicalExpertService ?? throw new ArgumentNullException(nameof(medicalExpertService));
         }
-
-        public List<MedicalExpertViewModel> MedicalExperts { get; set; } = new List<MedicalExpertViewModel>();
-
-
-        public void OnGet(int pg = 1)
+        public async Task OnGetAsync(int? pg)
         {
-            CurrentPage = pg;
-            var medicalExperts = _userService.GetAllUsers().Where(x => x.IsApprove == true && x.UserType == "MedicalExpert").ToList();
-            MedicalExperts = medicalExperts
-        .Select(expert =>
-        {
-            var viewModel = new MedicalExpertViewModel
+            int pageSize = 10; // Number of items per page
+            int pageNumber = pg ?? 1; // Default to page 1 if pg is null
+
+            try
             {
-                ExpertId = expert.UserId,
-                FullName = expert.FullName,
-                Email = expert.Email,
-                PhoneNumber = expert.PhoneNumber,
-                Specialization = expert.MedicalExpert.Specialization,
-                ExperienceYears = expert.MedicalExpert.ExperienceYears,
-                Department = expert.MedicalExpert.Department,
-                PriceBooking = expert.MedicalExpert.PriceBooking,
-                FacilityName = expert.MedicalExpert.Facility.FacilityName,
-                BankAccount = expert.BankAccount,
-                Status = expert.Status
-            };
+                // Fetch paginated MedicalExperts using the service
+                var (medicalExperts, totalItems) = _medicalExpertService.FindAllWithPagination(pageNumber, pageSize);
 
-            // Lấy danh sách ngày từ MedicalExpertSchedule
-            var schedules = _medicalExpertScheduleService.GetSchedulesByExpertId(expert.MedicalExpert.ExpertId)
-                .Where(s => s != null && !string.IsNullOrEmpty(s.DayOfWeek))
-                .Select(s => s.DayOfWeek)
-                .ToList();
+                MedicalExperts = medicalExperts ?? new List<MedicalExpert>();
 
-            viewModel.ScheduleDays.AddRange(schedules);
-
-            return viewModel;
-        })
-        .ToList();
-
-            int pageSize = 4;
-            TotalPages = (int)Math.Ceiling((double)MedicalExperts.Count / pageSize);
-            CurrentPage = pg;
-            MedicalExperts = MedicalExperts.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
+                // Set up pagination
+                Pager = new Pager(totalItems, pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                MedicalExperts = new List<MedicalExpert>();
+                Pager = new Pager(0, 1, pageSize);
+                ModelState.AddModelError(string.Empty, "An error occurred while loading medical experts. " + ex.Message);
+            }
         }
     }
 }

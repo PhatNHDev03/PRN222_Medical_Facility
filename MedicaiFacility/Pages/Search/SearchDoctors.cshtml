@@ -2,6 +2,80 @@
 @model MedicaiFacility.RazorPage.Pages.Search.SearchDoctorsModel
 @{
 }
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold mb-4 text-primary">Search Doctor</h1>
+
+    <!-- Search Bar and Filters -->
+    <div class="search-bar">
+        <form method="post">
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="SelectedSpecialization" class="filter-label">💪 Specialization</label>
+                    <select asp-for="SelectedSpecialization" asp-items="Model.Specializations" class="form-control"></select>
+                </div>
+                <div class="filter-item">
+                    <label for="SelectedDepartment" class="filter-label">🏬 Department</label>
+                    <select asp-for="SelectedDepartment" asp-items="Model.Departments" class="form-control"></select>
+                </div>
+                <div class="filter-item">
+                    <label for="SelectedFacilityId" class="filter-label">🏥 Medical Facility</label>
+                    <select asp-for="SelectedFacilityId" asp-items="Model.MedicalFacilities" class="form-control"></select>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control rounded-pill px-3" asp-for="SearchTerm" placeholder="Search doctor">
+                <button type="submit" class="btn btn-primary rounded-pill ms-2 px-4"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                <a href="@Url.Page("/Search/SearchDoctors")" class="btn btn-secondary rounded-pill ms-2 px-4">Clear Filters</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Doctor List -->
+    <div class="row mt-4">
+        @foreach (var doctor in Model.Doctors)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card doctor-card p-3">
+                    <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@doctor.FullName</h5>
+                        <p class="card-text"><strong>💪 Specialization:</strong> @doctor.Specialization</p>
+                        <p class="card-text"><strong>📚 Experience:</strong> @doctor.ExperienceYears Years</p>
+                        <p class="card-text"><strong>🏬 Department:</strong> @doctor.DepartmentName</p>
+                        <p class="card-text"><strong>⏰ Working Hour:</strong> @doctor.workHour</p>
+                        <p class="card-text"><strong>🏥 Medical Facility:</strong> @doctor.FacilityName</p>
+                        <p class="card-text"><strong>🏠 Address:</strong> @doctor.Address</p>
+                        <p class="card-text"><strong>💵 Booking Price:</strong> $@doctor.PriceBooking</p>
+                        <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="btn btn-success btn-sm w-100 mt-2">View Detail</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Doctors.Any())
+    {
+        <h5 class="text-center text-muted fw-bold my-5">Cannot find doctor as your expected.</h5>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center mt-4">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Page("/Search/SearchDoctors", new { pg = i, SearchTerm = Model.SearchTerm, SelectedSpecialization = Model.SelectedSpecialization, SelectedDepartment = Model.SelectedDepartment, SelectedFacilityId = Model.SelectedFacilityId })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     .doctor-card {
         border: none;
@@ -14,7 +88,6 @@
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-
     /* Ảnh bác sĩ */
     .doctor-image {
         width: 100px;
@@ -22,7 +95,6 @@
         border-radius: 50%;
         object-fit: cover;
     }
-
 
     .doctor-card:hover .doctor-image {
         transform: scale(1.05);
@@ -78,10 +150,14 @@
             transform: scale(1.05);
         }
 
-    /* Thanh tìm kiếm */
+    /* Thanh tìm kiếm và dropdowns */
     .search-bar {
-        max-width: 600px;
+        max-width: 1200px;
         margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
         .search-bar .form-control {
@@ -89,71 +165,84 @@
             padding-left: 15px;
             height: 45px;
             font-size: 14px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease;
         }
+
+            .search-bar .form-control:focus {
+                border-color: #3498db;
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            }
 
         .search-bar .btn {
             border-radius: 20px;
-            background-color: #3498db;
-            color: white;
             padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
 
-            .search-bar .btn:hover {
-                background-color: #217dbb;
+        .search-bar .btn-primary {
+            color: white;
+            border: none;
+        }
+
+            .search-bar .btn-primary:hover {
+                background-color: #66A593;
             }
-</style>
 
-<div class="container mt-4">
-    <h1 class="text-center fw-bold mb-4 text-primary">Search Doctor</h1>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-        <form method="post" class="input-group">
-            <input type="text" class="form-control rounded-pill px-3" asp-for="SearchTerm" placeholder="Search doctor">
-            <button type="submit" class="btn btn-primary rounded-pill ms-2 px-4">Search</button>
-        </form>
-    </div>
-
-    <!-- Doctor List -->
-    <div class="row mt-4">
-        @foreach (var doctor in Model.Doctors)
-        {
-            <div class="col-md-6 col-lg-4">
-                <div class="card doctor-card p-3">
-                    <img src="@doctor.Image" alt="@doctor.FullName" class="doctor-image mx-auto">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">@doctor.FullName</h5>
-                        <p class="card-text"><strong>Specialization:</strong> @doctor.Specialization</p>
-                        <p class="card-text"><strong>Experience:</strong> @doctor.ExperienceYears Years</p>
-                        <p class="card-text"><strong>Department:</strong> @doctor.DepartmentName</p>
-                        <p class="card-text"><strong>working hour:</strong> @doctor.workHour</p>
-                        <p class="card-text"><strong>Medical Facility:</strong> @doctor.FacilityName</p>
-                        <p class="card-text"><strong>Address:</strong> @doctor.Address</p>
-                        <p class="card-text"><strong>Booking Price:</strong> @doctor.PriceBooking VNĐ</p>
-                        <a href="@Url.Page("/Search/ExpertDetail", new { expertId = doctor.ExpertId })" class="btn btn-success btn-sm w-100 mt-2">View Detail</a>
-                    </div>
-                </div>
-            </div>
+        .search-bar .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
         }
-    </div>
 
-    @if (!Model.Doctors.Any())
-    {
-        <h5 class="text-center text-muted fw-bold my-5">Cannot find doctor as your expected.</h5>
+            .search-bar .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+    .filter-group {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
     }
-</div>
-@if (Model.TotalPages > 1)
-{
-    <nav>
-        <ul class="pagination">
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                
 
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" href="/Search/SearchDoctors?pg=@i">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
-}
+    .filter-item {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .filter-group select {
+        border-radius: 20px;
+        padding-left: 15px;
+        height: 45px;
+        font-size: 14px;
+        width: 100%;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s ease;
+    }
+
+        .filter-group select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+        .input-group .form-control {
+            flex: 1;
+        }
+</style>

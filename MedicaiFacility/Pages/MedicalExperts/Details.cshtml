@@ -1,0 +1,292 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.MedicalExperts.DetailsModel
+
+@{
+    ViewData["Title"] = "Medical Expert Details";
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
+}
+
+<h4>Medical Expert Details</h4>
+<hr />
+
+@if (Model.MedicalExpert == null)
+{
+    <p>Medical Expert not found.</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Expert Information (Users)</h5>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Image
+                </dt>
+                <dd class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.MedicalExpert.Expert?.Image))
+                    {
+                        <img src="@Model.MedicalExpert.Expert.Image" alt="Expert Image" class="expert-image" onerror="this.src='https://via.placeholder.com/150?text=No+Image';" />
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+                </dd>
+                <dt class="col-sm-4">
+                    Full Name
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.Expert?.FullName ?? "N/A")
+                </dd>
+                <dt class="col-sm-4">
+                    Email
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.Expert?.Email ?? "N/A")
+                </dd>
+                <dt class="col-sm-4">
+                    Phone Number
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.Expert?.PhoneNumber ?? "N/A")
+                </dd>
+                <dt class="col-sm-4">
+                    Bank Account
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.Expert?.BankAccount != null ? "****" + Model.MedicalExpert.Expert.BankAccount.Substring(Math.Max(0, Model.MedicalExpert.Expert.BankAccount.Length - 4)) : "N/A")
+                </dd>
+                <dt class="col-sm-4">
+                    Status
+                </dt>
+                <dd class="col-sm-8">
+                    <span class="status @(Model.MedicalExpert.Expert?.Status == true ? "status-active" : "status-inactive")">
+                        @(Model.MedicalExpert.Expert?.Status == true ? "Active" : "Inactive")
+                    </span>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Medical Expert Information</h5>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.MedicalExpert.Specialization)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.MedicalExpert.Specialization)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.MedicalExpert.ExperienceYears)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.MedicalExpert.ExperienceYears)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.MedicalExpert.Department)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.MedicalExpert.Department)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.MedicalExpert.PriceBooking)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.MedicalExpert.PriceBooking)
+                </dd>
+                <dt class="col-sm-4">
+                    Facility Name
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.Facility?.FacilityName ?? "N/A")
+                </dd>
+                <dt class="col-sm-4">Working Hours</dt>
+                <dd class="col-sm-8">
+                    @(Model.MedicalExpert.StartHour != null && Model.MedicalExpert.EndHour != null
+                        ? $"{Model.MedicalExpert.StartHour}:00 - {Model.MedicalExpert.EndHour}:00"
+                        : "N/A")
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Schedule</h5>
+            @if (Model.Schedule != null && Model.Schedule.Any())
+            {
+                <dl class="row">
+                    <dt class="col-sm-4">Available Days</dt>
+                    <dd class="col-sm-8">
+                        <ul>
+                            @foreach (var day in Model.Schedule)
+                            {
+                                <li>@day</li>
+                            }
+                        </ul>
+                    </dd> 
+                </dl>
+            }
+            else
+            {
+                <p>No schedule available for this expert.</p>
+            }
+        </div>
+    </div>
+
+    <div class="button-group">
+        <a asp-page="/MedicalExperts/Edit" asp-route-id="@Model.MedicalExpert.ExpertId" class="btnDetail btn-edit">Edit</a>
+        @if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+        {
+            <a asp-page="/MedicalExperts/Index" class="btnDetail btn-back">Close</a>
+        } else
+        
+        {
+            <a asp-page="/Index" class="btnDetail btn-back">Close</a>
+        }
+    </div>
+}
+
+<style>
+    /* Modal Content Styling */
+    .modal-content {
+        background: linear-gradient(135deg, #ffffff, #f9f9f9);
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid #e0e0e0;
+    }
+
+    /* Header Styling */
+    h4 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #34495e;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #78c2ad;
+        padding-bottom: 5px;
+    }
+
+    /* Horizontal Rule Styling */
+    hr {
+        border: 0;
+        border-top: 1px solid #e0e0e0;
+        margin: 15px 0;
+    }
+
+    /* Definition List Styling */
+    dl.row {
+        margin-bottom: 0;
+    }
+
+    dt {
+        font-weight: 500;
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        padding-top: 8px;
+    }
+
+    dd {
+        color: #2c3e50;
+        font-size: 0.95rem;
+        padding-top: 8px;
+        margin-bottom: 10px;
+    }
+
+    /* Status Styling */
+    .status {
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 12px;
+        display: inline-block;
+    }
+
+    .status-active {
+        background-color: #2ecc71;
+        color: #fff;
+    }
+
+    .status-inactive {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
+    /* Image Styling */
+    .expert-image {
+        max-width: 120px;
+        max-height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #78c2ad;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+    }
+
+    /* Schedule List Styling */
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+        ul li {
+            background-color: #f1f1f1;
+            margin: 5px 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+    /* Button Group Styling */
+    .button-group {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btnDetail {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-edit {
+        background-color: #f1c40f;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-edit:hover {
+            background-color: #d4ac0d;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-back {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        margin-left: 10px;
+    }
+
+        .btn-back:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+</style>
