@@ -52,7 +52,7 @@ namespace MedicaiFacility.RazorPage.Pages.Search
             // Dropdown
             PopulateDropdowns();
 
-            var medicalExperts = _medicalExpertService.GetAllMedicalExpert();
+            var medicalExperts = _medicalExpertService.GetAllMedicalExpert().Where(x=>x.Expert.IsApprove==true);
             var filter = medicalExperts.Where(m => string.IsNullOrEmpty(SearchTerm) ||
                              m.Specialization.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                              (m.Department ?? "").Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||

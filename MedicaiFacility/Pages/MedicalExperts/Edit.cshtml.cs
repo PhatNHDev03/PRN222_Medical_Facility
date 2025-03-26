@@ -258,7 +258,17 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                     ModelState.AddModelError(string.Empty, "Unable to activate specialist because the specialist's medical facility is inactive!");
                     return await ReloadDropdownsAndReturnPage();
                 }
+                if ((Input.Email!= user.Email) &&_userService.FindByEmail(Input.Email)!=null) {
 
+                    ModelState.AddModelError(string.Empty, "Email is already exist");
+                    return await ReloadDropdownsAndReturnPage();
+                }
+                if ((Input.PhoneNumber != user.PhoneNumber) && _userService.FindByPhoneNumber(Input.PhoneNumber) != null)
+                {
+
+                    ModelState.AddModelError(string.Empty, "Number phone is already exist");
+                    return await ReloadDropdownsAndReturnPage();
+                }
                 // Update User properties
                 user.FullName = Input.FullName;
                 user.Email = Input.Email;

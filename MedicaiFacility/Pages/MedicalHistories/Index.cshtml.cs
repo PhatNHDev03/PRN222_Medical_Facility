@@ -73,7 +73,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                 var system = _systemBalanceService.GetBalance(1);
                 var transaction = new Transaction
                 {
-                    Balance = system,
+                    BalanceId = 1,
                     UserId = item.Appointment.ExpertId,
                     PaymentMethod = "Credit Card",
                     Amount = transactionPayed.Amount,

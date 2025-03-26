@@ -52,6 +52,10 @@
 								<li class="nav-item">
 									<a class="btn btn-primary me-2" asp-area="" asp-page="/Users/EditSelfProfile" asp-route-id="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">My Profile</a>
 								</li>
+							}else{
+								<li class="nav-item">
+									<a class="btn btn-primary me-2" asp-area="" asp-page="/MedicalExperts/Details" asp-route-id="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">My Profile</a>
+								</li>
 							}
 							<li class="nav-item">
 								<a class="btn btn-primary me-2" asp-area="" asp-page="/Users/Logout">Logout</a>

@@ -40,7 +40,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             DepartmentName = x.FacilityDepartments.Select(fd => fd.Department.DepartmentName).ToList()
         };
             // display exxpertr co sheldue 
-            var expertAll = _medicalExpertService.getExpertsByFacilityId(id).Where(x=>x.MedicalExpertSchedules.Any()).ToList();   
+            var expertAll = _medicalExpertService.getExpertsByFacilityId(id).Where(x=>x.MedicalExpertSchedules.Any()&&x.Expert.IsApprove==true).ToList();   
             int pageSize = 3;
             TotalPages = (int)Math.Ceiling((double)expertAll.Count / pageSize);
             CurrentPage = pg;

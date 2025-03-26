@@ -80,6 +80,84 @@
 
 
 
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Cancellation</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to cancel this appointment?</p>
+                <p class="text-muted">Please make sure you have the patient's consent!</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <form method="post" asp-page-handler="CancelMyMedicalHistory">
+                    <input type="hidden" name="hid" id="deleteHistoryId" />
+                    <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirm -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Update history</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalForm">
+                <p>Loading...</p> <!-- Sẽ được thay thế bằng nội dung form -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(event, historyId) {
+        event.preventDefault();
+        document.getElementById("deleteHistoryId").value = historyId;
+        var myModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        myModal.show();
+    }
+</script>
+
+
+<script>
+    async function openModal(id = null) {
+        let url = `/MedicalHistories/Edit?id=${id}`;
+
+        try {
+            let response = await fetch(url);
+            let data = await response.text();
+
+            let modalForm = document.getElementById("modalForm");
+            modalForm.innerHTML = data;
+            let modal = new bootstrap.Modal(document.getElementById("confirmModal"));
+            modal.show();
+
+        } catch (error) {
+            console.error("Error loading modal:", error);
+        }
+    }
+
+    function closeModal() {
+        let modalElement = document.getElementById("confirmModal");
+        let modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) {
+            modal.hide();
+        }
+        document.getElementById("modalForm").innerHTML = "";
+    }
+
+
+</script>
 
 
     @if (Model.Pager.TotalPages > 0)
