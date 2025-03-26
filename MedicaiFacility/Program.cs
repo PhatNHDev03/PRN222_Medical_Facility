@@ -1,12 +1,13 @@
 ﻿using MedicaiFacility.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MedicaiFacility.RazorPage.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddSignalR();
 // Đăng ký Database và Configuration
 builder.Services.AddDatabaseAndConfiguration(builder.Configuration);
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -42,7 +43,7 @@ app.UseRouting();
 // Thêm UseAuthentication trước UseAuthorization
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapHub<SignalRServer>("/SignalRServer");
 app.MapRazorPages();
 
 app.Run();
