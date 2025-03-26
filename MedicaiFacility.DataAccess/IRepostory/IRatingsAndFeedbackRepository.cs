@@ -17,6 +17,8 @@ namespace MedicaiFacility.DataAccess.IRepostory
         public void Update(RatingsAndFeedback ratingsAndFeedback);
         public void Delete(int id);
         public RatingsAndFeedback findByHisId(int id);
-        (List<RatingsAndFeedback>, int totalItem) FindAllWithPagination(int pg, int pageSize);
+        List<RatingsAndFeedback> GetAllByExpertId(int expertId);
+
+		(List<RatingsAndFeedback>, int totalItem) FindAllWithPagination(int pg, int pageSize);
     }
 }

@@ -33,6 +33,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             FacilityId = x.FacilityId,
             FacilityName = x.FacilityName,
             Address = x.Address,
+            Serivice = x.Service,
             FacilityType = x.FacilityType,
             Verified = x.Verified,
             ContactInfo = x.ContactInfo,
@@ -40,7 +41,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalFacilites
             DepartmentName = x.FacilityDepartments.Select(fd => fd.Department.DepartmentName).ToList()
         };
             // display exxpertr co sheldue 
-            var expertAll = _medicalExpertService.getExpertsByFacilityId(id).Where(x=>x.MedicalExpertSchedules.Any()&&x.Expert.IsApprove==true).ToList();   
+            var expertAll = _medicalExpertService.getExpertsByFacilityId(id).Where(x=>x.MedicalExpertSchedules.Any()&&x.Expert.IsApprove==true&&x.Expert.Status==true).OrderByDescending(m => m.ExpertId).ToList();   
             int pageSize = 3;
             TotalPages = (int)Math.Ceiling((double)expertAll.Count / pageSize);
             CurrentPage = pg;

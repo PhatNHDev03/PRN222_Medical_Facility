@@ -7,7 +7,7 @@
         public string FacilityName { get; set; }
 
         public string Address { get; set; }
-
+        public string Serivice { get; set; }
         public string FacilityType { get; set; }
 
         public bool? Verified { get; set; }

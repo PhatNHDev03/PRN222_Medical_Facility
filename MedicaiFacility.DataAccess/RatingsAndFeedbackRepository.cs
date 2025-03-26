@@ -38,8 +38,16 @@ namespace MedicaiFacility.DataAccess
                 .Include(r => r.MedicalHistory) // Sửa lỗi Include
                 .ToList();
         }
-
-        public RatingsAndFeedback FindById(int id)
+		public List<RatingsAndFeedback> GetAllByExpertId(int expertId)
+		{
+			return _context.RatingsAndFeedbacks
+				.Include(r => r.MedicalHistory).ThenInclude(x=>x.Appointment)
+                .ThenInclude(X=>X.Patient).ThenInclude(X=>X.PatientNavigation).AsEnumerable()
+                
+                .Where(x=>x.MedicalHistory.Appointment.ExpertId==expertId) 
+				.ToList();
+		}
+		public RatingsAndFeedback FindById(int id)
         {
             return _context.RatingsAndFeedbacks
                 .Include(r => r.MedicalHistory) 

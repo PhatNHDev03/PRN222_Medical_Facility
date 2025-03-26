@@ -20,6 +20,11 @@
         <span asp-validation-for="MedicalFacility.Address" class="text-danger"></span>
     </div>
     <div class="mb-3">
+        <label asp-for="MedicalFacility.Service" class="form-label">Service</label>
+        <textarea asp-for="MedicalFacility.Service" type="text" class="form-control" required></textarea>
+        <span asp-validation-for="MedicalFacility.Service" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
         <label asp-for="MedicalFacility.FacilityType" class="form-label">Facility Type</label>
         <select id="FacilityType" name="MedicalFacility.FacilityType" class="form-control" required>
             @foreach (var facilityType in new[] { "Clinic", "Medical center", "Hospital" })

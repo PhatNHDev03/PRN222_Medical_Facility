@@ -42,6 +42,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
 
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
+            var check = HistoryId;
             if (file != null && file.Length > 0)
             {
                 var uploadsFolder = Path.Combine("wwwroot", "imgPatient");

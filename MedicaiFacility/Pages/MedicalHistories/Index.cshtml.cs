@@ -75,7 +75,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                 {
                     BalanceId = 1,
                     UserId = item.Appointment.ExpertId,
-                    PaymentMethod = "Credit Card",
+                    PaymentMethod = "MOMO",
                     Amount = transactionPayed.Amount,
                     TransactionStatus = "Success",
                     CreatedAt = DateTime.Now,

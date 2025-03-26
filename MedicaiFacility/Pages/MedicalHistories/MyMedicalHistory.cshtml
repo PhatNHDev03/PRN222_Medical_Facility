@@ -47,32 +47,27 @@
 				{
 					<td>@(history.Pay == true ? "Paid" : "not yet paid")</td>
 				}
-				<td>
-					<button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'"> History Detail</button>
-					@if (history.Status == "Completed")
-					{
-                        <button class="btn btn-primary" onclick="window.location.href='@Url.Page("/HealthRecords/Detail", new { id = history.HistoryId })'"> Health Record Detail</button>
-
-
+                <td>
+                    <button class="btn btn-primary action-btn" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'">
+                        History Detail
+                    </button>
+                    @if (history.Status == "Completed")
+                    {
+                        <button class="btn btn-primary action-btn" onclick="window.location.href='@Url.Page("/HealthRecords/Detail", new { id = history.HistoryId })'">
+                            Health Record Detail
+                        </button>
                         <form asp-page-handler="MyCreate" asp-route-id="@history.HistoryId" method="post">
-
-                            <button type="submit">View Rating and feedback</button>
+                            <button class="btn btn-primary action-btn" type="submit">View Rating and Feedback</button>
                         </form>
-					}
-
-					@if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
-					{
-						if (history.Status != "Cancel" && history.Status != "Completed" && history.Status != "Incomplete")
-						{
-							<button class="btn btn-warning btn-sm" onclick="openModal( @history.HistoryId)">Edit</button>
-						}
-						if (history.Status == "Completed")
-						{
+                    }
+                    @if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
+                    {
+                        if (history.Status != "Cancel" && history.Status != "Completed" && history.Status != "Incomplete")
+                        {
+                            <button class="btn btn-warning action-btn" onclick="openModal(@history.HistoryId)">Edit</button>
                         }
-
-					}
-
-				</td>
+                    }
+                </td>
 			</tr>
 		}
 	</tbody>
@@ -205,21 +200,18 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-        /* Table header */
         .table-custom thead {
             background-color: #343a40;
             color: white;
             text-transform: uppercase;
         }
 
-        /* Table header and cells */
         .table-custom th, .table-custom td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
-            /* Bo góc cho ô đầu và cuối mỗi hàng */
             .table-custom td:first-child,
             .table-custom th:first-child {
                 border-top-left-radius: 8px;
@@ -232,25 +224,46 @@
                 border-bottom-right-radius: 8px;
             }
 
-        /* Hover Effect */
         .table-custom tbody tr:hover {
-            background-color: rgba(0, 123, 255, 0.1); /* Làm nổi bật hàng khi hover */
+            background-color: rgba(0, 123, 255, 0.1);
             transition: background 0.3s ease-in-out;
         }
 
-    /* Button spacing */
-    .btn-action {
-        margin-right: 5px;
-        margin-bottom: 5px;
+    /* Style chung cho các nút trong cột Actions */
+    .action-btn {
+        padding: 6px 12px; /* Kích thước đồng nhất */
+        border-radius: 5px; /* Bo góc đồng nhất */
+        font-size: 14px; /* Cỡ chữ đồng nhất */
+        margin: 2px 4px; /* Khoảng cách giữa các nút */
+        min-width: 120px; /* Độ rộng tối thiểu để các nút bằng nhau */
+        text-align: center; /* Căn giữa nội dung */
+        display: inline-block; /* Đảm bảo các nút nằm trên cùng một hàng nếu đủ chỗ */
+        transition: all 0.3s ease; /* Hiệu ứng mượt mà khi hover */
     }
 
-    /* Trạng thái */
-    .status-confirmed {
-        background-color: #28a745;
-        color: #fff;
-        padding: 3px 10px;
-        border-radius: 5px;
+    /* Giữ màu sắc của btn-primary và btn-warning từ Bootstrap */
+    .btn-primary.action-btn {
+
+        border-color: #007bff;
     }
+
+        .btn-primary.action-btn:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }
+
+    .btn-warning.action-btn {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529; /* Đảm bảo chữ đọc được trên nền vàng */
+    }
+
+        .btn-warning.action-btn:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            transform: scale(1.05);
+        }
 
     /* Pagination */
     .pagination {
@@ -274,12 +287,8 @@
             border-color: #007bff;
         }
 
-        /* Hover cho nút chuyển trang */
         .pagination .page-link:hover {
             background-color: rgba(0, 123, 255, 0.2);
         }
-
-
-   
 </style>
 

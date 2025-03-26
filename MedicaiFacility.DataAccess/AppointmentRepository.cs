@@ -90,5 +90,6 @@ namespace MedicaiFacility.DataAccess
             var data = list.Skip(skip).Take(pageSize).ToList();
             return (data, total);
         }
+		
     }
 }

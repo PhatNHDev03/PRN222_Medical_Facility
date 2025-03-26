@@ -14,6 +14,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Address</th>
+            <th>Service</th>
             <th>Facility Type</th>
             <th>Department Name</th>
             <th>Vetified</th>
@@ -29,6 +30,7 @@
                 <td>@item.FacilityId</td>
                 <td>@item.FacilityName</td>
                 <td>@item.Address</td>
+                <td>@item.Service</td>
                 <td>@item.FacilityType</td>
                 <td>
                     @if (Model.FacilityDepartments.ContainsKey(item.FacilityId) && Model.FacilityDepartments[item.FacilityId].Any())

@@ -59,6 +59,7 @@ namespace MedicaiFacility.RazorPage.Pages.Search
                 filterItem = listItem.Where(x => string.IsNullOrEmpty(SearchTerm)
                 || x.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
                 || x.FacilityName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+                || x.Service.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
                 ).ToList();
             }
             if (option == "Hospital")
@@ -105,6 +106,7 @@ namespace MedicaiFacility.RazorPage.Pages.Search
             FacilityType = x.FacilityType,
             Verified = x.Verified,
             ContactInfo = x.ContactInfo,
+            Serivice = x.Service,
             IsActive = x.IsActive,
             DepartmentName = x.FacilityDepartments.Select(fd => fd.Department.DepartmentName).ToList()
         })

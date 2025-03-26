@@ -16,5 +16,7 @@ namespace MedicaiFacility.DataAccess.IRepostory
 		void DeleteById(int id);
 		(List<Transaction>, int totalItems) GetListByPagination(int pg, int pagesize);
 		(List<Transaction>, int totalItems) GetListByPaginationWithPatientId(int pg, int pageSize, int patientId);
-	}
+
+
+    }
 }

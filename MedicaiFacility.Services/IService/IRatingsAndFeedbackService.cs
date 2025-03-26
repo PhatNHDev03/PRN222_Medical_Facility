@@ -13,9 +13,10 @@ namespace MedicaiFacility.Service.IService
         void Udpate(RatingsAndFeedback healthArticle);
         void deleteById(int id);
         Task<RatingsAndFeedback?> GetFeedbackAsync(int id);
+        List<RatingsAndFeedback> GetAllByExpertId(int expertId);
 
-        // Đổi từ phương thức đồng bộ sang bất đồng bộ
-        Task<(List<RatingsAndFeedback>, int totalItem)> FindAllWithPaginationAsync(int pg, int pageSize);
+		// Đổi từ phương thức đồng bộ sang bất đồng bộ
+		Task<(List<RatingsAndFeedback>, int totalItem)> FindAllWithPaginationAsync(int pg, int pageSize);
         RatingsAndFeedback findByHisId(int id);
     }
 }

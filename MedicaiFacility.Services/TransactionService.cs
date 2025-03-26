@@ -33,7 +33,8 @@ namespace MedicaiFacility.Service
 			return _transactionRepository.GetAll();
 		}
 
-		public Transaction GetById(int id)
+
+        public Transaction GetById(int id)
 		{
 			return _transactionRepository.GetById(id);
 		}

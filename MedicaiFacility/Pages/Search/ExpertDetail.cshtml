@@ -11,7 +11,14 @@
     <div class="card mb-4">
         <div class="card-header">
             <h3>Doctor Information</h3>
-            <a href="@Url.Page("/Patients/CreateTransaction", new { expertId = Model.Doctor.ExpertId })" class="book-now">Book now</a>
+            @if (User.FindFirstValue(ClaimTypes.Role) == "Patient")
+            {
+                <a href="@Url.Page("/Patients/CreateTransaction", new { expertId = Model.Doctor.ExpertId })" class="book-now">Book now</a>
+            }
+            else
+            {
+                <button class="book-invalid-now">Book now</button>
+            }
         </div>
         <div class="card-body">
             <div class="row">
@@ -87,7 +94,7 @@
         <div class="card-body">
             @if (Model.Feedbacks != null && Model.Feedbacks.Any())
             {
-                foreach (var feedback in Model.Feedbacks)
+                foreach (var feedback in Model.Feedbacks.Take(2))
                 {
                     <div class="feedback-card">
                         <div class="user-info">
@@ -124,7 +131,7 @@
             }
             <!-- Add Write a Review Button -->
             <div class="text-center mt-3">
-                <a href="#" class="btn btn-danger">View all review</a>
+                <a class="text-decoration-none" href="/RatingsAndFeedbacks/ViewById?id=@Model.Doctor.ExpertId&pg=1">Xem đánh giá</a>
             </div>
         </div>
     </div>
@@ -148,6 +155,24 @@
         text-decoration: none;
     }
 
+    .book-invalid-now {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background-color: lightslategray;
+        color: white;
+        font-weight: bold;
+        padding: 8px 24px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+        .book-invalid-now:hover {
+        background-color: lightgray;
+        transform: scale(1.05);
+    }
         .book-now:hover {
             background-color: #C74422;
             transform: scale(1.05);

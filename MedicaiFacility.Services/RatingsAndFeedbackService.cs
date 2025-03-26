@@ -61,5 +61,10 @@ namespace MedicaiFacility.Services
         {
          return  _repository.findByHisId(id);
         }
-    }
+
+		public List<RatingsAndFeedback> GetAllByExpertId(int expertId)
+		{
+            return _repository.GetAllByExpertId(expertId);
+		}
+	}
 }

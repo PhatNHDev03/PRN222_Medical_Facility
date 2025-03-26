@@ -6,11 +6,13 @@
 <div class="text-center">
     <h1 class="display-4">Edit Transaction</h1>
 </div>
-
+<div>
+    <p class="btn btn-primary">Total Balance: @Model.TotalBalance</p>
+</div>
 <div class="container">
     <div class="mb-3 mt-3">
         <form asp-page="/Transactions/Edit" method="post">
-            <input hidden="hidden" type="text" class="form-control" asp-for="Transaction.UserId" />
+            <input hidden="hidden" type="text" class="form-control" asp-for="Transaction.UserId" readonly />
 
             <input hidden="hidden" type="text" class="form-control" asp-for="Transaction.TransactionId" />
 
@@ -38,27 +40,6 @@
 
                 </select>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Transaction Type</label>
-                <select class="form-control" asp-for="Transaction.TransactionType">
-                    <option value="AppointmentTransaction" selected="@(Model.Transaction.TransactionType == "AppointmentTransaction" ? "selected" : null)">Appointment Transaction</option>
-                    <option value="PayoutTransaction" selected="@(Model.Transaction.TransactionType == "PayoutTransaction" ? "selected" : null)">Payout Transaction</option>
-                    <option value="RefundTransaction" selected="@(Model.Transaction.TransactionType == "RefundTransaction" ? "selected" : null)">Refund Transaction</option>
-                </select>
-            </div>
-
-
-            <div class="mb-3">
-                <label class="form-label">Created At</label>
-                <input type="date" class="form-control" asp-for="Transaction.CreatedAt" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Updated At</label>
-                <input type="date" class="form-control" asp-for="Transaction.UpdateAt" />
-            </div>
-
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Update Transaction</button>
             </div>

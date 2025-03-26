@@ -1,0 +1,121 @@
+﻿@page
+@model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.ViewByIdModel
+@{
+    ViewData["Title"] = "All Ratings and Feedback";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <!-- Feedback Section -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Feedback</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+            {
+                foreach (var feedback in Model.Feedbacks)
+                {
+                    <div class="feedback-card">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                              
+                                @feedback.MedicalHistory.Appointment.Patient.PatientNavigation.FullName.Substring(0, 1)
+                            </div>
+                            <div>
+                                <div><strong>@feedback.MedicalHistory.Appointment.Patient.PatientNavigation.FullName</strong></div>
+                                <div class="feedback-date">@feedback.CreatedAt</div>
+                            </div>
+                        </div>
+                        <div>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= feedback.Rating)
+                                {
+                                    <i class="fas fa-star star-rating"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star star-rating"></i>
+                                }
+                            }
+                        </div>
+                        <div class="feedback-text">
+                            @feedback.Feedback
+                        </div>
+                    </div>
+                }
+         
+            }
+            else
+            {
+                <p>No feedback available.</p>
+            }
+
+            <!-- Pagination -->
+            
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+    .star-rating {
+        color: #FFCC00;
+        font-size: 15px;
+        margin-right: 5px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: #666;
+    }
+
+    .feedback-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .feedback-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .feedback-text {
+        margin-top: 10px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #ff5733;
+        border-color: #ff5733;
+        color: white;
+    }
+
+    .pagination .page-link {
+        color: #ff5733;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #f8f9fa;
+        }
+</style>

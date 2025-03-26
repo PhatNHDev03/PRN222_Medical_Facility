@@ -34,7 +34,7 @@ namespace MedicaiFacility.DataAccess
 
         public List<MedicalHistory> GetAll()
         {
-            return _Context.MedicalHistories.ToList();  
+            return _Context.MedicalHistories.Include(x=>x.Appointment).ToList();  
         }
 
         public (List<MedicalHistory> list, int totalItems) GetALlPagainations(int pg, int pageSize)
