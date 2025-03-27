@@ -13,6 +13,8 @@ public partial class MedicalFacility
 
     public string Address { get; set; }
 
+    public string Service { get; set; }
+
     public string FacilityType { get; set; }
 
     public bool? Verified { get; set; }
