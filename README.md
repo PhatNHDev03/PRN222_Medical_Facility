@@ -37,7 +37,8 @@ This project is a **Healthcare Online Platform** built using **ASP.NET Core Razo
 - **JavaScript (Fetch API)** for dynamic interactions
 
 ## Architecture
-![image](https://github.com/user-attachments/assets/d7cbcfe3-90b6-4f0e-bd4a-476da5b50a9f)
+![image](https://github.com/user-attachments/assets/1ecd69c9-814a-4648-8a8b-b0aded0412b7)
+
 
 This project follows the **Three-Layer Architecture** pattern:
 
