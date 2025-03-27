@@ -7,20 +7,23 @@ This project is a **Healthcare Online Platform** built using **ASP.NET Core Razo
 - **User Account Management**
   - Register and manage accounts via email or phone number.
   - Profile management for patients and doctors.
-  
 - **Doctor & Clinic Search**
+
   - Search for doctors by name, specialty, clinic, location, ratings, and pricing.
   - Search for healthcare facilities based on services and location.
 
 - **Online Appointment Booking**
+
   - Choose a doctor or clinic, select an available time slot, confirm, and optionally make a payment.
   - Cancel or reschedule appointments easily.
 
 - **Ratings & Reviews**
+
   - Users can leave reviews and ratings (1-5 stars) after using the service.
   - Public review system for transparency.
 
 - **Online Medical Records**
+
   - Store medical history and diagnosis details.
   - Share medical records securely with doctors.
   - Upload and manage medical test results and diagnostic images.
@@ -37,8 +40,8 @@ This project is a **Healthcare Online Platform** built using **ASP.NET Core Razo
 - **JavaScript (Fetch API)** for dynamic interactions
 
 ## Architecture
-![image](https://github.com/user-attachments/assets/1ecd69c9-814a-4648-8a8b-b0aded0412b7)
 
+![image](https://github.com/user-attachments/assets/1ecd69c9-814a-4648-8a8b-b0aded0412b7)
 
 This project follows the **Three-Layer Architecture** pattern:
 
@@ -72,7 +75,7 @@ This project follows the **Three-Layer Architecture** pattern:
    ```sh
    dotnet run
    ```
-4. Open your browser and navigate to `http://localhost:5000/` (or the specified port).
+4. Open your browser and navigate to `https://localhost:7048/` (or the specified port).
 
 ## File Structure
 
@@ -91,4 +94,3 @@ This project follows the **Three-Layer Architecture** pattern:
 ## License
 
 This project is open-source and available under the MIT License.
-

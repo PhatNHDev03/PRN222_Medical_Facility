@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MedicaiFacility.BusinessObject\MedicaiFacility.BusinessObject.csproj" />
-    <ProjectReference Include="..\MedicaiFacility.Services\MedicaiFacility.Service.csproj" />
+    <ProjectReference Include="..\MedicaiFacility.Services\MedicaiFacility.Business.csproj" />
   </ItemGroup>
 
   <ItemGroup>

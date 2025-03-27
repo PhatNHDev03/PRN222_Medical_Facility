@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicaiFacility.RazorPage",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicaiFacility.DataAccess", "MedicaiFacility.DataAccess\MedicaiFacility.DataAccess.csproj", "{9CDCFED6-9CCA-4924-99AF-74FDBBA231B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicaiFacility.Service", "MedicaiFacility.Services\MedicaiFacility.Service.csproj", "{85469165-E386-4529-B3C2-CA1FFD7669FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicaiFacility.Business", "MedicaiFacility.Services\MedicaiFacility.Business.csproj", "{85469165-E386-4529-B3C2-CA1FFD7669FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicaiFacility.BusinessObject", "MedicaiFacility.BusinessObject\MedicaiFacility.BusinessObject.csproj", "{84F38B7B-1885-48AB-8701-06A130664B4B}"
 EndProject
