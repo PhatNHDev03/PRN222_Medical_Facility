@@ -1,6 +1,10 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks.DetailModel
 @{
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
 }
 
 <h1>Details</h1>

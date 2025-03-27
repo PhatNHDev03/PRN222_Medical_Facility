@@ -1,6 +1,10 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.Transactions.EditModel
 @{
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
 }
 
 <div class="text-center">

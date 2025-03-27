@@ -3,6 +3,10 @@
 
 @{
     ViewData["Title"] = "Delete";
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
 }
 
 <h1>Delete</h1>

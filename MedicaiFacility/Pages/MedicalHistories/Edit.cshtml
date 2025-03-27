@@ -35,6 +35,8 @@
             }
             @if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
             {
+                <option value="Processing">Processing</option>
+                <option value="Cancel">Cancel</option>
                 <option value="IsDelete">IsDelete</option>
             }
         </select>

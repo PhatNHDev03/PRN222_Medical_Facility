@@ -40,22 +40,22 @@
                 <td>@(history.patientInfor ?? "Unknown")</td>
                 <td>@(history.ExpertInfor ?? "Unknown")</td>
                 <td>@(history.amount)</td>
-                <td>@(history.Pay == true ? "Paid" : "not yet paid")</td>
+                <td>@(history.Pay == true ? "Paid" : "Not yet paid")</td>
                 <td>
                     <button class="btn btn-primary" onclick="window.location.href='@Url.Page("/MedicalHistories/Detail", new { id = history.HistoryId })'">Detail</button>
-                    <button class="btn btn-secondary" onclick="window.location.href='@Url.Page("/MedicalHistories/Edit", new { id = history.HistoryId })'">Edit</button>
-                    @if (history.Pay==false)
+                    <button class="btn btn-warning action-btn" onclick="openModalEdit(@history.HistoryId)">Edit</button>
+                    @if (history.Pay == false)
                     {
                         <a class="btn btn-primary" asp-page="/MedicalHistories/Index" asp-route-id="@history.HistoryId" asp-page-handler="PayOut">Pay out</a>
-
                     }
-                    <button class="btn btn-danger" onclick="openModal(event, 'Delete', @history.HistoryId)">Delete</button>
+                    <button class="btn btn-danger" onclick="openModalDelete(@history.HistoryId)">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<!-- Phân trang -->
 @if (Model.Pager.TotalPages > 0)
 {
     <ul class="pagination justify-content-end">
@@ -87,75 +87,98 @@
 }
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h3>Are you sure you want to delete this record?</h3>
-        <p>Record ID: <strong id="deleteRecordId"></strong></p>
-        <form id="deleteForm" method="post" asp-page-handler="DeleteById">
-            <input type="hidden" name="id" id="deleteInputId">
-            <button type="submit" class="btn btn-danger">Confirm Delete</button>
-            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-        </form>
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this record?</p>
+                <p>Record ID: <strong id="deleteRecordId"></strong></p>
+                <form id="deleteForm" method="post" asp-page-handler="DeleteById">
+                    <input type="hidden" name="id" id="deleteInputId" />
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="editModalLabel">Edit Medical History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalForm">
+                <p>Loading...</p> <!-- Nội dung form sẽ được thay thế -->
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    function openModal(event, action, recordId) {
-        event.preventDefault();
-        if (action === 'Delete' && recordId) {
+    // Mở modal Delete
+    function openModalDelete(recordId) {
+        if (recordId) {
             document.getElementById("deleteRecordId").innerText = recordId;
             document.getElementById("deleteInputId").value = recordId;
-            document.getElementById("deleteModal").style.display = "block";
+            let modal = new bootstrap.Modal(document.getElementById("deleteModal"));
+            modal.show();
         } else {
             console.error("Invalid Record ID:", recordId);
         }
     }
 
-    function closeModal() {
-        document.getElementById("deleteModal").style.display = "none";
+    // Mở modal Edit
+    async function openModalEdit(id) {
+        let url = `/MedicalHistories/Edit?id=${id}`;
+        try {
+            let response = await fetch(url);
+            let data = await response.text();
+            let modalForm = document.getElementById("modalForm");
+            modalForm.innerHTML = data;
+            let modal = new bootstrap.Modal(document.getElementById("confirmModal"));
+            modal.show();
+        } catch (error) {
+            console.error("Error loading edit modal:", error);
+        }
     }
 
+    // Đóng modal khi click ngoài
     window.onclick = function (event) {
-        var modal = document.getElementById("deleteModal");
-        if (event.target === modal) {
-            closeModal();
+        let deleteModal = document.getElementById("deleteModal");
+        let editModal = document.getElementById("confirmModal");
+        if (event.target === deleteModal) {
+            bootstrap.Modal.getInstance(deleteModal).hide();
+        }
+        if (event.target === editModal) {
+            bootstrap.Modal.getInstance(editModal).hide();
         }
     }
 </script>
 
 <style>
+    /* Đảm bảo modal có z-index cao hơn các phần tử khác */
     .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1050 !important; /* Giá trị cao để vượt qua các phần tử khác */
+    }
+
+    .modal-backdrop {
+        z-index: 1040 !important; /* Đặt backdrop thấp hơn modal */
     }
 
     .modal-content {
         background-color: white;
-        margin: 10% auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 50%;
         box-shadow: 0px 0px 10px 0px #000;
     }
-
-    .close-btn {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-        .close-btn:hover {
-            color: black;
-        }
 </style>
 
 @if (TempData["ErrorMessage"] != null)

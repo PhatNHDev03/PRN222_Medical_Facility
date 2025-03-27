@@ -71,7 +71,9 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 
                     // Gửi signal đến tất cả client
                     await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
-                    return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+                    return User.FindFirstValue(ClaimTypes.Role) != "Admin"
+                    ? RedirectToPage("/MedicalHistories/MyMedicalHistory")
+                    : RedirectToPage("/MedicalHistories/Index");
                 }
 
                 // Các case khác giữ nguyên
@@ -86,7 +88,10 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                     _medicalHistoryService.Update(existing);
                     await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
                     TempData["SuccessMessage"] = "Please update health record about this medical examination";
-                    return RedirectToPage("/HealthRecords/Create", new { hisId = existing.HistoryId });
+                    return User.FindFirstValue(ClaimTypes.Role) != "Admin"
+                  ? RedirectToPage("/HealthRecords/Create", new { hisId = existing.HistoryId })
+                  : RedirectToPage("/MedicalHistories/Index");
+                  
                 }
 
                 await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
