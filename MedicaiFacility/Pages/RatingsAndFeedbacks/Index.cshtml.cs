@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 {
@@ -17,9 +19,14 @@ namespace MedicaiFacility.RazorPage.Pages.RatingsAndFeedbacks
 
         public List<RatingsAndFeedback> RatingsAndFeedback { get; private set; } = new List<RatingsAndFeedback>();
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             RatingsAndFeedback = _service.GetAll().OrderByDescending(x=>x.FeedbackId).ToList();
+            return Page();
         }
     }
 }

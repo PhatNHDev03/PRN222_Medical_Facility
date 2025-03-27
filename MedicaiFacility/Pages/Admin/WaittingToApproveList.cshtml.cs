@@ -3,6 +3,7 @@ using MedicaiFacility.RazorPage.ViewModel;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.Admin
 {
@@ -19,8 +20,12 @@ namespace MedicaiFacility.RazorPage.Pages.Admin
             _userService = userService;
             _medicalExpertScheduleService = medicalExpertScheduleService;
         }
-        public void OnGet(int pg=1)
+        public IActionResult OnGet(int pg=1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             CurrentPage = pg;
             var medicalExperts = _userService.GetAllUsers().Where(x=>x.IsApprove==false&&x.UserType== "MedicalExpert").ToList();
             MedicalExperts = medicalExperts
@@ -55,6 +60,7 @@ namespace MedicaiFacility.RazorPage.Pages.Admin
             TotalPages = (int)Math.Ceiling((double)MedicalExperts.Count / pageSize);
             CurrentPage = pg;
             MedicalExperts = MedicalExperts.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
+            return Page();
         }
 
         public IActionResult OnPostApprove(int id) {

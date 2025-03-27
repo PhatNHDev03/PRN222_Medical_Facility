@@ -1,6 +1,11 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.HealthRecords.DetailModel
-
+@{
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
+}
 <h2 class="text-center my-4">Health Record Details</h2>
 
 <div class="container">
@@ -69,7 +74,7 @@
     @if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert")
     {
 
-        <button class="btn btn-danger" onclick="window.location.href='@Url.Page("/HealthRecords/Edit", new { id = Model.HealthRecord.MedicalHistoryId })'">Health record Edit</button>
+        <button class="btn btn-danger" onclick="window.location.href='@Url.Page("/HealthRecords/Edit", new { id = Model.HealthRecord.RecordId })'">Health record Edit</button>
 
     }
 </div>

@@ -4,18 +4,21 @@
 	ViewData["Title"] = "Home Page";
 }
 <h3>MEDICAL SYSTEM </h3>
-<div class="booking-container">
-	<a href="/Search/SearchFacility" class="booking-option">
-		<img src="~/imgPatient/8e767d6d-f6f2-446d-9c05-1e39daa4c4b2-y_taaoa_taaoai_nhaa_.png" alt="Facility" />
-		<span>Search Facility</span>
-	</a>
-	<a href="/Search/SearchDoctors" class="booking-option">
-		<img src="~/imgPatient/a3df420d-e5bb-4c25-9866-40e7e1c8235c-aaaaoat_khaam_ngoaa_i_giaaa.png" alt="Doctor" />
-	
-		<span>Search Expert</span>
-	</a>
-</div>
+@if (User.FindFirstValue(ClaimTypes.Role) != "MedicalExpert")
+{
+	<div class="booking-container">
+		<a href="/Search/SearchFacility" class="booking-option">
+			<img src="~/imgPatient/8e767d6d-f6f2-446d-9c05-1e39daa4c4b2-y_taaoa_taaoai_nhaa_.png" alt="Facility" />
+			<span>Search Facility</span>
+		</a>
+		<a href="/Search/SearchDoctors" class="booking-option">
+			<img src="~/imgPatient/a3df420d-e5bb-4c25-9866-40e7e1c8235c-aaaaoat_khaam_ngoaa_i_giaaa.png" alt="Doctor" />
 
+			<span>Search Expert</span>
+		</a>
+	</div>
+
+}
 <div class="container">
 	<div class="row">
 		<!-- Khu vực bài viết (70%) -->

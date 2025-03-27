@@ -1,9 +1,12 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.BusinessObject.Pagination;
+using MedicaiFacility.RazorPage.Hubs;
 using MedicaiFacility.RazorPage.ViewModel;
+using MedicaiFacility.Service;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
@@ -16,10 +19,17 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 		public MedicalHistory MedicalHistory { get; set; }
 		private readonly IMedicalHistoryService _medicalHistoryService;
 		private readonly IHealthRecordService _healthRecordService;
-		public EditModel(IMedicalHistoryService medicalHistoryService, IHealthRecordService healthRecordService)
+        private readonly ISystemBalanceService _systemBalanceService;
+        private readonly ITransactionService _transactionService;
+        private readonly IHubContext<SignalRServer> _signalHub;
+        public EditModel(IMedicalHistoryService medicalHistoryService, IHealthRecordService healthRecordService, 
+			ISystemBalanceService systemBalanceService, ITransactionService transactionService, IHubContext<SignalRServer> signalHub)
 		{
 			_medicalHistoryService = medicalHistoryService;
 			_healthRecordService = healthRecordService;
+			_systemBalanceService = systemBalanceService;
+			_transactionService = transactionService;
+			_signalHub = signalHub;
 		}
 		public void OnGet(int? id)
 		{
@@ -28,34 +38,71 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 			PreRender(pg);
 		}
 
-		public IActionResult OnPost()
-		{
-			var exsisting  =  _medicalHistoryService.GetById(MedicalHistory.HistoryId);
-			exsisting.Status = MedicalHistory.Status;
-            exsisting.UpdatedAt = DateTime.Now;
+        // Trong EditModel.cs
+        public async Task<IActionResult> OnPost()
+        {
+            var existing = _medicalHistoryService.GetById(MedicalHistory.HistoryId);
+            existing.Status = MedicalHistory.Status;
+            existing.UpdatedAt = DateTime.Now;
 
-			_medicalHistoryService.Update(exsisting);
-			if (MedicalHistory.Status == "Processing")
-			{
-                TempData["SuccessMessage"] = "System is updated and you can update this medical examination";
+            try
+            {
+                if (MedicalHistory.Status == "Cancel")
+                {
+                    existing.Status = "Cancel";
+                    _medicalHistoryService.Update(existing);
+
+                    var transaction = _transactionService.GetById((int)existing.Appointment.TransactionId);
+                    var transactionRefund = new Transaction
+                    {
+						BalanceId = 1,
+                        UserId = existing.Appointment.PatientId,
+                        PaymentMethod = transaction.PaymentMethod,
+                        Amount = transaction.Amount,
+                        TransactionStatus = "success",
+                        CreatedAt = DateTime.Now,
+                        UpdateAt = DateTime.Now,
+                        TransactionType = "RefundTransaction"
+                    };
+
+                    _transactionService.Create(transactionRefund);
+                    _systemBalanceService.update(1, -transaction.Amount);
+                    _medicalHistoryService.Update(existing);
+
+                    // Gửi signal đến tất cả client
+                    await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
+                    return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+                }
+
+                // Các case khác giữ nguyên
+                if (MedicalHistory.Status == "Processing")
+                {
+                    TempData["SuccessMessage"] = "System is updated and you can update this medical examination";
+                    _medicalHistoryService.Update(existing);
+                    await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
+                }
+                if (MedicalHistory.Status == "Completed")
+                {
+                    _medicalHistoryService.Update(existing);
+                    await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
+                    TempData["SuccessMessage"] = "Please update health record about this medical examination";
+                    return RedirectToPage("/HealthRecords/Create", new { hisId = existing.HistoryId });
+                }
+
+                await _signalHub.Clients.All.SendAsync("ReceiveMedicalHistoryUpdate");
+                return User.FindFirstValue(ClaimTypes.Role) != "Admin"
+                    ? RedirectToPage("/MedicalHistories/MyMedicalHistory")
+                    : RedirectToPage("/MedicalHistories/Index");
             }
-			if (MedicalHistory.Status == "Completed")
-			{
-				
-			
-					TempData["SuccessMessage"] = "Please update health record about this medical examination";
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating the medical history";
+                Console.Error.WriteLine(ex);
+                return Page();
+            }
+        }
 
-                    return RedirectToPage("/HealthRecords/Create", new { hisId = exsisting.HistoryId });
-				
-			}
-			if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
-			{
-				return RedirectToPage("/MedicalHistories/MyMedicalHistory");
-			}
-			return RedirectToPage("/MedicalHistories/Index");
-		}
-
-		private void PreRender(int pg)
+        private void PreRender(int pg)
 		{
 			var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 			int pageSize = 5;

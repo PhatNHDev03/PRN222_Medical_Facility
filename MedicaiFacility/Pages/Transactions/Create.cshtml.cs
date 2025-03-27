@@ -41,6 +41,7 @@ namespace MedicaiFacility.RazorPage.Pages.Transactions
                 TempData["ErrorMessage"] = "Overpriced !!!";
                 return RedirectToPage("/Transactions/Index");
             }
+            Transaction.BalanceId = 1;
             _systemBalanceService.update(1,-Transaction.Amount);
             Transaction.CreatedAt = DateTime.Now;
             Transaction.UpdateAt = DateTime.Now;

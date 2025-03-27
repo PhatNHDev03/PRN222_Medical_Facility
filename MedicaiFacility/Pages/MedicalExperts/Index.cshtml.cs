@@ -16,6 +16,7 @@ using MedicaiFacility.DataAccess;
 using MedicaiFacility.BusinessObject.Pagination;
 using MedicaiFacility.Service.IService;
 using MedicaiFacility.Service;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
 {
@@ -30,8 +31,12 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
         {
             _medicalExpertService = medicalExpertService ?? throw new ArgumentNullException(nameof(medicalExpertService));
         }
-        public async Task OnGetAsync(int? pg)
+        public async Task<IActionResult> OnGetAsync(int? pg)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index"); 
+            }
             int pageSize = 10; // Number of items per page
             int pageNumber = pg ?? 1; // Default to page 1 if pg is null
 
@@ -52,6 +57,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                 Pager = new Pager(0, 1, pageSize);
                 ModelState.AddModelError(string.Empty, "An error occurred while loading medical experts. " + ex.Message);
             }
+            return Page();
         }
     }
 }

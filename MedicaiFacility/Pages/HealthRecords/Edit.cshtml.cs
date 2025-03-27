@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MedicaiFacility.RazorPage.Pages.HealthRecords
@@ -79,7 +80,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             existHealthRecord.Prescription = HealthRecord.Prescription;
             existHealthRecord.SharedLink = HealthRecord.SharedLink;
             existHealthRecord.UpdatedAt = DateTime.Now;
-
+            existHealthRecord.IsActive = HealthRecord.IsActive;
             var diseaseIdsToDelete = existHealthRecord.HealthRecordDiseases
             .Select(d => d.HealthRecordDiseaseId)
             .ToList(); // Chuyển sang List mới để tránh sửa đổi collection gốc
@@ -94,7 +95,14 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
                 .ToList();
 
             _healthRecordService.Udpate(existHealthRecord);
-            return RedirectToPage("/HealthRecords/Detail", new { id = HealthRecord.RecordId });
-        }
+
+            TempData["SuccessMessage"] = "Health record update successfully";
+
+            if (User.FindFirstValue(ClaimTypes.Role)== "Admin") {
+					return RedirectToPage("/HealthRecords/Index");
+			}
+			return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+
+		}
     }
 }

@@ -66,7 +66,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalExperts
                     foreach (var transaction in transactionExsiting) {
                         _transactionService.Create(new Transaction
                         {
-                            BalanceId = transaction.BalanceId,
+                            BalanceId = 1,
                             UserId = transaction.UserId,
                             PaymentMethod = transaction.PaymentMethod,
                             Amount = transaction.Amount,

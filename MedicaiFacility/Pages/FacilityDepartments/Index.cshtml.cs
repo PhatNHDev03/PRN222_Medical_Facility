@@ -3,6 +3,7 @@ using MedicaiFacility.BusinessObject;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.FacilitityDepartments
 {
@@ -17,12 +18,17 @@ namespace MedicaiFacility.RazorPage.Pages.FacilitityDepartments
             _facilityDepartmentService = facilityDepartmentService;
 
         }
-        public void OnGet(int pg = 1)
+        public IActionResult OnGet(int pg = 1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             int pageSize = 5;
             var (facilityDepartmentsAll, totalItem) = _facilityDepartmentService.FindAllWithPagination(pg, pageSize);
             Pager = new Pager(totalItem, pg, pageSize);
             FacilityDepartments = facilityDepartmentsAll;
+            return Page();
         }
     }
 }

@@ -1,6 +1,11 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.HealthRecords.EditModel
 @{
+
+    if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+    {
+        Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    }
 }
 @if (TempData["SuccessMessage"] != null)
 {

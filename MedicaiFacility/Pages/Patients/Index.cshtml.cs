@@ -4,6 +4,7 @@ using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace MedicaiFacility.RazorPage.Pages.Patients
@@ -25,8 +26,12 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
         public int CurrentPage { get; set; }
   
 
-        public void OnGet(int pg = 1)
+        public IActionResult OnGet(int pg = 1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             var allPatients = _patientService.GetAllPatients().ToList();
 
             int totalPatients = allPatients.Count;
@@ -34,7 +39,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
             TotalPages = (int)Math.Ceiling((double)allPatients.Count / pageSize);
             CurrentPage = pg;
             Patients = allPatients.Skip((pg - 1) * pageSize).Take(pageSize).ToList();
-
+            return Page();
         }
 
 

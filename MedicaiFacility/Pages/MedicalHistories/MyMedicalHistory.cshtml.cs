@@ -1,10 +1,12 @@
 ﻿using MedicaiFacility.BusinessObject;
 using MedicaiFacility.BusinessObject.Pagination;
+using MedicaiFacility.RazorPage.Hubs;
 using MedicaiFacility.RazorPage.ViewModel;
 using MedicaiFacility.Service;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
@@ -18,20 +20,22 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
         private readonly ITransactionService _transactionService;
         private readonly IHealthRecordService _healthRecordService;
         private readonly IRatingsAndFeedbackService _ratingsAndFeedbackService;
-        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService,IHealthRecordService healthRecordService, IRatingsAndFeedbackService ratingsAndFeedbackService)
+        private readonly IHubContext<SignalRServer> _signalHub;
+        public MyMedicalHistoryModel(IMedicalHistoryService medicalHistoryService, ISystemBalanceService systemBalanceService, ITransactionService transactionService,IHealthRecordService healthRecordService, IRatingsAndFeedbackService ratingsAndFeedbackService,IHubContext<SignalRServer> signalHub)
         {
             _medicalHistoryService = medicalHistoryService;
             _systemBalanceService = systemBalanceService;
             _transactionService = transactionService;
             _healthRecordService = healthRecordService;
             _ratingsAndFeedbackService = ratingsAndFeedbackService;
+            _signalHub = signalHub;
         }
         public void OnGet(int pg = 1)
         {
             PreRender(pg);
         }
 
-        public IActionResult OnPostCancelMyMedicalHistory(int hid) {
+        public IActionResult  OnPostCancelMyMedicalHistory(int hid) {
             var item = _medicalHistoryService.GetById(hid);
             if (item != null) {
                 item.Status = "Cancel";
@@ -39,6 +43,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                 var transaction = _transactionService.GetById((int)item.Appointment.TransactionId);
                 //refund
                 var transactionRefund = new Transaction {
+                    BalanceId = 1,
                     UserId = item.Appointment.PatientId,
                     PaymentMethod = transaction.PaymentMethod,
                     Amount = transaction.Amount,
@@ -53,6 +58,7 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
             }
             int pg =1;
             PreRender(pg);
+         
             return Page();
 
         }

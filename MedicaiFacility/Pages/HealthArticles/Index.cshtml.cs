@@ -5,6 +5,7 @@ using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.HealthArticles
 {
@@ -22,8 +23,12 @@ namespace MedicaiFacility.RazorPage.Pages.HealthArticles
             _healthArticleService = db;
 
         }
-        public async Task OnGetAsync(int pg =1)
+        public async Task<IActionResult> OnGetAsync(int pg =1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             int pageSize = 5;
             var (list,total) = _healthArticleService.findAllWithPagination(pg,pageSize);
             Pager = new Pager(total,pg,pageSize);
@@ -36,7 +41,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthArticles
                 CreatedAt = h.CreatedAt,
                 IsActive = h.IsActive,  
             }).ToList();
-
+            return Page();
         }
 
      

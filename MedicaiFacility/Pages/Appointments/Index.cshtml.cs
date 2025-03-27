@@ -4,6 +4,7 @@ using MedicaiFacility.RazorPage.ViewModel;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.Appointments
 {
@@ -19,8 +20,12 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
             _appointmentService = appointmentService;
             _transactionService = transactionService;
         }
-        public void OnGet(int pg =1)
+        public IActionResult OnGet(int pg =1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             int pageSize = 5;
             var (list, total) = _appointmentService.GetALlPagainations(pg, pageSize);
             Pager = new Pager(total, pg, pageSize);
@@ -42,7 +47,7 @@ namespace MedicaiFacility.RazorPage.Pages.Appointments
                     }
                     );
             }
-
+            return Page();
         }
         public IActionResult OnPostDeleteById(int id) { 
             var item = _appointmentService.GetById(id);

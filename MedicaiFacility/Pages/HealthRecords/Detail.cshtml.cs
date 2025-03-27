@@ -19,21 +19,46 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             _healthRecordService = healthRecordService;
             _diseaseService = diseaseService;
         }
-		public void OnGet(int? id)
+		public IActionResult OnGet(int? id)
 		{
             HealthRecord = _healthRecordService.findByMedicalHistoryId((int)id);
-			if (HealthRecord != null)
-			{
-				// Lấy danh sách tất cả bệnh
-				var allDiseases = _diseaseService.GetAllDisease()
-					.ToDictionary(d => d.DiseaseId, d => d.DiseaseName + " - " + d.Department.DepartmentName);
+            if (HealthRecord != null)
+            {
+                if (User.FindFirstValue(ClaimTypes.Role) == "Patient" && HealthRecord.IsActive==false) {
+                    TempData["ErrorMessage"] = "Health record is inactive, please contact expert or administrator to resolve this issue";
+                    return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+                }
+                // Lấy danh sách tất cả bệnh
+                var allDiseases = _diseaseService.GetAllDisease()
+                    .ToDictionary(d => d.DiseaseId, d => d.DiseaseName + " - " + d.Department.DepartmentName);
 
-				// Lọc danh sách bệnh đã chọn từ HealthRecord
-				SelectedDiseases = HealthRecord.HealthRecordDiseases
-					.Where(d => d.DiseaseId.HasValue && allDiseases.ContainsKey(d.DiseaseId.Value)) // Kiểm tra DiseaseId hợp lệ
-					.Select(d => new SelectListItem { Value = d.DiseaseId.ToString(), Text = allDiseases[d.DiseaseId.Value] })
-					.ToList();
+                // Lọc danh sách bệnh đã chọn từ HealthRecord
+                SelectedDiseases = HealthRecord.HealthRecordDiseases
+                    .Where(d => d.DiseaseId.HasValue && allDiseases.ContainsKey(d.DiseaseId.Value)) // Kiểm tra DiseaseId hợp lệ
+                    .Select(d => new SelectListItem { Value = d.DiseaseId.ToString(), Text = allDiseases[d.DiseaseId.Value] })
+                    .ToList();
+
+                return Page();
+            }
+            else {
+				TempData["ErrorMessage"] = "Please waiting for Expert update healthRecord";
+                if (User.FindFirstValue(ClaimTypes.Role) == "Admin")
+                {
+                    return RedirectToPage("/HealthRecords/Index");
+                }
+                else {
+                    if (User.FindFirstValue(ClaimTypes.Role) == "MedicalExpert") {
+                        TempData["SuccessMessage"] = "Please Update patient healthRecord ";
+
+						return RedirectToPage("/HealthRecords/Create", new { hisId = id });
+                    }
+
+					return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+				}
+
+
 			}
+          
 		}
 
 

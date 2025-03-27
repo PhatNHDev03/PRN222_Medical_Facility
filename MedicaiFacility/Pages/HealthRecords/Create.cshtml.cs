@@ -80,7 +80,8 @@ namespace MedicaiFacility.RazorPage.Pages.HealthRecords
             _healthRecordService.Save(HealthRecord);
 
             TempData["SuccessMessage"] = "Health record saved successfully";
-            return Page();
-        }
+		
+			return RedirectToPage("/MedicalHistories/MyMedicalHistory");
+		}
     }
 }

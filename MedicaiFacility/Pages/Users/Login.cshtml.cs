@@ -44,7 +44,11 @@ namespace MedicaiFacility.RazorPage.Pages.Users
                 ModelState.AddModelError("", "Invalid identifier, password, or account is inactive.");
                 return Page();
             }
+            if (user.IsApprove == false) {
+                ModelState.AddModelError("", "Please waiting to approve !!");
+                return Page();
 
+            }
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),

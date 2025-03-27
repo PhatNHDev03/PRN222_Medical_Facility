@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Composition.Convention;
+using System.Security.Claims;
 
 namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
 {
@@ -26,8 +27,12 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
             _transactionService = transactionService;
             _systemBalanceService = systemBalanceService;
         }
-        public void OnGet(int pg=1)
+        public IActionResult OnGet(int pg=1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             TotalBalance = _systemBalanceService.GetBalance(1).TotalBalance;
             int pageSize = 5;
             var (listByPagination, total) = _medicalHistoryService.GetALlPagainations(pg,pageSize);
@@ -49,10 +54,9 @@ namespace MedicaiFacility.RazorPage.Pages.MedicalHistories
                     Pay =(bool)item.Payed,
                     amount = item.Appointment.Transaction.Amount
                 });
-
-               
+                
             }
-
+            return Page();
         }
         public IActionResult OnPostDeleteById(int id) { 
             var item = _medicalHistoryService.GetById(id);

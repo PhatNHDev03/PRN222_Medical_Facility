@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using System.Transactions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -27,8 +28,12 @@ namespace MedicaiFacility.RazorPage.Pages.Transactions
             _systemBalanceService = systemBalanceService;
 
         }
-        public void OnGet(int pg = 1)
+        public IActionResult OnGet(int pg = 1)
         {
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                return RedirectToPage("/Index");
+            }
             TotalBalance = _systemBalanceService.GetBalance(1).TotalBalance;
 
             int pageSize = 5;
@@ -51,7 +56,7 @@ namespace MedicaiFacility.RazorPage.Pages.Transactions
                     TransactionType = transaction.TransactionType
                 });
             }
-
+            return Page();
         }
 
         public IActionResult OnPostDeleteById(int id)
