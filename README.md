@@ -87,7 +87,6 @@ This project follows the **Three-Layer Architecture** pattern:
 │── 📂 WebRazorPage     # Presentation layer (Razor Pages)
 │── appsettings.json
 │── Program.cs
-│── Startup.cs
 │── README.md
 ```
 
