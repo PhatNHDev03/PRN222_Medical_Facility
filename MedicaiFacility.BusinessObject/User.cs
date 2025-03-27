@@ -35,6 +35,8 @@ public partial class User
 
     public virtual ICollection<Conversation> ConversationPatients { get; set; } = new List<Conversation>();
 
+    public virtual ICollection<HealthArticle> HealthArticles { get; set; } = new List<HealthArticle>();
+
     public virtual MedicalExpert MedicalExpert { get; set; }
 
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();

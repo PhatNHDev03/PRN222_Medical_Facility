@@ -46,10 +46,8 @@ namespace MedicaiFacility.RazorPage.Pages.HealthArticles
 			existingArticle.IsActive = HealthArticle.IsActive;
 			// Giữ lại các trường khác như CreatedAt và AuthorName không thay đổi
 			// (những trường này không cần thiết phải cập nhật lại)
-
 			// Cập nhật bài viết trong cơ sở dữ liệu
 			_healthArticleService.Udpate(existingArticle);   
-
             // Quay lại trang danh sách sau khi cập nhật
             return RedirectToPage("/HealthArticles/Index");
         }

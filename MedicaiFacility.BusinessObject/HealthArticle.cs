@@ -19,5 +19,5 @@ public partial class HealthArticle
 
     public bool? IsActive { get; set; }
 
-    public virtual MedicalExpert Author { get; set; }
+    public virtual User Author { get; set; }
 }

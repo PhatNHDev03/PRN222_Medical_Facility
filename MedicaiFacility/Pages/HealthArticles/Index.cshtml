@@ -1,5 +1,9 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.HealthArticles.IndexModel
+@{
+ 
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
 
 <h3>Health Article Management</h3>
 
@@ -24,7 +28,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var obj in Model.HealthArticles.OrderByDescending(u => u.CreatedAt))
+            @foreach (var obj in Model.HealthArticles)
             {
                 <tr>
                     <td>@obj.Title</td>
@@ -70,25 +74,25 @@ else
 		@if (Model.Pager.CurrentPage > 1)
 		{
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
+                <a class="page-link" asp-page="/HealthArticles/Index" asp-route-pg="@(Model.Pager.StartPage)">First</a>
 			</li>
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
+                <a class="page-link" asp-page="/HealthArticles/Index" asp-route-pg="@(Model.Pager.CurrentPage-1)">Previous</a>
 			</li>
 		}
 		@for (var pge = Model.Pager.StartPage; pge <= Model.Pager.EndPage; pge++)
 		{
 			<li class="page-item  @(pge == Model.Pager.CurrentPage? "active": "")">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@pge">@pge</a>
+                <a class="page-link" asp-page="/HealthArticles/Index" asp-route-pg="@pge">@pge</a>
 			</li>
 		}
 		@if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
 		{
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
+                <a class="page-link" asp-page="/HealthArticles/Index" asp-route-pg="@(Model.Pager.CurrentPage+1)">Next</a>
 			</li>
 			<li class="page-item">
-				<a class="page-link" asp-page="/HealthRecords/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
+                <a class="page-link" asp-page="/HealthArticles/Index" asp-route-pg="@(Model.Pager.TotalPages)">Last</a>
 			</li>
 		}
 	</ul>

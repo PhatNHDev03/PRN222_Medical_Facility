@@ -27,7 +27,7 @@ namespace MedicaiFacility.DataAccess
         {
             var list = _context.HealthArticles
             .Include(h => h.Author)
-            .ThenInclude(me => me.Expert)
+            .OrderByDescending(h => h.ArticleId)
             .ToList();
             var total = list.Count();
             int skip = (pg-1)*pageSize;
@@ -39,7 +39,7 @@ namespace MedicaiFacility.DataAccess
         {
             return _context.HealthArticles
                                  .Include(h => h.Author)
-                                 .ThenInclude(me => me.Expert)
+                          
                                  .FirstOrDefault(h => h.ArticleId == id);
         }
 
@@ -47,7 +47,7 @@ namespace MedicaiFacility.DataAccess
         {
            return _context.HealthArticles
              .Include(h => h.Author)
-             .ThenInclude(me => me.Expert)
+            
              .ToList();
         }
 

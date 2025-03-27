@@ -26,8 +26,9 @@ namespace MedicaiFacility.RazorPage.Pages.HealthArticles
             var userIdparse = userId.Value;
 
 			HealthArticle.AuthorId = int.Parse(userId.Value);
+            HealthArticle.CreatedAt = DateTime.Now;
 
-			HealthArticle.IsActive = true;
+            HealthArticle.IsActive = true;
             _healthArticleService.Save(HealthArticle);
             return RedirectToPage("/HealthArticles/Index");
 

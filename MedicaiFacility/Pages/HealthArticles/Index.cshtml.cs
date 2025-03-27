@@ -32,7 +32,7 @@ namespace MedicaiFacility.RazorPage.Pages.HealthArticles
                 ArticleID = h.ArticleId,
                 Title = h.Title,
                 Content = h.Content,
-                AuthorName = h.Author.Expert.FullName,
+                AuthorName = h.Author.FullName,
                 CreatedAt = h.CreatedAt,
                 IsActive = h.IsActive,  
             }).ToList();

@@ -29,7 +29,5 @@ public partial class MedicalExpert
 
     public virtual MedicalFacility Facility { get; set; }
 
-    public virtual ICollection<HealthArticle> HealthArticles { get; set; } = new List<HealthArticle>();
-
     public virtual ICollection<MedicalExpertSchedule> MedicalExpertSchedules { get; set; } = new List<MedicalExpertSchedule>();
 }

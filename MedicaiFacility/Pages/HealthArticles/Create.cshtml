@@ -1,6 +1,8 @@
 ﻿@page
 @model MedicaiFacility.RazorPage.Pages.HealthArticles.CreateModel
 @{
+
+	Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
 <form method="post">
@@ -21,15 +23,6 @@
 			<textarea asp-for="HealthArticle.Content" class="form-control" rows="5"></textarea>
 			<span asp-validation-for="HealthArticle.Content" class="text-danger"></span>
 		</div>
-
-	
-
-		<div class="mb-3 row p-1">
-			<label asp-for="HealthArticle.CreatedAt" class="p-0"></label>
-			<input asp-for="HealthArticle.CreatedAt" class="form-control" type="datetime-local" />
-			<span asp-validation-for="HealthArticle.CreatedAt" class="text-danger"></span>
-		</div>
-
 
 		<div class="row">
 			<div class="col-6 col-md-3">
