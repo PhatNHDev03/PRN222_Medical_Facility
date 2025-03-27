@@ -1,7 +1,9 @@
 ﻿using MedicaiFacility.BusinessObject;
+using MedicaiFacility.RazorPage.Hubs;
 using MedicaiFacility.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MedicaiFacility.RazorPage.Pages.Patients
 {
@@ -20,11 +22,13 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
         private readonly IAppointmentService _appointmentService;
         private readonly IPatientService _patientService;
         private readonly IMedicalExpertService _medicalExpertService;
-        public CreateAppointmentModel(IAppointmentService appointmentService,IPatientService patientService,IMedicalExpertService medicalExpertService)
+        private readonly IHubContext<SignalRServer> _signalHub;
+        public CreateAppointmentModel(IAppointmentService appointmentService,IPatientService patientService,IMedicalExpertService medicalExpertService, IHubContext<SignalRServer> signalHub)
         {
             _appointmentService = appointmentService;
             _patientService = patientService;
             _medicalExpertService = medicalExpertService;
+            _signalHub = signalHub;
         }
         public void OnGet(int? patientId,int? transactionId,int? expertId)
         {
@@ -50,7 +54,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
                .Select(x => x.EndDate.Value.ToString("yyyy-MM-ddTHH:mm"))  // Format theo datetime-local
                .ToList();
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
            
             Appointment.Status = "Pending";
@@ -70,6 +74,7 @@ namespace MedicaiFacility.RazorPage.Pages.Patients
                 return Page();
             }
             _appointmentService.Create(Appointment);
+            await _signalHub.Clients.All.SendAsync("ReceiveDeletedItem");
             ViewData["SuccessMessage"] = "Your appointment will be confirmed by a Medical Expert. Please wait!";
             return RedirectToPage("/Appointments/MyAppointments",new { pg =1, patientId = Appointment .PatientId});
         }
