@@ -51,18 +51,19 @@ jobs:
         name: app-artifact
         path: ./publish
 
-    - name: Deploy to server
+    - name: Deploy to DigitalOcean
       run: |
-        # Thêm lệnh deploy tùy chỉnh, ví dụ: sử dụng SSH để copy file lên server
-        # Cần cấu hình SSH key và host trong secrets
-        echo "Deploying to 159.223.107.50..."
-        scp -r ./publish/* user@159.223.107.50:/path/to/deploy
+        # Sử dụng SSH với username và password cho DigitalOcean
+        echo "Deploying to $DIGITALOCEAN_HOST..."
+        scp -r ./publish/* $DIGITALOCEAN_USERNAME@$DIGITALOCEAN_HOST:/path/to/deploy
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
+        DIGITALOCEAN_HOST: ${{ secrets.DIGITALOCEAN_HOST }}
+        DIGITALOCEAN_USERNAME: ${{ secrets.DIGITALOCEAN_USERNAME }}
+        DIGITALOCEAN_PASSWORD: ${{ secrets.DIGITALOCEAN_PASSWORD }}
 
     - name: Run deployment script
-      run: ssh user@159.223.107.50 "cd /path/to/deploy && ./deploy.sh"
+      run: sshpass -p "$DIGITALOCEAN_PASSWORD" ssh $DIGITALOCEAN_USERNAME@$DIGITALOCEAN_HOST "cd /path/to/deploy && ./deploy.sh"
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        DIGITALOCEAN_HOST: ${{ secrets.DIGITALOCEAN_HOST }}
+        DIGITALOCEAN_USERNAME: ${{ secrets.DIGITALOCEAN_USERNAME }}
+        DIGITALOCEAN_PASSWORD: ${{ secrets.DIGITALOCEAN_PASSWORD }}
